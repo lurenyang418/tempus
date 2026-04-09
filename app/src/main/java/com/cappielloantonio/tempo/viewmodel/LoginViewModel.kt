@@ -19,14 +19,14 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         get() = serverRepository.liveServer
 
     fun addServer(server: Server?) {
-        serverRepository.insert(server)
+        server?.let { serverRepository.insert(it) }
     }
 
     fun deleteServer(server: Server?) {
         if (server != null) {
             serverRepository.delete(server)
         } else if (this.serverToEdit != null) {
-            serverRepository.delete(this.serverToEdit)
+            serverRepository.delete(this.serverToEdit!!)
         }
     }
 }

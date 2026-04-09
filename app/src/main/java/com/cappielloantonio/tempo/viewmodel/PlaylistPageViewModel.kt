@@ -72,10 +72,12 @@ class PlaylistPageViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun setPinned(isNowPinned: Boolean) {
-        if (isNowPinned) {
-            playlistRepository.insert(playlist)
-        } else {
-            playlistRepository.delete(playlist)
+        playlist?.let {
+            if (isNowPinned) {
+                playlistRepository.insert(it)
+            } else {
+                playlistRepository.delete(it)
+            }
         }
     }
 }

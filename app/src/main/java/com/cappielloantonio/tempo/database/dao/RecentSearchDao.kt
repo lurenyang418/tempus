@@ -16,8 +16,8 @@ interface RecentSearchDao {
     val alpha: MutableList<String?>?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insert(search: RecentSearch?)
+    fun insert(search: RecentSearch)
 
     @Delete
-    fun delete(search: RecentSearch?)
+    fun delete(search: RecentSearch)
 }

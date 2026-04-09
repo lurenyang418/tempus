@@ -27,7 +27,7 @@ class LyricsRepository {
         return lyricsDao!!.observeOne(songId)
     }
 
-    fun insert(lyricsCache: LyricsCache?) {
+    fun insert(lyricsCache: LyricsCache) {
         val insert = LyricsRepository.InsertThreadSafe(lyricsDao!!, lyricsCache)
         val thread = Thread(insert)
         thread.start()
@@ -53,7 +53,7 @@ class LyricsRepository {
 
     private class InsertThreadSafe(
         private val lyricsDao: LyricsDao,
-        private val lyricsCache: LyricsCache?
+        private val lyricsCache: LyricsCache
     ) : Runnable {
         override fun run() {
             lyricsDao.insert(lyricsCache)

@@ -285,14 +285,14 @@ class PlaylistRepository {
         get() = playlistDao!!.all
 
     @OptIn(UnstableApi::class)
-    fun insert(playlist: Playlist?) {
+    fun insert(playlist: Playlist) {
         val insert = PlaylistRepository.InsertThreadSafe(playlistDao!!, playlist)
         val thread = Thread(insert)
         thread.start()
     }
 
     @UnstableApi
-    fun delete(playlist: Playlist?) {
+    fun delete(playlist: Playlist) {
         val delete = PlaylistRepository.DeleteThreadSafe(playlistDao!!, playlist)
         val thread = Thread(delete)
         thread.start()
@@ -345,7 +345,7 @@ class PlaylistRepository {
 
     private class InsertThreadSafe(
         private val playlistDao: PlaylistDao,
-        private val playlist: Playlist?
+        private val playlist: Playlist
     ) : Runnable {
         override fun run() {
             playlistDao.insert(playlist)
@@ -354,7 +354,7 @@ class PlaylistRepository {
 
     private class DeleteThreadSafe(
         private val playlistDao: PlaylistDao,
-        private val playlist: Playlist?
+        private val playlist: Playlist
     ) : Runnable {
         override fun run() {
             playlistDao.delete(playlist)

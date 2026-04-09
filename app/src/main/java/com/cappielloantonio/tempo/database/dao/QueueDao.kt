@@ -19,10 +19,10 @@ interface QueueDao {
     val lastPlayed: Queue?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(songQueueObject: Queue?)
+    fun insert(songQueueObject: Queue)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(songQueueObjects: MutableList<Queue?>?)
+    fun insertAll(songQueueObjects: MutableList<Queue>)
 
     @Query("DELETE FROM queue WHERE queue.track_order=:position")
     fun delete(position: Int)

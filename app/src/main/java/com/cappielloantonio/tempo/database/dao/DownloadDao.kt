@@ -19,10 +19,10 @@ interface DownloadDao {
     fun getOne(id: String?): Download?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insert(download: Download?)
+    fun insert(download: Download)
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insertAll(downloads: MutableList<Download?>?)
+    fun insertAll(downloads: MutableList<Download>)
 
     @Query("UPDATE download SET download_state = 1 WHERE id = :id")
     fun update(id: String?)

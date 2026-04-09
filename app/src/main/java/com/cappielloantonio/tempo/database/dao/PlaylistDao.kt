@@ -17,8 +17,8 @@ interface PlaylistDao {
     val allSync: MutableList<Playlist?>?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insert(playlist: Playlist?)
+    fun insert(playlist: Playlist)
 
     @Delete
-    fun delete(playlist: Playlist?)
+    fun delete(playlist: Playlist)
 }

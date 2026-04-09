@@ -16,7 +16,7 @@ class ChronologyRepository {
         return chronologyDao!!.getAllFrom(start, end, server)
     }
 
-    fun insert(item: Chronology?) {
+    fun insert(item: Chronology) {
         val insert = ChronologyRepository.InsertThreadSafe(chronologyDao!!, item)
         val thread = Thread(insert)
         thread.start()
@@ -24,7 +24,7 @@ class ChronologyRepository {
 
     private class InsertThreadSafe(
         private val chronologyDao: ChronologyDao,
-        private val item: Chronology?
+        private val item: Chronology
     ) : Runnable {
         override fun run() {
             chronologyDao.insert(item)

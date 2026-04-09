@@ -14,8 +14,8 @@ interface ServerDao {
     val all: LiveData<MutableList<Server?>?>?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insert(server: Server?)
+    fun insert(server: Server)
 
     @Delete
-    fun delete(server: Server?)
+    fun delete(server: Server)
 }

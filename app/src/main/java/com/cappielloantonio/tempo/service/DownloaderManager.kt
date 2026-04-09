@@ -145,7 +145,7 @@ class DownloaderManager(
             get() = DownloadRepository()
 
         private fun insertDatabase(download: com.cappielloantonio.tempo.model.Download?) {
-            downloadRepository.insert(download)
+            download?.let { downloadRepository.insert(it) }
         }
 
         private fun deleteDatabase(id: String?) {

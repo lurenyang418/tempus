@@ -139,7 +139,7 @@ class QueueRepository {
             delete.start()
             delete.join()
 
-            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, mediaList))
+            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, mediaList.filterNotNull().toMutableList()))
             insertAll.start()
             insertAll.join()
         } catch (e: InterruptedException) {
@@ -187,7 +187,7 @@ class QueueRepository {
             delete.start()
             delete.join()
 
-            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, media))
+            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, media.filterNotNull().toMutableList()))
             insertAll.start()
             insertAll.join()
         } catch (e: InterruptedException) {
@@ -292,7 +292,7 @@ class QueueRepository {
 
     private class InsertAllThreadSafe(
         private val queueDao: QueueDao,
-        private val media: MutableList<Queue?>?
+        private val media: MutableList<Queue>
     ) : Runnable {
         override fun run() {
             queueDao.insertAll(media)

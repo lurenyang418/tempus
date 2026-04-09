@@ -169,13 +169,13 @@ class SearchingRepository {
         return suggestions
     }
 
-    fun insert(recentSearch: RecentSearch?) {
+    fun insert(recentSearch: RecentSearch) {
         val insert = SearchingRepository.InsertThreadSafe(recentSearchDao!!, recentSearch)
         val thread = Thread(insert)
         thread.start()
     }
 
-    fun delete(recentSearch: RecentSearch?) {
+    fun delete(recentSearch: RecentSearch) {
         val delete = SearchingRepository.DeleteThreadSafe(recentSearchDao!!, recentSearch)
         val thread = Thread(delete)
         thread.start()
@@ -202,7 +202,7 @@ class SearchingRepository {
 
     private class DeleteThreadSafe(
         private val recentSearchDao: RecentSearchDao,
-        private val recentSearch: RecentSearch?
+        private val recentSearch: RecentSearch
     ) : Runnable {
         override fun run() {
             recentSearchDao.delete(recentSearch)
@@ -211,7 +211,7 @@ class SearchingRepository {
 
     private class InsertThreadSafe(
         private val recentSearchDao: RecentSearchDao,
-        private val recentSearch: RecentSearch?
+        private val recentSearch: RecentSearch
     ) : Runnable {
         override fun run() {
             recentSearchDao.insert(recentSearch)

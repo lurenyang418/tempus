@@ -481,7 +481,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun manageFavoriteToDelete(favoritesToDelete: java.util.ArrayList<Favorite?>) {
         for (favorite in favoritesToDelete) {
-            favoriteRepository.delete(favorite)
+            favorite?.let { favoriteRepository.delete(it) }
         }
     }
 

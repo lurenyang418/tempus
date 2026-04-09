@@ -64,7 +64,7 @@ class DownloadRepository {
         }
     }
 
-    fun insert(download: Download?) {
+    fun insert(download: Download) {
         val insert = DownloadRepository.InsertThreadSafe(downloadDao!!, download)
         val thread = Thread(insert)
         thread.start()
@@ -72,7 +72,7 @@ class DownloadRepository {
 
     private class InsertThreadSafe(
         private val downloadDao: DownloadDao,
-        private val download: Download?
+        private val download: Download
     ) : Runnable {
         override fun run() {
             downloadDao.insert(download)
@@ -92,7 +92,7 @@ class DownloadRepository {
         }
     }
 
-    fun insertAll(downloads: MutableList<Download?>?) {
+    fun insertAll(downloads: MutableList<Download>) {
         val insertAll = DownloadRepository.InsertAllThreadSafe(downloadDao!!, downloads)
         val thread = Thread(insertAll)
         thread.start()
@@ -100,7 +100,7 @@ class DownloadRepository {
 
     private class InsertAllThreadSafe(
         private val downloadDao: DownloadDao,
-        private val downloads: MutableList<Download?>?
+        private val downloads: MutableList<Download>
     ) : Runnable {
         override fun run() {
             downloadDao.insertAll(downloads)

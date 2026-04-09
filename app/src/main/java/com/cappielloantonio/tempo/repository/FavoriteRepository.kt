@@ -96,14 +96,14 @@ class FavoriteRepository {
 
     private class InsertThreadSafe(
         private val favoriteDao: FavoriteDao,
-        private val favorite: Favorite?
+        private val favorite: Favorite
     ) : Runnable {
         override fun run() {
             favoriteDao.insert(favorite)
         }
     }
 
-    fun delete(favorite: Favorite?) {
+    fun delete(favorite: Favorite) {
         val delete = FavoriteRepository.DeleteThreadSafe(favoriteDao!!, favorite)
         val thread = Thread(delete)
         thread.start()
@@ -111,7 +111,7 @@ class FavoriteRepository {
 
     private class DeleteThreadSafe(
         private val favoriteDao: FavoriteDao,
-        private val favorite: Favorite?
+        private val favorite: Favorite
     ) : Runnable {
         override fun run() {
             favoriteDao.delete(favorite)

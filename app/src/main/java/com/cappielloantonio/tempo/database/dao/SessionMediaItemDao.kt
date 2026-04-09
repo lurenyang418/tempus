@@ -15,10 +15,10 @@ interface SessionMediaItemDao {
     fun get(timestamp: Long): MutableList<SessionMediaItem?>?
 
     @Insert(onConflict = OnConflictStrategy.Companion.IGNORE)
-    fun insert(sessionMediaItem: SessionMediaItem?)
+    fun insert(sessionMediaItem: SessionMediaItem)
 
     @Insert(onConflict = OnConflictStrategy.Companion.IGNORE)
-    fun insertAll(sessionMediaItems: MutableList<SessionMediaItem?>?)
+    fun insertAll(sessionMediaItems: MutableList<SessionMediaItem>)
 
     @Query("DELETE FROM session_media_item")
     fun deleteAll()

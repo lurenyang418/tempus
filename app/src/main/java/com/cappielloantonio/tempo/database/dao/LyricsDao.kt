@@ -16,7 +16,7 @@ interface LyricsDao {
     fun observeOne(songId: String?): LiveData<LyricsCache?>?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insert(lyricsCache: LyricsCache?)
+    fun insert(lyricsCache: LyricsCache)
 
     @Query("DELETE FROM lyrics_cache WHERE song_id = :songId")
     fun delete(songId: String?)

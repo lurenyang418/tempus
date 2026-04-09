@@ -13,10 +13,10 @@ interface FavoriteDao {
     val all: MutableList<Favorite?>?
 
     @Insert(onConflict = OnConflictStrategy.Companion.IGNORE)
-    fun insert(favorite: Favorite?)
+    fun insert(favorite: Favorite)
 
     @Delete
-    fun delete(favorite: Favorite?)
+    fun delete(favorite: Favorite)
 
     @Query("DELETE FROM favorite")
     fun deleteAll()

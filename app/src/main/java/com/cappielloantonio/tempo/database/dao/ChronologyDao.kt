@@ -20,5 +20,5 @@ interface ChronologyDao {
     ): LiveData<MutableList<Chronology?>?>?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun insert(chronologyObject: Chronology?)
+    fun insert(chronologyObject: Chronology)
 }

@@ -1043,7 +1043,7 @@ class AutomotiveRepository {
     @OptIn(UnstableApi::class)
     fun setChildrenMetadata(children: MutableList<Child>) {
         val timestamp = System.currentTimeMillis()
-        val sessionMediaItems = ArrayList<SessionMediaItem?>()
+        val sessionMediaItems = ArrayList<SessionMediaItem>()
 
         for (child in children) {
             val sessionMediaItem = SessionMediaItem(child)
@@ -1060,7 +1060,7 @@ class AutomotiveRepository {
     @OptIn(UnstableApi::class)
     fun setPodcastEpisodesMetadata(podcastEpisodes: MutableList<PodcastEpisode>) {
         val timestamp = System.currentTimeMillis()
-        val sessionMediaItems = ArrayList<SessionMediaItem?>()
+        val sessionMediaItems = ArrayList<SessionMediaItem>()
 
         for (podcastEpisode in podcastEpisodes) {
             val sessionMediaItem = SessionMediaItem(podcastEpisode)
@@ -1077,7 +1077,7 @@ class AutomotiveRepository {
     @OptIn(UnstableApi::class)
     fun setInternetRadioStationsMetadata(internetRadioStations: MutableList<InternetRadioStation>) {
         val timestamp = System.currentTimeMillis()
-        val sessionMediaItems = ArrayList<SessionMediaItem?>()
+        val sessionMediaItems = ArrayList<SessionMediaItem>()
 
         for (internetRadioStation in internetRadioStations) {
             val sessionMediaItem = SessionMediaItem(internetRadioStation)
@@ -1302,7 +1302,7 @@ class AutomotiveRepository {
 
     private class InsertAllThreadSafe(
         private val sessionMediaItemDao: SessionMediaItemDao,
-        private val sessionMediaItems: MutableList<SessionMediaItem?>?
+        private val sessionMediaItems: MutableList<SessionMediaItem>
     ) : Runnable {
         override fun run() {
             sessionMediaItemDao.insertAll(sessionMediaItems)
