@@ -207,7 +207,7 @@ class SessionMediaItem() {
     }
 
     fun getMediaItem(): MediaItem {
-        val uri: Uri = getStreamUri()
+        val uri: Uri = getStreamUri()!!
         val artworkUri = if (coverArtId != null) AlbumArtContentProvider.contentUri(coverArtId!!) else null
 
         val bundle = Bundle()
@@ -278,7 +278,7 @@ class SessionMediaItem() {
             .build()
     }
 
-    private fun getStreamUri(): Uri {
+    private fun getStreamUri(): Uri? {
         return when (type) {
             Constants.MEDIA_TYPE_MUSIC -> {
                 MusicUtil.getStreamUri(id)

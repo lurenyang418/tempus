@@ -38,23 +38,8 @@ android {
     dependenciesInfo {
         // Disables dependency metadata when building APKs (for IzzyOnDroid/F-Droid)
         includeInApk = false
-        // Disables dependency metadata when building Android App Bundles (for Google Play)
+        // Disables dependency metadata for Android App Bundles (for Google Play)
         includeInBundle = false
-    }
-
-    flavorDimensions += "default"
-
-    productFlavors {
-        tempus {
-            dimension = "default"
-            applicationId 'com.eddyizm.tempus'
-        }
-
-        degoogled {
-            dimension = "default"
-            applicationId "com.eddyizm.degoogled.tempus"
-        }
-
     }
 
     buildTypes {
@@ -72,12 +57,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
 
     buildFeatures {
@@ -86,6 +71,12 @@ android {
     }
 
     namespace 'com.cappielloantonio.tempo'
+
+    applicationVariants.all {
+        outputs.all { output ->
+            output.outputFileName = "tempus-${versionName}-${output.name}.apk"
+        }
+    }
 }
 
 dependencies {
@@ -95,10 +86,10 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.8.6'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.8.6'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'androidx.room:room-runtime:2.7.0'
     implementation 'androidx.core:core-splashscreen:1.0.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0"
@@ -116,19 +107,17 @@ dependencies {
     implementation 'androidx.media3:media3-exoplayer:1.8.0'
     implementation 'androidx.media3:media3-ui:1.8.0'
     implementation 'androidx.media3:media3-exoplayer-hls:1.8.0'
-    tempusImplementation 'androidx.media3:media3-cast:1.8.0'
-
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
-    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.7.0'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
 }
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }

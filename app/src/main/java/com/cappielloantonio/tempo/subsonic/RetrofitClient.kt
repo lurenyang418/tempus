@@ -63,7 +63,7 @@ class RetrofitClient(subsonic: Subsonic) {
 
     private fun getCache(): Cache {
         val cacheSize = 10 * 1024 * 1024
-        return Cache(App.getContext().cacheDir, cacheSize.toLong())
+        return Cache(App.getContext()!!.cacheDir, cacheSize.toLong())
     }
 
     private fun OkHttpClient.Builder.setupSsl(): OkHttpClient.Builder {

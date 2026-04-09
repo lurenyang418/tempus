@@ -131,7 +131,7 @@ open class BaseMediaService : MediaLibraryService() {
             0L
         }.let { if (it < 0L) 0L else it }
 
-        player.setMediaItems(mediaItems, lastIndex, lastPosition)
+        player.setMediaItems(mediaItems.filterNotNull(), lastIndex, lastPosition)
         player.prepare()
         updateWidget(player)
     }
