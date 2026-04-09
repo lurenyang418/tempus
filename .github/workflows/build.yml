@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ppp]
+    tags: ['*']
   workflow_dispatch:
 
 jobs:
