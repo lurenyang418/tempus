@@ -30,7 +30,7 @@ android {
             enable true
             reset()
             //noinspection ChromeOsAbiSupport
-            include 'armeabi-v7a', 'arm64-v8a'
+            include 'arm64-v8a'
             universalApk false
         }
     }
@@ -51,8 +51,8 @@ android {
         }
 
         debug {
-            applicationIdSuffix ".debug"
-            debuggable true
+            applicationIdSuffix = ".debug"
+            debuggable = true
         }
     }
 

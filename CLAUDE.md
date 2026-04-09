@@ -20,7 +20,7 @@ The codebase is in transition from Java to Kotlin (approximately 120 Java files 
 # Clean build
 ./gradlew clean
 
-# Build with specific ABI split (arm64-v8a or armeabi-v7a)
+# Build with specific ABI split (arm64-v8a)
 ./gradlew assembleArm64Debug
 ```
 
