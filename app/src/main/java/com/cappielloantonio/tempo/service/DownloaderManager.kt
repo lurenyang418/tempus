@@ -2,7 +2,6 @@ package com.cappielloantonio.tempo.service
 
 import android.content.Context
 import androidx.media3.common.MediaItem
-import androidx.media3.common.util.Assertions
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
@@ -35,6 +34,7 @@ class DownloaderManager(
     }
 
     private fun buildDownloadRequest(mediaItem: MediaItem): DownloadRequest {
+        val mediaId = mediaItem.mediaId ?: throw IllegalArgumentException("MediaItem must have a mediaId")
         return DownloadHelper
             .forMediaItem(
                 context,
@@ -42,12 +42,12 @@ class DownloaderManager(
                 DownloadUtil.buildRenderersFactory(context, false),
                 dataSourceFactory
             )
-            .getDownloadRequest(Util.getUtf8Bytes(Assertions.checkNotNull<String?>(mediaItem.mediaId)))
-            .copyWithId(mediaItem.mediaId)
+            .getDownloadRequest(Util.getUtf8Bytes(mediaId))
+            .copyWithId(mediaId)
     }
 
     fun isDownloaded(mediaId: String?): Boolean {
-        val download: Download? = downloads.get(mediaId)
+        val download = downloads[mediaId]
         return download != null && download.state != Download.STATE_FAILED
     }
 
@@ -56,8 +56,7 @@ class DownloaderManager(
     }
 
     fun areDownloaded(mediaItems: MutableList<MediaItem?>): Boolean {
-        return mediaItems.stream()
-            .anyMatch { mediaItem: MediaItem? -> this.isDownloaded(mediaItem!!) }
+        return mediaItems.any { mediaItem -> mediaItem != null && this.isDownloaded(mediaItem) }
     }
 
     fun download(mediaItem: MediaItem, download: com.cappielloantonio.tempo.model.Download) {
@@ -76,8 +75,9 @@ class DownloaderManager(
         mediaItems: MutableList<MediaItem?>,
         downloads: MutableList<com.cappielloantonio.tempo.model.Download?>
     ) {
-        for (counter in mediaItems.indices) {
-            download(mediaItems.get(counter)!!, downloads.get(counter)!!)
+        mediaItems.forEachIndexed { index, mediaItem ->
+            val dl = downloads.getOrNull(index) ?: return@forEachIndexed
+            mediaItem?.let { download(it, dl) }
         }
     }
 
@@ -96,8 +96,9 @@ class DownloaderManager(
         mediaItems: MutableList<MediaItem?>,
         downloads: MutableList<com.cappielloantonio.tempo.model.Download?>
     ) {
-        for (counter in mediaItems.indices) {
-            remove(mediaItems.get(counter)!!, downloads.get(counter)!!)
+        mediaItems.forEachIndexed { index, mediaItem ->
+            val dl = downloads.getOrNull(index) ?: return@forEachIndexed
+            mediaItem?.let { remove(it, dl) }
         }
     }
 

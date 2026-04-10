@@ -65,7 +65,7 @@ class PlaylistPageViewModel(application: Application) : AndroidViewModel(applica
             owner,
             Observer { playlists: MutableList<Playlist?>? ->
                 isPinnedLive.postValue(
-                    playlists!!.stream().anyMatch { obj: Playlist? -> obj!!.id == playlist!!.id })
+                    playlists?.any { obj -> obj?.id == playlist?.id } == true)
             })
 
         return isPinnedLive
