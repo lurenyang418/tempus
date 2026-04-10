@@ -89,41 +89,31 @@ class DownloadHorizontalAdapter(private val click: ClickCallback) :
             Constants.DOWNLOAD_TYPE_TRACK -> return filterSong(
                 filterKey!!,
                 filterValue,
-                songs.stream().filter { song: Child? -> Objects.nonNull(song?.id) }.filter(
-                    distinctByKey<Child?> { it?.id }
-                ).collect(Collectors.toList())
+                songs.filter { it?.id != null }.distinctBy { it?.id }.toMutableList()
             )
 
             Constants.DOWNLOAD_TYPE_ALBUM -> return filterSong(
                 filterKey!!,
                 filterValue,
-                songs.stream().filter { song: Child? -> Objects.nonNull(song?.albumId) }.filter(
-                    distinctByKey<Child?> { it?.albumId }
-                ).collect(Collectors.toList())
+                songs.filter { it?.albumId != null }.distinctBy { it?.albumId }.toMutableList()
             )
 
             Constants.DOWNLOAD_TYPE_ARTIST -> return filterSong(
                 filterKey!!,
                 filterValue,
-                songs.stream().filter { song: Child? -> Objects.nonNull(song?.artistId) }.filter(
-                    distinctByKey<Child?> { it?.artistId }
-                ).collect(Collectors.toList())
+                songs.filter { it?.artistId != null }.distinctBy { it?.artistId }.toMutableList()
             )
 
             Constants.DOWNLOAD_TYPE_GENRE -> return filterSong(
                 filterKey!!,
                 filterValue,
-                songs.stream().filter { song: Child? -> Objects.nonNull(song?.genre) }.filter(
-                    distinctByKey<Child?> { it?.genre }
-                ).collect(Collectors.toList())
+                songs.filter { it?.genre != null }.distinctBy { it?.genre }.toMutableList()
             )
 
             Constants.DOWNLOAD_TYPE_YEAR -> return filterSong(
                 filterKey!!,
                 filterValue,
-                songs.stream().filter { song: Child? -> Objects.nonNull(song?.year) }.filter(
-                    distinctByKey<Child?> { it?.year }
-                ).collect(Collectors.toList())
+                songs.filter { it?.year != null }.distinctBy { it?.year }.toMutableList()
             )
         }
 
@@ -137,33 +127,13 @@ class DownloadHorizontalAdapter(private val click: ClickCallback) :
     ): MutableList<Child?> {
         if (filterValue != null) {
             when (filterKey) {
-                Constants.DOWNLOAD_TYPE_TRACK -> return songs.stream()
-                    .filter { child: Child? -> child?.id == filterValue }.collect(
-                        Collectors.toList()
-                    )
-
-                Constants.DOWNLOAD_TYPE_ALBUM -> return songs.stream()
-                    .filter { child: Child? -> child?.albumId == filterValue }.collect(
-                        Collectors.toList()
-                    )
-
-                Constants.DOWNLOAD_TYPE_GENRE -> return songs.stream()
-                    .filter { child: Child? -> child?.genre == filterValue }.collect(
-                        Collectors.toList()
-                    )
-
-                Constants.DOWNLOAD_TYPE_YEAR -> return songs.stream()
-                    .filter { child: Child? -> child?.year == filterValue.toInt() }.collect(
-                        Collectors.toList()
-                    )
-
-                Constants.DOWNLOAD_TYPE_ARTIST -> return songs.stream()
-                    .filter { child: Child? -> child?.artistId == filterValue }.collect(
-                        Collectors.toList()
-                    )
+                Constants.DOWNLOAD_TYPE_TRACK -> return songs.filter { it?.id == filterValue }.toMutableList()
+                Constants.DOWNLOAD_TYPE_ALBUM -> return songs.filter { it?.albumId == filterValue }.toMutableList()
+                Constants.DOWNLOAD_TYPE_GENRE -> return songs.filter { it?.genre == filterValue }.toMutableList()
+                Constants.DOWNLOAD_TYPE_YEAR -> return songs.filter { it?.year == filterValue.toInt() }.toMutableList()
+                Constants.DOWNLOAD_TYPE_ARTIST -> return songs.filter { it?.artistId == filterValue }.toMutableList()
             }
         }
-
         return songs
     }
 
@@ -173,31 +143,11 @@ class DownloadHorizontalAdapter(private val click: ClickCallback) :
         }
 
         when (filterKey) {
-            Constants.DOWNLOAD_TYPE_TRACK -> return songs.stream()
-                .filter { child: Child? -> child?.id == filterValue }.collect(
-                    Collectors.toList()
-                )
-
-            Constants.DOWNLOAD_TYPE_ALBUM -> return songs.stream()
-                .filter { child: Child? -> child?.albumId == filterValue }.collect(
-                    Collectors.toList()
-                )
-
-            Constants.DOWNLOAD_TYPE_GENRE -> return songs.stream()
-                .filter { child: Child? -> child?.genre == filterValue }.collect(
-                    Collectors.toList()
-                )
-
-            Constants.DOWNLOAD_TYPE_YEAR -> return songs.stream()
-                .filter { child: Child? -> child?.year == filterValue!!.toInt() }.collect(
-                    Collectors.toList()
-                )
-
-            Constants.DOWNLOAD_TYPE_ARTIST -> return songs.stream()
-                .filter { child: Child? -> child?.artistId == filterValue }.collect(
-                    Collectors.toList()
-                )
-
+            Constants.DOWNLOAD_TYPE_TRACK -> return songs.filter { it?.id == filterValue }.toMutableList()
+            Constants.DOWNLOAD_TYPE_ALBUM -> return songs.filter { it?.albumId == filterValue }.toMutableList()
+            Constants.DOWNLOAD_TYPE_GENRE -> return songs.filter { it?.genre == filterValue }.toMutableList()
+            Constants.DOWNLOAD_TYPE_YEAR -> return songs.filter { it?.year == filterValue!!.toInt() }.toMutableList()
+            Constants.DOWNLOAD_TYPE_ARTIST -> return songs.filter { it?.artistId == filterValue }.toMutableList()
             else -> return songs
         }
     }
@@ -209,24 +159,13 @@ class DownloadHorizontalAdapter(private val click: ClickCallback) :
     ): String {
         if (filterValue != null) {
             when (filterKey) {
-                Constants.DOWNLOAD_TYPE_TRACK -> return songs.stream()
-                    .filter { child: Child? -> child?.id == filterValue }.count().toString()
-
-                Constants.DOWNLOAD_TYPE_ALBUM -> return songs.stream()
-                    .filter { child: Child? -> child?.albumId == filterValue }.count().toString()
-
-                Constants.DOWNLOAD_TYPE_GENRE -> return songs.stream()
-                    .filter { child: Child? -> child?.genre == filterValue }.count().toString()
-
-                Constants.DOWNLOAD_TYPE_YEAR -> return songs.stream()
-                    .filter { child: Child? -> child?.year == filterValue.toInt() }.count()
-                    .toString()
-
-                Constants.DOWNLOAD_TYPE_ARTIST -> return songs.stream()
-                    .filter { child: Child? -> child?.artistId == filterValue }.count().toString()
+                Constants.DOWNLOAD_TYPE_TRACK -> return songs.count { it?.id == filterValue }.toString()
+                Constants.DOWNLOAD_TYPE_ALBUM -> return songs.count { it?.albumId == filterValue }.toString()
+                Constants.DOWNLOAD_TYPE_GENRE -> return songs.count { it?.genre == filterValue }.toString()
+                Constants.DOWNLOAD_TYPE_YEAR -> return songs.count { it?.year == filterValue.toInt() }.toString()
+                Constants.DOWNLOAD_TYPE_ARTIST -> return songs.count { it?.artistId == filterValue }.toString()
             }
         }
-
         return "0"
     }
 

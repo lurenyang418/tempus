@@ -115,8 +115,7 @@ class AlbumBottomSheetViewModel(application: Application) : AndroidViewModel(app
                         if (nonNullSongs.isNotEmpty()) {
                             DownloadUtil.getDownloadTracker(context).download(
                                 MappingUtil.mapDownloads(nonNullSongs.toMutableList()),
-                                nonNullSongs.stream().map<Download> { child -> Download(child) }
-                                    .collect(Collectors.toList())
+                                nonNullSongs.map { child -> Download(child) }.toMutableList()
                             )
                         }
                     }

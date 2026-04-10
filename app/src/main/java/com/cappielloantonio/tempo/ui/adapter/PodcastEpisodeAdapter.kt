@@ -65,11 +65,9 @@ class PodcastEpisodeAdapter(private val click: ClickCallback) :
 
     fun setItems(podcastEpisodes: MutableList<PodcastEpisode?>) {
         this.podcastEpisodesFull = podcastEpisodes
-        this.podcastEpisodes = podcastEpisodesFull!!.stream()
-            .filter { podcastEpisode: PodcastEpisode? -> podcastEpisode!!.status == "completed" }
-            .collect(
-                Collectors.toList()
-            ) as MutableList<PodcastEpisode?>
+        this.podcastEpisodes = podcastEpisodesFull!!
+            .filter { podcastEpisode -> podcastEpisode?.status == "completed" }
+            .toMutableList()
         notifyDataSetChanged()
     }
 
@@ -143,11 +141,9 @@ class PodcastEpisodeAdapter(private val click: ClickCallback) :
 
     fun sort(order: String) {
         when (order) {
-            Constants.PODCAST_FILTER_BY_DOWNLOAD -> podcastEpisodes = podcastEpisodesFull!!.stream()
-                .filter { podcastEpisode: PodcastEpisode? -> podcastEpisode!!.status == "completed" }
-                .collect(
-                    Collectors.toList()
-                ) as MutableList<PodcastEpisode?>
+            Constants.PODCAST_FILTER_BY_DOWNLOAD -> podcastEpisodes = podcastEpisodesFull!!
+                .filter { podcastEpisode -> podcastEpisode?.status == "completed" }
+                .toMutableList()
 
             Constants.PODCAST_FILTER_BY_ALL -> podcastEpisodes = podcastEpisodesFull!!
         }

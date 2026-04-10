@@ -112,18 +112,11 @@ class DirectoryFragment : Fragment(), ClickCallback {
                     directoryViewModel!!.loadMusicDirectory(getArguments()!!.getString(Constants.MUSIC_DIRECTORY_ID))
                         .observe(getViewLifecycleOwner(), Observer { directory: Directory? ->
                             if (isVisible() && getActivity() != null) {
-                                val songs = directory!!.children!!.stream()
-                                    .filter { child: Child? -> !child!!.isDir }.collect(
-                                        Collectors.toList()
-                                    )
+                                val songs = directory!!.children!!.filter { !it.isDir }.toMutableList()
                                 if (getDownloadDirectoryUri() == null) {
                                     DownloadUtil.getDownloadTracker(requireContext()).download(
                                         mapDownloads(songs),
-                                        songs.stream()
-                                            .map { child: Child? -> child?.let { Download(it) } }
-                                            .collect(
-                                                Collectors.toList()
-                                            )
+                                        ArrayList(songs.map { Download(it) })
                                     )
                                 } else {
                                     songs.forEach(Consumer { child: Child? ->
@@ -183,10 +176,7 @@ class DirectoryFragment : Fragment(), ClickCallback {
                 musicDirectoryAdapter!!.setItems(directory.children?.filterNotNull()?.toMutableList() ?: mutableListOf())
                 menuItem!!.setVisible(
                     directory.children != null && directory.children!!
-                        .stream()
-                        .filter { child: Child? -> !child!!.isDir }
-                        .findFirst()
-                        .orElse(null) != null
+                        .any { !it.isDir }
                 )
             })
     }

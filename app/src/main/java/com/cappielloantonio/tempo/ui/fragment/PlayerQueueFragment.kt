@@ -179,9 +179,7 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
             Observer { queue: MutableList<Queue?>? ->
                 if (queue != null) {
                     playerSongQueueAdapter!!.items =
-                        queue.stream().map<Child?> { item: Queue? -> item as Child? }.collect(
-                            Collectors.toList()
-                        )
+                        queue.map { it as? Child? }.toMutableList()
                     reapplyPlayback()
                 }
             })

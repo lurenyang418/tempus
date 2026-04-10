@@ -147,11 +147,8 @@ class HomeTabPodcastFragment : Fragment(), ClickCallback, PodcastCallback {
                     if (bind != null) bind!!.homeNewestPodcastsSector.setVisibility(if (!podcastEpisodes.isEmpty()) View.VISIBLE else View.GONE)
 
                     podcastEpisodeAdapter!!.setItems(
-                        podcastEpisodes.stream()
-                            .filter { podcastEpisode: PodcastEpisode? -> podcastEpisode!!.status == "completed" }
-                            .collect(
-                                Collectors.toList()
-                            ))
+                        podcastEpisodes.filter { it?.status == "completed" }.toMutableList()
+                    )
                 }
             })
     }

@@ -38,18 +38,9 @@ class ArtistListPageViewModel(application: Application) : AndroidViewModel(appli
             Constants.ARTIST_DOWNLOADED -> downloadRepository.liveDownload!!.observe(
                 owner,
                 Observer { downloads: MutableList<Download?>? ->
-                    val unique: MutableList<Download?>? = downloads!!
-                        .stream()
-                        .collect(
-                            Collectors.collectingAndThen(
-                                Collectors.toCollection(Supplier {
-                                    TreeSet<Download?>(
-                                        Comparator.comparing<Download?, String>(
-                                            { d -> d?.artist ?: "" }
-                                        )
-                                    )
-                                }), Function { c: TreeSet<Download?>? -> ArrayList(c) })
-                        )
+                    val unique = downloads!!
+                        .distinctBy { it?.artist }
+                        .toMutableList()
                 })
         }
 

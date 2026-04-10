@@ -422,10 +422,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun checkHomeSectorVisibility(sectorId: String?): Boolean {
-        return this.homeSectorList != null && homeSectorList!!.stream()
-            .filter { sector: HomeSector? -> sector!!.id == sectorId }
-            .findAny()
-            .orElse(null) == null
+        return this.homeSectorList != null && homeSectorList!!
+            .any { sector -> sector?.id == sectorId }
     }
 
     fun setOfflineFavorite() {

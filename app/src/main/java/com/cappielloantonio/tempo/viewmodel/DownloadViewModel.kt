@@ -35,10 +35,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
             owner,
             Observer { downloads: MutableList<Download?>? ->
                 downloadedTrackSample.postValue(
-                    downloads!!.stream().map<Child?> { download: Download? -> download as Child? }
-                        .collect(
-                            Collectors.toList()
-                        ))
+                    downloads!!.map { it as? Child? }.toMutableList()
+                )
             })
         return downloadedTrackSample
     }

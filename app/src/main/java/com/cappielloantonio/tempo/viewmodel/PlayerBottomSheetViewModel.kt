@@ -271,7 +271,7 @@ class PlayerBottomSheetViewModel(application: Application) : AndroidViewModel(ap
     fun savePlayQueue(): Boolean {
         val media = getLiveMedia().getValue()
         val queue = queueRepository.media
-        val ids = queue.stream().filter { it != null }.map<String> { it!!.id }.collect(Collectors.toList())
+        val ids: MutableList<String?> = queue.filterNotNull().map { it.id }.toMutableList()
 
         if (media != null) {
             // TODO: We need to get the actual playback position here

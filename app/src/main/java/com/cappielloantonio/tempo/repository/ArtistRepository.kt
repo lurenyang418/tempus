@@ -329,28 +329,18 @@ class ArtistRepository {
 
                         val shuffledAlbums = ArrayList(albums)
                         Collections.shuffle(shuffledAlbums)
-                        val counts = shuffledAlbums.stream().mapToInt { it.songCount ?: 0 }.toArray()
-                        Arrays.parallelPrefix(
-                            counts,
-                            IntBinaryOperator { a: Int, b: Int -> Integer.sum(a, b) })
+                        val counts = shuffledAlbums.map { it.songCount ?: 0 }.toIntArray()
+                        for (i in 1 until counts.size) counts[i] += counts[i - 1]
                         var albumLimit = 0
-                        val multiplier = 4 // get more than the limit so we can shuffle them
+                        val multiplier = 4
                         while (albumLimit < shuffledAlbums.size && counts[albumLimit] < count * multiplier) albumLimit++
-                        Log.d(
-                            "ArtistRepository",
-                            String.format("Retaining %d/%d albums", albumLimit, shuffledAlbums.size)
-                        )
+                        Log.d("ArtistRepository", "Retaining $albumLimit/${shuffledAlbums.size} albums")
 
                         fetchAllAlbumSongsWithCallback(
-                            ArrayList(shuffledAlbums.stream().limit(albumLimit.toLong()).collect(
-                                Collectors.toList()
-                            )), object : ArtistSongsCallback {
+                            ArrayList(shuffledAlbums.take(albumLimit)), object : ArtistSongsCallback {
                                 override fun onSongsCollected(songs: MutableList<Child>?) {
                                     Collections.shuffle(songs)
-                                    randomSongs.setValue(
-                                        songs!!.stream().limit(count.toLong())
-                                            .collect(Collectors.toList())
-                                    )
+                                    randomSongs.setValue(ArrayList(songs!!.take(count)))
                                 }
                             })
                     } else {

@@ -184,18 +184,21 @@ class SongHorizontalAdapter(
             }
 
             if (album?.discTitles != null) {
-                val discTitle = album.discTitles!!.stream()
-                    .filter { title: DiscTitle? -> title!!.disc == currSong?.discNumber }
-                    .findFirst()
+                val discTitle = album.discTitles!!
+                    .firstOrNull { title -> title?.disc == currSong?.discNumber }
 
-                if (discTitle.isPresent && discTitle.get().disc != null && discTitle.get().title != null && !discTitle.get().title!!.isEmpty()) {
-                    holder.item.discTitleTextView.setText(
-                        holder.itemView.getContext().getString(
-                            R.string.disc_titlefull,
-                            discTitle.get().disc.toString(),
-                            discTitle.get().title
+                if (discTitle != null) {
+                    val title = discTitle.title
+                    val disc = discTitle.disc
+                    if (disc != null && title != null && title.isNotEmpty()) {
+                        holder.item.discTitleTextView.setText(
+                            holder.itemView.getContext().getString(
+                                R.string.disc_titlefull,
+                                disc.toString(),
+                                title
+                            )
                         )
-                    )
+                    }
                 }
             }
         }

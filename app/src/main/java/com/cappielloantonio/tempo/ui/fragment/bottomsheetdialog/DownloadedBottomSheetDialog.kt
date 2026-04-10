@@ -127,10 +127,7 @@ class DownloadedBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickLis
             val nonNullSongs = songs ?: mutableListOf()
             if (getDownloadDirectoryUri() == null) {
                 val mediaItems: MutableList<MediaItem?> = MappingUtil.mapDownloads(nonNullSongs)
-                val downloads =
-                    nonNullSongs.stream().map<Download?> { child: Child? -> Download(child!!) }.collect(
-                        Collectors.toList()
-                    )
+                val downloads: MutableList<Download?> = ArrayList(nonNullSongs.filterNotNull().map { Download(it) })
                 DownloadUtil.getDownloadTracker(requireContext()).remove(mediaItems, downloads)
             } else {
                 nonNullSongs.forEach(Consumer { obj: Child? -> delete(obj!!) })

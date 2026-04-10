@@ -108,8 +108,7 @@ class ArtistBottomSheetViewModel(application: Application) : AndroidViewModel(ap
                             if (nonNullSongs.isNotEmpty()) {
                                 DownloadUtil.getDownloadTracker(context).download(
                                     MappingUtil.mapDownloads(nonNullSongs.toMutableList()),
-                                    nonNullSongs.stream().map<Download> { child -> Download(child) }
-                                        .collect(Collectors.toList())
+                                    nonNullSongs.map { child -> Download(child) }.toMutableList()
                                 )
                             }
                             Log.d("ArtistSync", "Download started successfully")

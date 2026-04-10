@@ -27,9 +27,8 @@ object OpenSubsonicExtensionsUtil {
     private fun getOpenSubsonicExtension(extensionName: String?): OpenSubsonicExtension? {
         if (openSubsonicExtensions == null) return null
 
-        return openSubsonicExtensions!!.stream()
-            .filter { openSubsonicExtension: OpenSubsonicExtension? -> openSubsonicExtension!!.name == extensionName }
-            .findAny().orElse(null)
+        return openSubsonicExtensions!!
+            .firstOrNull { openSubsonicExtension -> openSubsonicExtension?.name == extensionName }
     }
 
     val isTranscodeOffsetExtensionAvailable: Boolean

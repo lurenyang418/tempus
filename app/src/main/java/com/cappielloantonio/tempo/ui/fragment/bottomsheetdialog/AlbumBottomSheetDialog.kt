@@ -205,12 +205,9 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
         albumBottomSheetViewModel!!.albumTracks.observe(
             getViewLifecycleOwner(),
             Observer { songs: MutableList<Child?>? ->
-                val nonNullSongs = songs ?: mutableListOf()
+                val nonNullSongs: MutableList<Child> = songs?.filterNotNull()?.toMutableList() ?: mutableListOf()
                 val mediaItems: MutableList<MediaItem?> = MappingUtil.mapDownloads(nonNullSongs)
-                val downloads =
-                    nonNullSongs.stream().map<Download?> { child: Child? -> Download(child!!) }.collect(
-                        Collectors.toList()
-                    )
+                val downloads = ArrayList(nonNullSongs.map { Download(it) })
                 downloadAll.setOnClickListener { v ->
                     if (getDownloadDirectoryUri() == null) {
                         DownloadUtil.getDownloadTracker(requireContext())
@@ -251,10 +248,7 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
 
                 removeAllTextView!!.setOnClickListener { v ->
                     if (getDownloadDirectoryUri() == null) {
-                        val downloads = currentAlbumTracks!!.stream()
-                            .map<Download?> { child: Child? -> Download(child!!) }.collect(
-                                Collectors.toList()
-                            )
+                        val downloads: MutableList<Download?> = ArrayList(currentAlbumTracks!!.filterNotNull().map { Download(it) })
                         DownloadUtil.getDownloadTracker(requireContext())
                             .remove(currentAlbumMediaItems, downloads)
                     } else {
@@ -342,8 +336,7 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
                 removeAllTextView!!.setVisibility(View.GONE)
             }
         } else {
-            val hasLocal = currentAlbumTracks!!.stream()
-                .anyMatch { song: Child? -> ExternalAudioReader.getUri(song!!) != null }
+            val hasLocal = currentAlbumTracks!!.any { song -> song != null && ExternalAudioReader.getUri(song) != null }
             removeAllTextView!!.setVisibility(if (hasLocal) View.VISIBLE else View.GONE)
         }
     }

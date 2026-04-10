@@ -887,9 +887,8 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                         )
                     )
 
-                    val topSongs = chronologies.stream()
-                        .map<Child?> { cronologia: Chronology? -> cronologia as Child? }
-                        .collect(Collectors.toList())
+                    @Suppress("UNCHECKED_CAST")
+                    val topSongs = chronologies.filterNotNull().map { it as Child? }.toMutableList()
 
                     topSongAdapter!!.setItems(topSongs)
                     reapplyTopSongsPlayback()

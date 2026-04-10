@@ -155,10 +155,7 @@ class AlbumPageFragment : Fragment(), ClickCallback {
                     if (getDownloadDirectoryUri() == null) {
                         DownloadUtil.getDownloadTracker(requireContext()).download(
                             MappingUtil.mapDownloads(nonNullSongs),
-                            nonNullSongs.stream().map<Download?> { child: Child? -> Download(child!!) }
-                                .collect(
-                                    Collectors.toList()
-                                )
+                            nonNullSongs.filterNotNull().map { Download(it) }.toMutableList()
                         )
                     } else {
                         nonNullSongs.forEach(Consumer { child: Child? ->

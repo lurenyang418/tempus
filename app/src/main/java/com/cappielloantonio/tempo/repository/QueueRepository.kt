@@ -31,13 +31,9 @@ class QueueRepository {
 
             try {
                 thread.join()
-                media = getMedia.getMedia().stream()
-                    .map<Child?> { obj: Queue? ->
-                        Child::class.java.cast(
-                            obj
-                        )
-                    }
-                    .collect(Collectors.toList())
+                media = getMedia.getMedia()
+                    .mapNotNull { obj -> Child::class.java.cast(obj) }
+                    .toMutableList()
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
@@ -149,7 +145,7 @@ class QueueRepository {
 
     private fun isMediaInQueue(queue: MutableList<Queue?>?, media: Child?): Boolean {
         if (queue == null || media == null) return false
-        return queue.stream().anyMatch { queueItem: Queue? ->
+        return queue.any { queueItem ->
             queueItem != null && media.id != null &&
                     queueItem.id == media.id
         }
@@ -170,9 +166,9 @@ class QueueRepository {
 
             var filteredToAdd: MutableList<Child?>? = toAdd
             val finalMedia: MutableList<Queue?>? = media
-            filteredToAdd = toAdd.stream()
-                .filter { child: Child? -> !isMediaInQueue(finalMedia, child) }
-                .collect(Collectors.toList())
+            filteredToAdd = toAdd
+                .filter { child -> !isMediaInQueue(finalMedia, child) }
+                .toMutableList()
 
             for (i in filteredToAdd.indices) {
                 val queueItem = Queue(filteredToAdd.get(i)!!)

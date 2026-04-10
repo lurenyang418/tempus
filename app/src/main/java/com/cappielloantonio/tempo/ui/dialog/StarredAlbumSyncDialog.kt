@@ -58,10 +58,7 @@ class StarredAlbumSyncDialog(private val onCancel: Runnable?) : DialogFragment()
                         if (allSongs != null && !allSongs.isEmpty()) {
                             DownloadUtil.getDownloadTracker(context).download(
                                 mapDownloads(allSongs.filterNotNull()),
-                                allSongs.stream()
-                                    .map<Download> { child: Child? -> Download(child!!) }.collect(
-                                        Collectors.toList()
-                                    )
+                                allSongs.filterNotNull().map { Download(it) }.toMutableList()
                             )
                         }
                         dialog.dismiss()

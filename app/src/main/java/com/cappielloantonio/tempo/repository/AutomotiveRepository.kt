@@ -569,10 +569,7 @@ class AutomotiveRepository {
                         }
 
                         setChildrenMetadata(
-                            ArrayList(directory.children!!.stream()
-                                .filter { child: Child? -> !child!!.isDir }.collect(
-                                    Collectors.toList()
-                                ))
+                            ArrayList(directory.children!!.filter { !it.isDir })
                         )
 
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =

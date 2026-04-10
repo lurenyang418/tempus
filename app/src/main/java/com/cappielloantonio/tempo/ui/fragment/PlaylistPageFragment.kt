@@ -147,14 +147,12 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
                         if (getDownloadDirectoryUri() == null) {
                             DownloadUtil.getDownloadTracker(requireContext()).download(
                                 MappingUtil.mapDownloads(songs!!),
-                                songs.stream().map<Download?> { child: Child? ->
-                                    val toDownload = Download(child!!)
-                                    toDownload.playlistId =
-                                        playlistPageViewModel!!.getPlaylist()!!.id
-                                    toDownload.playlistName =
-                                        playlistPageViewModel!!.getPlaylist()!!.name
+                                ArrayList(songs.filterNotNull().map { child ->
+                                    val toDownload = Download(child)
+                                    toDownload.playlistId = playlistPageViewModel!!.getPlaylist()!!.id
+                                    toDownload.playlistName = playlistPageViewModel!!.getPlaylist()!!.name
                                     toDownload
-                                }.collect(Collectors.toList())
+                                })
                             )
                         } else {
                             songs!!.forEach(Consumer { child: Child? ->
@@ -352,9 +350,7 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
                             songs.size
                         )
                     )
-                    val totalDuration = songs.stream()
-                        .mapToLong { s: Child? -> s?.duration?.toLong() ?: 0L }
-                        .sum()
+                    val totalDuration = songs.sumOf { it?.duration?.toLong() ?: 0L }
                     bind!!.playlistDurationLabel.setText(
                         getString(
                             R.string.playlist_duration,
