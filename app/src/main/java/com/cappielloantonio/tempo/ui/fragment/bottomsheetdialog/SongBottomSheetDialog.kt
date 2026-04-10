@@ -55,6 +55,7 @@ import com.cappielloantonio.tempo.viewmodel.SongBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.Future
 
@@ -504,10 +505,7 @@ class SongBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener 
 
     @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 

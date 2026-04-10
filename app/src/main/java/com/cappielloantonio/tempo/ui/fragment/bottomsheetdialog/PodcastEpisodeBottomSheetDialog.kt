@@ -21,6 +21,7 @@ import com.cappielloantonio.tempo.ui.activity.MainActivity
 import com.cappielloantonio.tempo.util.Constants
 import com.cappielloantonio.tempo.viewmodel.PodcastEpisodeBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.Future
 
@@ -160,10 +161,7 @@ class PodcastEpisodeBottomSheetDialog : BottomSheetDialogFragment(), View.OnClic
 
     @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 }

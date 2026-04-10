@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaBrowser
+import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -364,11 +365,9 @@ class SongListPageFragment : Fragment(), ClickCallback {
         ).buildAsync()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNCHECKED_CAST")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 

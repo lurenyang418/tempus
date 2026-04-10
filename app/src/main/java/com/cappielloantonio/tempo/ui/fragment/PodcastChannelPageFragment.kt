@@ -29,6 +29,7 @@ import com.cappielloantonio.tempo.util.MusicUtil
 import com.cappielloantonio.tempo.util.UIUtil.getDividerItemDecoration
 import com.cappielloantonio.tempo.viewmodel.PodcastChannelPageViewModel
 import com.google.android.material.snackbar.Snackbar
+import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.Future
 
@@ -159,11 +160,9 @@ class PodcastChannelPageFragment : Fragment(), ClickCallback {
         ).buildAsync()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNCHECKED_CAST")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 

@@ -35,6 +35,7 @@ import com.cappielloantonio.tempo.util.Preferences.setDefaultDownloadViewType
 import com.cappielloantonio.tempo.util.Preferences.setDownloadDirectoryUri
 import com.cappielloantonio.tempo.viewmodel.DownloadViewModel
 import com.google.android.material.appbar.MaterialToolbar
+import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.Collections
 import java.util.Objects
@@ -314,10 +315,7 @@ class DownloadFragment : Fragment(), ClickCallback {
 
     @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 

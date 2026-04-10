@@ -40,6 +40,7 @@ import com.cappielloantonio.tempo.ui.adapter.SongHorizontalAdapter
 import com.cappielloantonio.tempo.util.Constants
 import com.cappielloantonio.tempo.viewmodel.PlaybackViewModel
 import com.cappielloantonio.tempo.viewmodel.SearchViewModel
+import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.concurrent.Future
 
@@ -338,11 +339,9 @@ class SearchFragment : Fragment(), ClickCallback {
         ).buildAsync()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNCHECKED_CAST")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 

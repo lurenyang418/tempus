@@ -42,6 +42,7 @@ import com.cappielloantonio.tempo.util.MusicUtil
 import com.cappielloantonio.tempo.util.Preferences.getDownloadDirectoryUri
 import com.cappielloantonio.tempo.viewmodel.PlaybackViewModel
 import com.cappielloantonio.tempo.viewmodel.PlaylistPageViewModel
+import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.Collections
 import java.util.Objects
@@ -377,10 +378,7 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
 
     @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 

@@ -69,6 +69,7 @@ import com.cappielloantonio.tempo.util.UIUtil.getSpanCount
 import com.cappielloantonio.tempo.viewmodel.HomeViewModel
 import com.cappielloantonio.tempo.viewmodel.PlaybackViewModel
 import com.google.android.material.snackbar.Snackbar
+import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.stream.Collectors
 import java.util.concurrent.Future
@@ -1412,10 +1413,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
     @Suppress("UNCHECKED_CAST")
     private fun releaseMediaBrowser() {
-        @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
-        val raw: Any = mediaBrowserListenableFuture!!
-        @Suppress("UNCHECKED_CAST")
-        val future: Future<out androidx.media3.session.MediaController> = raw as Future<out androidx.media3.session.MediaController>
+        val future = mediaBrowserListenableFuture as ListenableFuture<MediaController>
         MediaBrowser.releaseFuture(future)
     }
 
