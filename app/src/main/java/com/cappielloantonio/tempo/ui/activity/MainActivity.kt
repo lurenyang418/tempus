@@ -83,7 +83,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.navigation.NavigationView
 import com.google.common.util.concurrent.MoreExecutors
-import java.util.Objects
 import java.util.concurrent.ExecutionException
 
 @UnstableApi
@@ -202,7 +201,8 @@ class MainActivity : BaseActivity() {
         val navHostFragment = this
             .getSupportFragmentManager()
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
-        navController = Objects.requireNonNull<NavHostFragment?>(navHostFragment).navController
+        val nonNullNavHostFragment = requireNotNull(navHostFragment)
+        navController = nonNullNavHostFragment.navController
 
         /*
         navController is currently global since some legacy code still invokes it directly
@@ -216,7 +216,7 @@ class MainActivity : BaseActivity() {
                 findViewById<FrameLayout>(R.id.bottom_navigation_frame),
                 findViewById<DrawerLayout>(R.id.drawer_layout),
                 findViewById<NavigationView>(R.id.nav_view),
-                navHostFragment!!
+                nonNullNavHostFragment
             )
 
         // Controller
@@ -382,22 +382,24 @@ class MainActivity : BaseActivity() {
         bottomSheetBehavior!!.setState(BottomSheetBehavior.STATE_HIDDEN)
         setBottomNavigationBarVisibility(false)
         setBottomSheetVisibility(false)
+        val currentDestinationId = requireNotNull(navController!!.currentDestination).id
 
-        if (Objects.requireNonNull<NavDestination?>(navController!!.currentDestination).id == R.id.landingFragment) {
+        if (currentDestinationId == R.id.landingFragment) {
             navController!!.navigate(R.id.action_landingFragment_to_loginFragment)
-        } else if (Objects.requireNonNull<NavDestination?>(navController!!.currentDestination).id == R.id.settingsFragment) {
+        } else if (currentDestinationId == R.id.settingsFragment) {
             navController!!.navigate(R.id.action_settingsFragment_to_loginFragment)
-        } else if (Objects.requireNonNull<NavDestination?>(navController!!.currentDestination).id == R.id.homeFragment) {
+        } else if (currentDestinationId == R.id.homeFragment) {
             navController!!.navigate(R.id.action_homeFragment_to_loginFragment)
         }
     }
 
     private fun goToHome() {
         setBottomNavigationBarVisibility(true)
+        val currentDestinationId = requireNotNull(navController!!.currentDestination).id
 
-        if (Objects.requireNonNull<NavDestination?>(navController!!.currentDestination).id == R.id.landingFragment) {
+        if (currentDestinationId == R.id.landingFragment) {
             navController!!.navigate(R.id.action_landingFragment_to_homeFragment)
-        } else if (Objects.requireNonNull<NavDestination?>(navController!!.currentDestination).id == R.id.loginFragment) {
+        } else if (currentDestinationId == R.id.loginFragment) {
             navController!!.navigate(R.id.action_loginFragment_to_homeFragment)
         }
     }
@@ -510,7 +512,7 @@ class MainActivity : BaseActivity() {
 
     private fun resetView() {
         resetViewModel()
-        val id = Objects.requireNonNull<NavDestination?>(navController!!.currentDestination).id
+        val id = requireNotNull(navController!!.currentDestination).id
         navController!!.popBackStack(id, true)
         navController!!.navigate(id)
     }

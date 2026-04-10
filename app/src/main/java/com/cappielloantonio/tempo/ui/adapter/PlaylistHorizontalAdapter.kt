@@ -48,6 +48,7 @@ class PlaylistHorizontalAdapter(private val click: ClickCallback) :
             return results
         }
 
+        @Suppress("UNCHECKED_CAST")
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
             playlists.clear()
             if (results.values != null) {
@@ -78,7 +79,7 @@ class PlaylistHorizontalAdapter(private val click: ClickCallback) :
             holder.itemView.getContext().getString(
                 R.string.playlist_counted_tracks,
                 playlist.songCount,
-                MusicUtil.getReadableDurationString(playlist.duration ?: 0, false)
+                MusicUtil.getReadableDurationString(playlist.duration, false)
             )
         )
 

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.View.OnLongClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.cappielloantonio.tempo.R
@@ -19,7 +20,6 @@ import com.cappielloantonio.tempo.model.Server
 import com.cappielloantonio.tempo.util.MusicUtil
 import com.cappielloantonio.tempo.viewmodel.LoginViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.Objects
 import java.util.UUID
 
 class ServerSignupDialog : DialogFragment() {
@@ -86,7 +86,7 @@ class ServerSignupDialog : DialogFragment() {
     private fun setServerInfo() {
         if (getArguments() != null) {
             loginViewModel!!.serverToEdit =
-                requireArguments().getParcelable<Server?>("server_object")
+                BundleCompat.getParcelable(requireArguments(), "server_object", Server::class.java)
 
             if (loginViewModel!!.serverToEdit != null) {
                 bind!!.serverNameTextView.setText(loginViewModel!!.serverToEdit!!.serverName)
@@ -103,13 +103,13 @@ class ServerSignupDialog : DialogFragment() {
     }
 
     private fun setButtonAction() {
-        val alertDialog = Objects.requireNonNull<Dialog?>(getDialog()) as AlertDialog
+        val alertDialog = requireDialog() as AlertDialog
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
             .setOnClickListener(View.OnClickListener { v: View? ->
                 if (validateInput()) {
                     saveServerPreference()
-                    Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+                    dismiss()
                 }
             })
 
@@ -125,20 +125,17 @@ class ServerSignupDialog : DialogFragment() {
         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
             .setOnLongClickListener(OnLongClickListener { v: View? ->
                 loginViewModel!!.deleteServer(null)
-                Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+                dismiss()
                 true
             })
     }
 
     private fun validateInput(): Boolean {
-        serverName =
-            Objects.requireNonNull<Editable?>(bind!!.serverNameTextView.getText()).toString()
-                .trim { it <= ' ' }
-        username = Objects.requireNonNull<Editable?>(bind!!.usernameTextView.getText()).toString()
-            .trim { it <= ' ' }
+        serverName = bind!!.serverNameTextView.text?.toString()?.trim { it <= ' ' }
+        username = bind!!.usernameTextView.text?.toString()?.trim { it <= ' ' }
         password = if (bind!!.lowSecurityCheckbox.isChecked()) MusicUtil.passwordHexEncoding(
-            Objects.requireNonNull<Editable?>(bind!!.passwordTextView.getText()).toString()
-        ) else Objects.requireNonNull<Editable?>(bind!!.passwordTextView.getText()).toString()
+            bind!!.passwordTextView.text?.toString().orEmpty()
+        ) else bind!!.passwordTextView.text?.toString().orEmpty()
         server = if (bind!!.serverTextView.getText() != null && !bind!!.serverTextView.getText()
                 .toString().trim { it <= ' ' }.isBlank()
         ) bind!!.serverTextView.getText().toString().trim { it <= ' ' } else null

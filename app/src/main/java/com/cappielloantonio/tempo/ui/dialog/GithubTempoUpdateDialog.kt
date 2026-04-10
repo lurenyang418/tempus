@@ -13,7 +13,6 @@ import com.cappielloantonio.tempo.databinding.DialogGithubTempoUpdateBinding
 import com.cappielloantonio.tempo.github.models.LatestRelease
 import com.cappielloantonio.tempo.util.Preferences.setTempusUpdateReminder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.Objects
 
 class GithubTempoUpdateDialog(private val latestRelease: LatestRelease) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -42,24 +41,24 @@ class GithubTempoUpdateDialog(private val latestRelease: LatestRelease) : Dialog
     }
 
     private fun setButtonAction() {
-        val alertDialog = Objects.requireNonNull<Dialog?>(getDialog()) as AlertDialog
+        val alertDialog = requireDialog() as AlertDialog
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
             .setOnClickListener(View.OnClickListener { v: View? ->
                 openLink(latestRelease.htmlUrl)
-                Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+                dismiss()
             })
 
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
             .setOnClickListener(View.OnClickListener { v: View? ->
                 setTempusUpdateReminder()
-                Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+                dismiss()
             })
 
         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
             .setOnClickListener(View.OnClickListener { v: View? ->
                 openLink(getString(R.string.support_url))
-                Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+                dismiss()
             })
     }
 

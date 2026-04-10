@@ -3,7 +3,6 @@ package com.cappielloantonio.tempo.ui.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +13,6 @@ import com.cappielloantonio.tempo.databinding.DialogPodcastChannelEditorBinding
 import com.cappielloantonio.tempo.interfaces.PodcastCallback
 import com.cappielloantonio.tempo.viewmodel.PodcastChannelEditorViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.Objects
 
 class PodcastChannelEditorDialog(private val podcastCallback: PodcastCallback) : DialogFragment() {
     private var bind: DialogPodcastChannelEditorBinding? = null
@@ -68,9 +66,7 @@ class PodcastChannelEditorDialog(private val podcastCallback: PodcastCallback) :
 
 
     private fun validateInput(): Boolean {
-        channelUrl =
-            Objects.requireNonNull<Editable?>(bind!!.podcastChannelRssUrlNameTextView.getText())
-                .toString().trim { it <= ' ' }
+        channelUrl = bind!!.podcastChannelRssUrlNameTextView.text?.toString()?.trim { it <= ' ' }
 
         if (TextUtils.isEmpty(channelUrl)) {
             bind!!.podcastChannelRssUrlNameTextView.setError(getString(R.string.error_required))
@@ -82,6 +78,6 @@ class PodcastChannelEditorDialog(private val podcastCallback: PodcastCallback) :
 
     private fun dismissDialog() {
         podcastCallback.onDismiss()
-        Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+        dismiss()
     }
 }

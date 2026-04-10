@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.Editable
 import android.text.TextUtils
 import android.view.View
 import android.view.View.OnLongClickListener
@@ -31,7 +30,6 @@ import com.cappielloantonio.tempo.util.Preferences.isSharingEnabled
 import com.cappielloantonio.tempo.viewmodel.PlaylistEditorViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Collections
-import java.util.Objects
 
 class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : DialogFragment() {
     private var bind: DialogPlaylistEditorBinding? = null
@@ -95,7 +93,7 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
     }
 
     private fun setButtonAction() {
-        val alertDialog = Objects.requireNonNull<Dialog?>(getDialog()) as AlertDialog
+        val alertDialog = requireDialog() as AlertDialog
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
             .setOnClickListener(View.OnClickListener { v: View? ->
@@ -177,7 +175,7 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
                     fromPosition,
                     toPosition
                 )
-                Objects.requireNonNull<RecyclerView.Adapter<*>?>(recyclerView.getAdapter())
+                requireNotNull(recyclerView.adapter)
                     .notifyItemMoved(fromPosition, toPosition)
 
                 return false
@@ -204,7 +202,7 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 playlistEditorViewModel!!.removeFromPlaylistSongLiveList(viewHolder.getBindingAdapterPosition())
-                Objects.requireNonNull<RecyclerView.Adapter<*>?>(bind!!.playlistSongRecyclerView.getAdapter())
+                requireNotNull(bind!!.playlistSongRecyclerView.adapter)
                     .notifyItemRemoved(viewHolder.getBindingAdapterPosition())
             }
         }
@@ -212,9 +210,7 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
     }
 
     private fun validateInput(): Boolean {
-        playlistName =
-            Objects.requireNonNull<Editable?>(bind!!.playlistNameTextView.getText()).toString()
-                .trim { it <= ' ' }
+        playlistName = bind!!.playlistNameTextView.text?.toString()?.trim { it <= ' ' }
 
         if (TextUtils.isEmpty(playlistName)) {
             bind!!.playlistNameTextView.setError(getString(R.string.error_required))
@@ -225,7 +221,7 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
     }
 
     private fun dialogDismiss() {
-        Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+        dismiss()
         if (playlistCallback != null) {
             playlistCallback.onDismiss()
         }

@@ -3,7 +3,6 @@ package com.cappielloantonio.tempo.ui.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -20,7 +19,6 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.Date
-import java.util.Objects
 
 class ShareUpdateDialog : DialogFragment() {
     private var bind: DialogShareUpdateBinding? = null
@@ -103,23 +101,19 @@ class ShareUpdateDialog : DialogFragment() {
     }
 
     private fun setButtonAction() {
-        (Objects.requireNonNull<Dialog?>(getDialog()) as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+        (requireDialog() as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
             .setOnClickListener(
                 View.OnClickListener { v: View? ->
                     if (validateInput()) {
                         updateShare()
-                        Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+                        dismiss()
                     }
                 })
     }
 
     private fun validateInput(): Boolean {
-        descriptionTextView =
-            Objects.requireNonNull<Editable?>(bind!!.shareDescriptionTextView.getText()).toString()
-                .trim { it <= ' ' }
-        expirationTextView =
-            Objects.requireNonNull<Editable?>(bind!!.shareExpirationTextView.getText()).toString()
-                .trim { it <= ' ' }
+        descriptionTextView = bind!!.shareDescriptionTextView.text?.toString()?.trim { it <= ' ' }
+        expirationTextView = bind!!.shareExpirationTextView.text?.toString()?.trim { it <= ' ' }
 
         if (TextUtils.isEmpty(descriptionTextView)) {
             bind!!.shareDescriptionTextView.setError(getString(R.string.error_required))

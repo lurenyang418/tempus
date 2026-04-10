@@ -220,7 +220,7 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
             activity!!.navController!!.navigateUp()
         })
 
-        Objects.requireNonNull<Drawable?>(bind!!.animToolbar.getOverflowIcon())
+        requireNotNull(bind!!.animToolbar.overflowIcon)
             .setTint(requireContext().getResources().getColor(R.color.titleTextColor, null))
     }
 

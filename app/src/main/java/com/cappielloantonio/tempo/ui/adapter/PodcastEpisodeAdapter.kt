@@ -41,10 +41,11 @@ class PodcastEpisodeAdapter(private val click: ClickCallback) :
 
         holder.item.podcastTitleLabel.setText(podcastEpisode.title)
         holder.item.podcastSubtitleLabel.setText(podcastEpisode.artist)
+        val releaseDate = podcastEpisode.publishDate?.let { simpleDateFormat.format(it) } ?: ""
         holder.item.podcastReleasesAndDurationLabel.setText(
             holder.itemView.getContext().getString(
                 R.string.podcast_release_date_duration_formatter,
-                simpleDateFormat.format(podcastEpisode.publishDate),
+                releaseDate,
                 MusicUtil.getReadablePodcastDurationString(podcastEpisode.duration!!.toLong())
             )
         )

@@ -310,7 +310,7 @@ class AlbumPageFragment : Fragment(), ClickCallback {
 
         bind!!.animToolbar.setNavigationOnClickListener(View.OnClickListener { v: View? -> activity!!.navController!!.navigateUp() })
 
-        Objects.requireNonNull<Drawable?>(bind!!.animToolbar.getOverflowIcon())
+        requireNotNull(bind!!.animToolbar.overflowIcon)
             .setTint(requireContext().getResources().getColor(R.color.titleTextColor, null))
 
         bind!!.albumOtherInfoButton.setOnClickListener(View.OnClickListener { v: View? ->

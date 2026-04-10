@@ -324,16 +324,16 @@ class PlayerBottomSheetFragment : Fragment() {
 
     private fun setHeaderMediaController() {
         bind!!.playerHeaderLayout.playerHeaderButton.setOnClickListener(View.OnClickListener { view: View? ->
-            bind!!.getRoot().findViewById<View?>(R.id.exo_play_pause).performClick()
+            bind!!.getRoot().findViewById<View>(R.id.exo_play_pause).performClick()
         })
         bind!!.playerHeaderLayout.playerHeaderNextMediaButton.setOnClickListener(View.OnClickListener { view: View? ->
-            bind!!.getRoot().findViewById<View?>(R.id.exo_next).performClick()
+            bind!!.getRoot().findViewById<View>(R.id.exo_next).performClick()
         })
         bind!!.playerHeaderLayout.playerHeaderRewindMediaButton.setOnClickListener(View.OnClickListener { view: View? ->
-            bind!!.getRoot().findViewById<View?>(R.id.exo_rew).performClick()
+            bind!!.getRoot().findViewById<View>(R.id.exo_rew).performClick()
         })
         bind!!.playerHeaderLayout.playerHeaderFastForwardMediaButton.setOnClickListener(View.OnClickListener { view: View? ->
-            bind!!.getRoot().findViewById<View?>(R.id.exo_ffwd).performClick()
+            bind!!.getRoot().findViewById<View>(R.id.exo_ffwd).performClick()
         })
     }
 
@@ -342,8 +342,8 @@ class PlayerBottomSheetFragment : Fragment() {
         bind!!.playerHeaderLayout.playerHeaderNextMediaButton.setAlpha(if (isEnabled) 1.0.toFloat() else 0.3.toFloat())
     }
 
-    val playerHeader: View?
-        get() = requireView().findViewById<View?>(R.id.player_header_layout)
+    val playerHeader: View
+        get() = requireView().findViewById<View>(R.id.player_header_layout)
 
     fun goBackToFirstPage() {
         bind!!.playerBodyLayout.playerBodyBottomSheetViewPager.setCurrentItem(0, false)

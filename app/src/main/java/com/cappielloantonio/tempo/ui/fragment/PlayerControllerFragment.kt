@@ -560,15 +560,15 @@ class PlayerControllerFragment : Fragment() {
                     bind!!.getRoot().setShowNextButton(false)
                     bind!!.getRoot().setShowFastForwardButton(true)
                     bind!!.getRoot().setRepeatToggleModes(RepeatModeUtil.REPEAT_TOGGLE_MODE_NONE)
-                    bind!!.getRoot().findViewById<View?>(R.id.player_playback_speed_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_playback_speed_button)
                         .setVisibility(
                             View.VISIBLE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.player_skip_silence_toggle_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_skip_silence_toggle_button)
                         .setVisibility(
                             View.VISIBLE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.button_favorite)
+                    bind!!.getRoot().findViewById<View>(R.id.button_favorite)
                         .setVisibility(View.GONE)
                     setPlaybackParameters(mediaBrowser)
                 }
@@ -580,15 +580,15 @@ class PlayerControllerFragment : Fragment() {
                     bind!!.getRoot().setShowNextButton(false)
                     bind!!.getRoot().setShowFastForwardButton(false)
                     bind!!.getRoot().setRepeatToggleModes(RepeatModeUtil.REPEAT_TOGGLE_MODE_NONE)
-                    bind!!.getRoot().findViewById<View?>(R.id.player_playback_speed_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_playback_speed_button)
                         .setVisibility(
                             View.GONE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.player_skip_silence_toggle_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_skip_silence_toggle_button)
                         .setVisibility(
                             View.GONE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.button_favorite)
+                    bind!!.getRoot().findViewById<View>(R.id.button_favorite)
                         .setVisibility(View.GONE)
                     setPlaybackParameters(mediaBrowser)
                 }
@@ -601,15 +601,15 @@ class PlayerControllerFragment : Fragment() {
                     bind!!.getRoot().setShowFastForwardButton(false)
                     bind!!.getRoot()
                         .setRepeatToggleModes(RepeatModeUtil.REPEAT_TOGGLE_MODE_ALL or RepeatModeUtil.REPEAT_TOGGLE_MODE_ONE)
-                    bind!!.getRoot().findViewById<View?>(R.id.player_playback_speed_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_playback_speed_button)
                         .setVisibility(
                             View.VISIBLE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.player_skip_silence_toggle_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_skip_silence_toggle_button)
                         .setVisibility(
                             View.GONE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.button_favorite)
+                    bind!!.getRoot().findViewById<View>(R.id.button_favorite)
                         .setVisibility(View.VISIBLE)
                     setPlaybackParameters(mediaBrowser)
                 }
@@ -622,15 +622,15 @@ class PlayerControllerFragment : Fragment() {
                     bind!!.getRoot().setShowFastForwardButton(false)
                     bind!!.getRoot()
                         .setRepeatToggleModes(RepeatModeUtil.REPEAT_TOGGLE_MODE_ALL or RepeatModeUtil.REPEAT_TOGGLE_MODE_ONE)
-                    bind!!.getRoot().findViewById<View?>(R.id.player_playback_speed_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_playback_speed_button)
                         .setVisibility(
                             View.VISIBLE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.player_skip_silence_toggle_button)
+                    bind!!.getRoot().findViewById<View>(R.id.player_skip_silence_toggle_button)
                         .setVisibility(
                             View.GONE
                         )
-                    bind!!.getRoot().findViewById<View?>(R.id.button_favorite)
+                    bind!!.getRoot().findViewById<View>(R.id.button_favorite)
                         .setVisibility(View.VISIBLE)
                     setPlaybackParameters(mediaBrowser)
                 }

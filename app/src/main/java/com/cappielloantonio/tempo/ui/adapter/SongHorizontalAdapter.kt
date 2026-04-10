@@ -168,14 +168,12 @@ class SongHorizontalAdapter(
                             )
                     )
         ) {
-            if (currSong?.discNumber != null && !Objects.requireNonNull<Int?>(
-                    currSong.discNumber
-                ).toString().isBlank()
-            ) {
+            val discNumber = currSong?.discNumber
+            if (discNumber != null && discNumber.toString().isNotBlank()) {
                 holder.item.discTitleTextView.setText(
                     holder.itemView.getContext().getString(
                         R.string.disc_titleless,
-                        currSong.discNumber.toString()
+                        discNumber.toString()
                     )
                 )
                 holder.item.differentDiskDividerSector.setVisibility(View.VISIBLE)

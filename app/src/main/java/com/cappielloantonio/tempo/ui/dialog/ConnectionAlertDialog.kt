@@ -11,7 +11,6 @@ import com.cappielloantonio.tempo.databinding.DialogConnectionAlertBinding
 import com.cappielloantonio.tempo.util.Preferences.isDataSavingMode
 import com.cappielloantonio.tempo.util.Preferences.setDataSavingMode
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import java.util.Objects
 
 class ConnectionAlertDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -43,12 +42,12 @@ class ConnectionAlertDialog : DialogFragment() {
     }
 
     private fun setButtonAction() {
-        val alertDialog = Objects.requireNonNull<Dialog?>(getDialog()) as AlertDialog
+        val alertDialog = requireDialog() as AlertDialog
 
         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
             .setOnClickListener(View.OnClickListener { v: View? ->
                 setDataSavingMode(true)
-                Objects.requireNonNull<Dialog?>(getDialog()).dismiss()
+                dismiss()
             })
     }
 }

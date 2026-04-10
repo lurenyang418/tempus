@@ -101,7 +101,7 @@ class HomeRearrangementDialog : DialogFragment() {
                 toPosition = target.getBindingAdapterPosition()
 
                 Collections.swap(homeSectorHorizontalAdapter!!.items, fromPosition, toPosition)
-                Objects.requireNonNull<RecyclerView.Adapter<*>?>(recyclerView.getAdapter())
+                requireNotNull(recyclerView.adapter)
                     .notifyItemMoved(fromPosition, toPosition)
 
                 return false

@@ -191,7 +191,7 @@ class LibraryFragment : Fragment(), ClickCallback {
         materialToolbar = bind!!.getRoot().findViewById<MaterialToolbar>(R.id.toolbar)
 
         activity!!.setSupportActionBar(materialToolbar)
-        Objects.requireNonNull<Drawable?>(materialToolbar!!.getOverflowIcon())
+        requireNotNull(materialToolbar!!.overflowIcon)
             .setTint(requireContext().getResources().getColor(R.color.titleTextColor, null))
     }
 

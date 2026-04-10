@@ -84,8 +84,8 @@ object AssetLinkUtil {
             return null
         }
         return buildUri(
-            Objects.requireNonNull<String?>(type),
-            Objects.requireNonNull<String?>(id)
+            requireNotNull(type),
+            requireNotNull(id)
         ).toString()
     }
 
