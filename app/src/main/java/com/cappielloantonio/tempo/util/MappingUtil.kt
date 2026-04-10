@@ -2,7 +2,6 @@ package com.cappielloantonio.tempo.util
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import androidx.annotation.OptIn
 import androidx.lifecycle.LifecycleOwner
@@ -17,7 +16,6 @@ import com.cappielloantonio.tempo.App.Companion.getContext
 import com.cappielloantonio.tempo.provider.AlbumArtContentProvider.Companion.contentUri
 import com.cappielloantonio.tempo.repository.DownloadRepository
 import com.cappielloantonio.tempo.subsonic.models.Child
-import com.cappielloantonio.tempo.subsonic.models.InternetRadioStation
 import com.cappielloantonio.tempo.subsonic.models.PodcastEpisode
 import com.cappielloantonio.tempo.util.Preferences.getDownloadDirectoryUri
 import com.cappielloantonio.tempo.util.Preferences.preferTranscodedDownload
@@ -272,53 +270,6 @@ object MappingUtil {
                     media.id
                 )
             )
-            .build()
-    }
-
-    fun mapInternetRadioStation(internetRadioStation: InternetRadioStation): MediaItem {
-        val uri = Uri.parse(internetRadioStation.streamUrl)
-        var artworkUri: Uri? = null
-        val homePageUrl = internetRadioStation.homePageUrl
-        var coverArtId: String? = null
-
-        if (homePageUrl != null && !homePageUrl.isEmpty() && MusicUtil.isImageUrl(homePageUrl)) {
-            val encodedUrl = Base64.encodeToString(
-                homePageUrl.toByteArray(StandardCharsets.UTF_8),
-                Base64.URL_SAFE or Base64.NO_WRAP
-            )
-            coverArtId = "ir_" + encodedUrl
-            artworkUri = contentUri(coverArtId)
-        }
-
-        val bundle = Bundle()
-        bundle.putString("id", internetRadioStation.id)
-        bundle.putString("title", internetRadioStation.name)
-        bundle.putString("stationName", internetRadioStation.name)
-        bundle.putString("uri", uri.toString())
-        bundle.putString("type", Constants.MEDIA_TYPE_RADIO)
-        bundle.putString("coverArtId", coverArtId)
-        if (homePageUrl != null) {
-            bundle.putString("homepageUrl", homePageUrl)
-        }
-
-        return MediaItem.Builder()
-            .setMediaId(internetRadioStation.id!!)
-            .setMediaMetadata(
-                MediaMetadata.Builder()
-                    .setTitle(internetRadioStation.name)
-                    .setArtworkUri(artworkUri)
-                    .setExtras(bundle)
-                    .setIsBrowsable(false)
-                    .setIsPlayable(true)
-                    .build()
-            )
-            .setRequestMetadata(
-                RequestMetadata.Builder()
-                    .setMediaUri(uri)
-                    .setExtras(bundle)
-                    .build()
-            ) // .setMimeType(MimeTypes.BASE_TYPE_AUDIO)
-            .setUri(uri)
             .build()
     }
 

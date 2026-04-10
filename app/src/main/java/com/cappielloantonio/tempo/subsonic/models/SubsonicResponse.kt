@@ -17,7 +17,6 @@ class SubsonicResponse {
     var shares: Shares? = null
     var playQueue: PlayQueue? = null
     var bookmarks: Bookmarks? = null
-    var internetRadioStations: InternetRadioStations? = null
     var newestPodcasts: NewestPodcasts? = null
     var podcasts: Podcasts? = null
     var lyrics: Lyrics? = null

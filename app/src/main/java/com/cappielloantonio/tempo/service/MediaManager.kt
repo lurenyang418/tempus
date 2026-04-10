@@ -17,7 +17,6 @@ import com.cappielloantonio.tempo.repository.ChronologyRepository
 import com.cappielloantonio.tempo.repository.QueueRepository
 import com.cappielloantonio.tempo.repository.SongRepository
 import com.cappielloantonio.tempo.subsonic.models.Child
-import com.cappielloantonio.tempo.subsonic.models.InternetRadioStation
 import com.cappielloantonio.tempo.subsonic.models.PodcastEpisode
 import com.cappielloantonio.tempo.util.MappingUtil
 import com.cappielloantonio.tempo.util.Preferences.isContinuousPlayEnabled
@@ -283,34 +282,6 @@ object MediaManager {
                         mediaBrowser.prepare()
                         mediaBrowser.play()
                         clearDatabase()
-                    }
-                } catch (e: ExecutionException) {
-                    e.printStackTrace()
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-            }, MoreExecutors.directExecutor())
-        }
-    }
-
-    @JvmStatic
-    fun startRadio(
-        mediaBrowserListenableFuture: ListenableFuture<MediaBrowser>?,
-        internetRadioStation: InternetRadioStation
-    ) {
-        if (mediaBrowserListenableFuture != null) {
-            mediaBrowserListenableFuture.addListener(Runnable {
-                try {
-                    if (mediaBrowserListenableFuture.isDone()) {
-                        val browser = mediaBrowserListenableFuture.get()
-                        justStarted.set(true)
-                        browser.setMediaItem(
-                            MappingUtil.mapInternetRadioStation(
-                                internetRadioStation
-                            )
-                        )
-                        browser.prepare()
-                        browser.play()
                     }
                 } catch (e: ExecutionException) {
                     e.printStackTrace()

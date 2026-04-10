@@ -12,7 +12,6 @@ import com.cappielloantonio.tempo.databinding.FragmentHomeBinding
 import com.cappielloantonio.tempo.ui.activity.MainActivity
 import com.cappielloantonio.tempo.ui.fragment.pager.HomePager
 import com.cappielloantonio.tempo.util.Preferences.isPodcastSectionVisible
-import com.cappielloantonio.tempo.util.Preferences.isRadioSectionVisible
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
@@ -88,12 +87,6 @@ class HomeFragment : Fragment() {
             R.drawable.ic_graphic_eq
         )
 
-        if (isRadioSectionVisible()) pager.addFragment(
-            HomeTabRadioFragment(),
-            getString(R.string.home_section_radio),
-            R.drawable.ic_play_for_work
-        )
-
         bind!!.homeViewPager.setAdapter(pager)
         bind!!.homeViewPager.setOffscreenPageLimit(3)
         bind!!.homeViewPager.setUserInputEnabled(false)
@@ -105,7 +98,7 @@ class HomeFragment : Fragment() {
             }
         ).attach()
 
-        tabLayout!!.setVisibility(if (isPodcastSectionVisible() || isRadioSectionVisible()) View.VISIBLE else View.GONE)
+        tabLayout!!.setVisibility(if (isPodcastSectionVisible()) View.VISIBLE else View.GONE)
     }
 
     companion object {

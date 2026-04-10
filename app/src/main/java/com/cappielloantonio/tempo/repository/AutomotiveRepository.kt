@@ -19,7 +19,6 @@ import com.cappielloantonio.tempo.subsonic.models.ArtistID3
 import com.cappielloantonio.tempo.subsonic.models.Child
 import com.cappielloantonio.tempo.subsonic.models.Genre
 import com.cappielloantonio.tempo.subsonic.models.Index
-import com.cappielloantonio.tempo.subsonic.models.InternetRadioStation
 import com.cappielloantonio.tempo.subsonic.models.MusicFolder
 import com.cappielloantonio.tempo.subsonic.models.Playlist
 import com.cappielloantonio.tempo.subsonic.models.PodcastEpisode
@@ -715,60 +714,6 @@ class AutomotiveRepository {
         return listenableFuture
     }
 
-    val internetRadioStations: ListenableFuture<LibraryResult<ImmutableList<MediaItem>>>
-        get() {
-            val listenableFuture =
-                SettableFuture.create<LibraryResult<ImmutableList<MediaItem>>>()
-
-            getSubsonicClientInstance(false)
-                .internetRadioClient!!
-                .internetRadioStations
-                ?.enqueue(object : Callback<ApiResponse?> {
-                    override fun onResponse(
-                        call: Call<ApiResponse?>,
-                        response: Response<ApiResponse?>
-                    ) {
-                        if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.internetRadioStations != null && response.body()!!.subsonicResponse.internetRadioStations!!.internetRadioStations != null) {
-                            val radioStations: List<InternetRadioStation>? =
-                                response.body()!!.subsonicResponse.internetRadioStations!!.internetRadioStations
-
-                            val mediaItems: MutableList<MediaItem?> =
-                                ArrayList<MediaItem?>()
-
-                            for (radioStation in radioStations!!) {
-                                mediaItems.add(MappingUtil.mapInternetRadioStation(radioStation))
-                            }
-
-                            setInternetRadioStationsMetadata(ArrayList(radioStations))
-
-                            val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
-                                LibraryResult.ofItemList(
-                                    ImmutableList.copyOf(
-                                        mediaItems.filterNotNull()
-                                    ), null
-                                )
-
-                            listenableFuture.set(libraryResult)
-                        } else {
-                            listenableFuture.set(
-                                LibraryResult.ofError<ImmutableList<MediaItem>>(
-                                    LibraryResult.RESULT_ERROR_BAD_VALUE
-                                )
-                            )
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<ApiResponse?>,
-                        t: Throwable
-                    ) {
-                        listenableFuture.setException(t)
-                    }
-                })
-
-            return listenableFuture
-        }
-
     fun getAlbumTracks(id: String?): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
         val listenableFuture = SettableFuture.create<LibraryResult<ImmutableList<MediaItem>>>()
 
@@ -1064,23 +1009,6 @@ class AutomotiveRepository {
 
         for (podcastEpisode in podcastEpisodes) {
             val sessionMediaItem = SessionMediaItem(podcastEpisode)
-            sessionMediaItem.timestamp = timestamp
-            sessionMediaItems.add(sessionMediaItem)
-        }
-
-        val insertAll =
-            AutomotiveRepository.InsertAllThreadSafe(sessionMediaItemDao!!, sessionMediaItems)
-        val thread = Thread(insertAll)
-        thread.start()
-    }
-
-    @OptIn(UnstableApi::class)
-    fun setInternetRadioStationsMetadata(internetRadioStations: MutableList<InternetRadioStation>) {
-        val timestamp = System.currentTimeMillis()
-        val sessionMediaItems = ArrayList<SessionMediaItem>()
-
-        for (internetRadioStation in internetRadioStations) {
-            val sessionMediaItem = SessionMediaItem(internetRadioStation)
             sessionMediaItem.timestamp = timestamp
             sessionMediaItems.add(sessionMediaItem)
         }

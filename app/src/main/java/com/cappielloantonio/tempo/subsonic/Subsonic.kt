@@ -3,7 +3,6 @@ package com.cappielloantonio.tempo.subsonic
 import com.cappielloantonio.tempo.subsonic.api.albumsonglist.AlbumSongListClient
 import com.cappielloantonio.tempo.subsonic.api.bookmarks.BookmarksClient
 import com.cappielloantonio.tempo.subsonic.api.browsing.BrowsingClient
-import com.cappielloantonio.tempo.subsonic.api.internetradio.InternetRadioClient
 import com.cappielloantonio.tempo.subsonic.api.mediaannotation.MediaAnnotationClient
 import com.cappielloantonio.tempo.subsonic.api.medialibraryscanning.MediaLibraryScanningClient
 import com.cappielloantonio.tempo.subsonic.api.mediaretrieval.MediaRetrievalClient
@@ -94,14 +93,6 @@ class Subsonic(private val preferences: SubsonicPreferences) {
         get() {
             if (field == null) {
                 field = BookmarksClient(this)
-            }
-            return field
-        }
-        private set
-    var internetRadioClient: InternetRadioClient? = null
-        get() {
-            if (field == null) {
-                field = InternetRadioClient(this)
             }
             return field
         }
