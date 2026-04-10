@@ -25,7 +25,7 @@ class AlbumHorizontalAdapter(private val click: ClickCallback, private val isOff
 
     private val filtering: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList: MutableList<AlbumID3?> = ArrayList()
+            val filteredList: MutableList<AlbumID3?> = mutableListOf()
 
             if (constraint == null || constraint.length == 0) {
                 filteredList.addAll(albumsFull)

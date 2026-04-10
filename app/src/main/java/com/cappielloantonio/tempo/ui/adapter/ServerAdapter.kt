@@ -15,7 +15,7 @@ class ServerAdapter(private val click: ClickCallback) :
     private var servers: MutableList<Server>
 
     init {
-        this.servers = ArrayList()
+        this.servers = mutableListOf()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

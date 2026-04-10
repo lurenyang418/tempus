@@ -97,7 +97,7 @@ class PlaylistHorizontalAdapter(private val click: ClickCallback) :
 
     fun setItems(playlists: MutableList<Playlist?>) {
         this.playlists = playlists
-        this.playlistsFull = ArrayList(playlists)
+        this.playlistsFull = playlists.toMutableList()
         notifyDataSetChanged()
     }
 

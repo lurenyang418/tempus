@@ -87,7 +87,7 @@ class PodcastChannelCatalogueAdapter(private val click: ClickCallback) :
 
     fun setItems(podcastChannels: MutableList<PodcastChannel?>) {
         this.podcastChannels = podcastChannels
-        this.podcastChannelsFull = ArrayList(podcastChannels)
+        this.podcastChannelsFull = podcastChannels.toMutableList()
         notifyDataSetChanged()
     }
 

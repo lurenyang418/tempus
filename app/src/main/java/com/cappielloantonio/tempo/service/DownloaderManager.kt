@@ -123,7 +123,7 @@ class DownloaderManager(
     companion object {
         private const val TAG = "DownloaderManager"
 
-        private val downloads: HashMap<String?, Download?> = HashMap()
+        private val downloads: MutableMap<String?, Download?> = mutableMapOf()
 
         fun getDownloadNotificationMessage(id: String?): String? {
             val download: com.cappielloantonio.tempo.model.Download? =

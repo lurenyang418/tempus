@@ -21,7 +21,7 @@ class ArtistCatalogueAdapter(private val click: ClickCallback) :
     RecyclerView.Adapter<ArtistCatalogueAdapter.ViewHolder?>(), Filterable {
     private val filtering: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList: MutableList<ArtistID3?> = ArrayList()
+            val filteredList: MutableList<ArtistID3?> = mutableListOf()
 
             if (constraint == null || constraint.length == 0) {
                 filteredList.addAll(artistFull!!)
@@ -88,7 +88,7 @@ class ArtistCatalogueAdapter(private val click: ClickCallback) :
 
     fun setItems(artists: MutableList<ArtistID3?>) {
         this.artists = artists
-        this.artistFull = ArrayList(artists)
+        this.artistFull = artists.toMutableList()
         notifyDataSetChanged()
     }
 

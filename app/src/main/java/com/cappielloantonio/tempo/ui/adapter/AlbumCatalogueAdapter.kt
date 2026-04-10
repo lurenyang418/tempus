@@ -24,7 +24,7 @@ class AlbumCatalogueAdapter(private val click: ClickCallback, private val showAr
 
     private val filtering: Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList: MutableList<AlbumID3?> = ArrayList()
+            val filteredList: MutableList<AlbumID3?> = mutableListOf()
 
             if (constraint == null || constraint.length == 0) {
                 filteredList.addAll(albumsFull)
@@ -91,7 +91,7 @@ class AlbumCatalogueAdapter(private val click: ClickCallback, private val showAr
     }
 
     fun setItems(albums: MutableList<AlbumID3?>) {
-        this.albumsFull = ArrayList(albums)
+        this.albumsFull = albums.toMutableList()
         filtering.filter(currentFilter)
     }
 
@@ -137,8 +137,8 @@ class AlbumCatalogueAdapter(private val click: ClickCallback, private val showAr
     }
 
     fun setItemsWithoutFilter(albums: MutableList<AlbumID3?>) {
-        this.albumsFull = ArrayList(albums)
-        this.albums = ArrayList(albums)
+        this.albumsFull = albums.toMutableList()
+        this.albums = albums.toMutableList()
         notifyDataSetChanged()
     }
 
