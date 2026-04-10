@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.FrameLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -134,6 +135,27 @@ class MainActivity : BaseActivity() {
         checkTempoUpdate()
 
         maybeSchedulePlaybackIntent(getIntent())
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
+                    collapseBottomSheetDelayed()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
+            }
+        })
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
+            collapseBottomSheetDelayed()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onStart() {
@@ -160,11 +182,6 @@ class MainActivity : BaseActivity() {
         setIntent(intent)
         maybeSchedulePlaybackIntent(intent)
         consumePendingPlaybackIntent()
-    }
-
-    override fun onBackPressed() {
-        if (bottomSheetBehavior!!.getState() == BottomSheetBehavior.STATE_EXPANDED) collapseBottomSheetDelayed()
-        else super.onBackPressed()
     }
 
     fun init() {

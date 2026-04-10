@@ -139,8 +139,8 @@ object AssetLinkUtil {
                 textView.setTag(R.id.tag_link_original_color, textView.getCurrentTextColor())
             }
             val accent = MaterialColors.getColor(
-                view, com.google.android.material.R.attr.colorPrimary,
-                ContextCompat.getColor(view.getContext(), android.R.color.holo_blue_light)
+                view.context, androidx.appcompat.R.attr.colorPrimary,
+                ContextCompat.getColor(view.context, android.R.color.holo_blue_light)
             )
             textView.setTextColor(accent)
         }
