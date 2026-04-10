@@ -46,7 +46,7 @@ class StarredSyncDialog(private val onCancel: Runnable?) : DialogFragment() {
         setButtonAction(requireContext())
     }
 
-    private fun setButtonAction(context: Context?) {
+    private fun setButtonAction(context: Context) {
         val dialog = getDialog() as AlertDialog?
 
         if (dialog != null) {

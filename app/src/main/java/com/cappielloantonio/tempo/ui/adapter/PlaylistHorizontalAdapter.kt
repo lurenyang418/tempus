@@ -78,7 +78,7 @@ class PlaylistHorizontalAdapter(private val click: ClickCallback) :
             holder.itemView.getContext().getString(
                 R.string.playlist_counted_tracks,
                 playlist.songCount,
-                MusicUtil.getReadableDurationString(playlist.duration, false)
+                MusicUtil.getReadableDurationString(playlist.duration ?: 0, false)
             )
         )
 

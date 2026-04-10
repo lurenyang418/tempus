@@ -106,7 +106,8 @@ class ArtistBottomSheetViewModel(application: Application) : AndroidViewModel(ap
                             Log.d("ArtistSync", "Starting download of " + songs.size + " songs")
                             val nonNullSongs = songs.filterNotNull()
                             if (nonNullSongs.isNotEmpty()) {
-                                DownloadUtil.getDownloadTracker(context).download(
+                                val safeContext = context ?: return
+                                DownloadUtil.getDownloadTracker(safeContext).download(
                                     MappingUtil.mapDownloads(nonNullSongs.toMutableList()),
                                     nonNullSongs.map { child -> Download(child) }.toMutableList()
                                 )

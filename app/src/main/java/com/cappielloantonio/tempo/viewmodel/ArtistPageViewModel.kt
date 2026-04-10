@@ -114,7 +114,8 @@ class ArtistPageViewModel(application: Application) : AndroidViewModel(applicati
                         if (songs != null && !songs.isEmpty()) {
                             val nonNullSongs = songs.filterNotNull()
                             if (nonNullSongs.isNotEmpty()) {
-                                DownloadUtil.getDownloadTracker(context).download(
+                                val safeContext = context ?: return
+                                DownloadUtil.getDownloadTracker(safeContext).download(
                                     MappingUtil.mapDownloads(nonNullSongs.toMutableList()),
                                     nonNullSongs.map { child -> Download(child) }.toMutableList()
                                 )

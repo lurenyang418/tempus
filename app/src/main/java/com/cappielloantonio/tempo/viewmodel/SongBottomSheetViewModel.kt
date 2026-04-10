@@ -113,7 +113,8 @@ class SongBottomSheetViewModel(application: Application) : AndroidViewModel(appl
         media.starred = Date()
 
         if (isStarredSyncEnabled() && getDownloadDirectoryUri() == null) {
-            DownloadUtil.getDownloadTracker(context).download(
+            val safeContext = context ?: return
+            DownloadUtil.getDownloadTracker(safeContext).download(
                 MappingUtil.mapDownload(media),
                 Download(media)
             )
