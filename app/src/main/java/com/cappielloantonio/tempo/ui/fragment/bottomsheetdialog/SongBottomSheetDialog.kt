@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
+import androidx.core.os.BundleCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
@@ -84,7 +85,11 @@ class SongBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener 
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_song_dialog, container, false)
 
-        song = requireArguments().getParcelable<Child?>(Constants.TRACK_OBJECT)
+        song = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.TRACK_OBJECT,
+            Child::class.java
+        )
 
         homeViewModel =
             ViewModelProvider(requireActivity()).get<HomeViewModel>(HomeViewModel::class.java)

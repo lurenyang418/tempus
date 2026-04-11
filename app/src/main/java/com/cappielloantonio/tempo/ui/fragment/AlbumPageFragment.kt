@@ -1,3 +1,4 @@
+
 package com.cappielloantonio.tempo.ui.fragment
 
 import android.content.ComponentName
@@ -14,6 +15,7 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.ToggleButton
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -190,7 +192,13 @@ class AlbumPageFragment : Fragment(), ClickCallback {
 
     private fun init(view: View) {
         val albumArg: AlbumID3? =
-            checkNotNull(requireArguments().getParcelable<AlbumID3?>(Constants.ALBUM_OBJECT))
+            checkNotNull(
+                BundleCompat.getParcelable(
+                    requireArguments(),
+                    Constants.ALBUM_OBJECT,
+                    AlbumID3::class.java
+                )
+            )
         albumPageViewModel!!.setAlbum(getViewLifecycleOwner(), albumArg!!)
         val favoriteToggle = view.findViewById<ToggleButton>(R.id.button_favorite)
         favoriteToggle.setChecked(albumArg.starred != null)
@@ -452,10 +460,12 @@ class AlbumPageFragment : Fragment(), ClickCallback {
 
     override fun onMediaClick(bundle: Bundle?) {
         val args = bundle ?: return
+        val tracks = BundleCompat.getParcelableArrayList(args, Constants.TRACKS_OBJECT, Child::class.java)
+            ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
-                Constants.TRACKS_OBJECT
-            )!!, args.getInt(Constants.ITEM_POSITION)
+            mediaBrowserListenableFuture,
+            tracks,
+            args.getInt(Constants.ITEM_POSITION)
         )
         activity!!.setBottomSheetInPeek(true)
     }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.BundleCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
 import com.cappielloantonio.tempo.R
@@ -36,7 +37,11 @@ class ShareBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_share_dialog, container, false)
 
-        share = this.requireArguments().getParcelable<Share?>(Constants.SHARE_OBJECT)
+        share = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.SHARE_OBJECT,
+            Share::class.java
+        )
 
         homeViewModel =
             ViewModelProvider(requireActivity()).get<HomeViewModel>(HomeViewModel::class.java)

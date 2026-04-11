@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -346,9 +347,12 @@ class SearchFragment : Fragment(), ClickCallback {
     }
 
     override fun onMediaClick(bundle: Bundle?) {
-        val tracks: MutableList<Child?> = bundle?.getParcelableArrayList<Child?>(
-            Constants.TRACKS_OBJECT
-        )?.toMutableList() ?: mutableListOf()
+        val tracks: MutableList<Child?> = if (bundle != null) {
+            BundleCompat.getParcelableArrayList(bundle, Constants.TRACKS_OBJECT, Child::class.java)
+                ?.toMutableList() ?: mutableListOf()
+        } else {
+            mutableListOf()
+        }
         MediaManager.startQueue(
             mediaBrowserListenableFuture, tracks, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
         )
@@ -361,7 +365,11 @@ class SearchFragment : Fragment(), ClickCallback {
     }
 
     override fun onPlaylistClick(bundle: Bundle?) {
-        val playlistWithSongs = bundle?.getParcelable<PlaylistWithSongs?>(Constants.PLAYLIST_OBJECT)
+        val playlistWithSongs = if (bundle != null) {
+            BundleCompat.getParcelable(bundle, Constants.PLAYLIST_OBJECT, PlaylistWithSongs::class.java)
+        } else {
+            null
+        }
         if (playlistWithSongs != null) {
             val entries: MutableList<Child?> = playlistWithSongs.entries?.toMutableList() ?: mutableListOf()
             MediaManager.startQueue(mediaBrowserListenableFuture, entries, 0)

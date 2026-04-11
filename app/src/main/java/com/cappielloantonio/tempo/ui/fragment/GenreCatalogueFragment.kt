@@ -1,3 +1,4 @@
+
 package com.cappielloantonio.tempo.ui.fragment
 
 import android.annotation.SuppressLint
@@ -104,9 +105,7 @@ class GenreCatalogueFragment : Fragment(), ClickCallback {
         })
 
         bind!!.appBarLayout.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout: AppBarLayout?, verticalOffset: Int ->
-            if ((bind!!.genreInfoSector.getHeight() + verticalOffset) < (2 * ViewCompat.getMinimumHeight(
-                    bind!!.toolbar
-                ))
+            if ((bind!!.genreInfoSector.getHeight() + verticalOffset) < (2 * bind!!.toolbar.minimumHeight)
             ) {
                 bind!!.toolbar.setTitle(R.string.genre_catalogue_title)
             } else {

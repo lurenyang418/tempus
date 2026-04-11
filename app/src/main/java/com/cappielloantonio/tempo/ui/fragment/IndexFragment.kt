@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -84,7 +85,11 @@ class IndexFragment : Fragment(), ClickCallback {
 
     private fun init() {
         val musicFolder =
-            getArguments()!!.getParcelable<MusicFolder?>(Constants.MUSIC_FOLDER_OBJECT)
+            BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.MUSIC_FOLDER_OBJECT,
+                MusicFolder::class.java
+            )
 
         if (musicFolder != null) {
             indexViewModel!!.setMusicFolder(musicFolder)
@@ -103,9 +108,7 @@ class IndexFragment : Fragment(), ClickCallback {
         if (bind != null) bind!!.toolbar.setNavigationOnClickListener(View.OnClickListener { v: View? -> activity!!.navController!!.navigateUp() })
 
         if (bind != null) bind!!.appBarLayout.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout: AppBarLayout?, verticalOffset: Int ->
-            if ((bind!!.indexInfoSector.getHeight() + verticalOffset) < (2 * ViewCompat.getMinimumHeight(
-                    bind!!.toolbar
-                ))
+            if ((bind!!.indexInfoSector.getHeight() + verticalOffset) < (2 * bind!!.toolbar.minimumHeight)
             ) {
                 bind!!.toolbar.setTitle(indexViewModel!!.musicFolderName)
             } else {
@@ -116,7 +119,11 @@ class IndexFragment : Fragment(), ClickCallback {
 
     private fun initDirectoryListView() {
         val musicFolder =
-            getArguments()!!.getParcelable<MusicFolder?>(Constants.MUSIC_FOLDER_OBJECT)
+            BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.MUSIC_FOLDER_OBJECT,
+                MusicFolder::class.java
+            )
 
         bind!!.indexRecyclerView.setLayoutManager(LinearLayoutManager(requireContext()))
         bind!!.indexRecyclerView.setHasFixedSize(true)

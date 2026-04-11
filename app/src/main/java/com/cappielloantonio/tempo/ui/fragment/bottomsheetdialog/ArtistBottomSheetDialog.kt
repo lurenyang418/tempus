@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
+import androidx.core.os.BundleCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
@@ -47,7 +48,11 @@ class ArtistBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListene
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_artist_dialog, container, false)
 
-        artist = this.requireArguments().getParcelable<ArtistID3?>(Constants.ARTIST_OBJECT)
+        artist = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.ARTIST_OBJECT,
+            ArtistID3::class.java
+        )
 
         artistBottomSheetViewModel =
             ViewModelProvider(requireActivity()).get<ArtistBottomSheetViewModel>(

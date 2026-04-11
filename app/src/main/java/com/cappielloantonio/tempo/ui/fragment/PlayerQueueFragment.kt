@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -247,9 +248,12 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
     }
 
     override fun onMediaClick(bundle: Bundle?) {
-        val tracks: MutableList<Child?> = bundle?.getParcelableArrayList<Child?>(
-            Constants.TRACKS_OBJECT
-        )?.toMutableList() ?: mutableListOf()
+        val tracks: MutableList<Child?> = if (bundle != null) {
+            BundleCompat.getParcelableArrayList(bundle, Constants.TRACKS_OBJECT, Child::class.java)
+                ?.toMutableList() ?: mutableListOf()
+        } else {
+            mutableListOf()
+        }
         MediaManager.startQueue(
             mediaBrowserListenableFuture, tracks, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
         )

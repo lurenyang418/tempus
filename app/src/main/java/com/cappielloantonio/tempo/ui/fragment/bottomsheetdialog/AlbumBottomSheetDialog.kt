@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
+import androidx.core.os.BundleCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.MediaItem
@@ -72,7 +73,11 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_album_dialog, container, false)
 
-        album = this.requireArguments().getParcelable<AlbumID3?>(Constants.ALBUM_OBJECT)
+        album = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.ALBUM_OBJECT,
+            AlbumID3::class.java
+        )
 
         homeViewModel =
             ViewModelProvider(requireActivity()).get<HomeViewModel>(HomeViewModel::class.java)

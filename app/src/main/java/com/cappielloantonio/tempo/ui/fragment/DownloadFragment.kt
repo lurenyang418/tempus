@@ -1,3 +1,4 @@
+
 package com.cappielloantonio.tempo.ui.fragment
 
 import android.app.Activity
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -362,10 +364,12 @@ class DownloadFragment : Fragment(), ClickCallback {
     @Suppress("UNCHECKED_CAST")
     override fun onMediaClick(bundle: Bundle?) {
         val args = bundle ?: return
+        val tracks = BundleCompat.getParcelableArrayList(args, Constants.TRACKS_OBJECT, Child::class.java)
+            ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
-                Constants.TRACKS_OBJECT
-            )!!, args.getInt(Constants.ITEM_POSITION)
+            mediaBrowserListenableFuture,
+            tracks,
+            args.getInt(Constants.ITEM_POSITION)
         )
         activity?.setBottomSheetInPeek(true)
     }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.BundleCompat
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaBrowser
 import androidx.media3.session.SessionToken
@@ -36,7 +37,11 @@ class PlaylistBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListe
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_playlist_dialog, container, false)
 
-        playlist = requireArguments().getParcelable<PlaylistWithSongs?>(Constants.PLAYLIST_OBJECT)
+        playlist = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.PLAYLIST_OBJECT,
+            PlaylistWithSongs::class.java
+        )
 
         init(view)
 

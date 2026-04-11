@@ -1,3 +1,4 @@
+
 package com.cappielloantonio.tempo.ui.fragment
 
 import android.content.ComponentName
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -177,7 +179,12 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
     }
 
     private fun init() {
-        playlistPageViewModel!!.setPlaylist(requireArguments().getParcelable<Playlist>(Constants.PLAYLIST_OBJECT)!!)
+        val playlist = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.PLAYLIST_OBJECT,
+            Playlist::class.java
+        )
+        playlistPageViewModel!!.setPlaylist(checkNotNull(playlist))
     }
 
     private fun initMenuOption(menu: Menu) {
@@ -381,10 +388,12 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
 
     override fun onMediaClick(bundle: Bundle?) {
         val args = bundle ?: return
+        val tracks = BundleCompat.getParcelableArrayList(args, Constants.TRACKS_OBJECT, Child::class.java)
+            ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
-                Constants.TRACKS_OBJECT
-            )!!, args.getInt(Constants.ITEM_POSITION)
+            mediaBrowserListenableFuture,
+            tracks,
+            args.getInt(Constants.ITEM_POSITION)
         )
         activity!!.setBottomSheetInPeek(true)
     }

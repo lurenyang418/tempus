@@ -1,9 +1,9 @@
+
 package com.cappielloantonio.tempo.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.annotation.OptIn
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -92,9 +93,18 @@ class AlbumListPageFragment : Fragment(), ClickCallback {
         } else if (requireArguments().getString(Constants.ALBUM_DOWNLOADED) != null) {
             albumListPageViewModel!!.title = Constants.ALBUM_DOWNLOADED
             bind!!.pageTitleLabel.setText(R.string.album_list_page_downloaded)
-        } else if (requireArguments().getParcelable<Parcelable?>(Constants.ARTIST_OBJECT) != null) {
+        } else if (BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.ARTIST_OBJECT,
+                ArtistID3::class.java
+            ) != null
+        ) {
             albumListPageViewModel!!.artist =
-                requireArguments().getParcelable<ArtistID3?>(Constants.ARTIST_OBJECT)
+                BundleCompat.getParcelable(
+                    requireArguments(),
+                    Constants.ARTIST_OBJECT,
+                    ArtistID3::class.java
+                )
             albumListPageViewModel!!.title = Constants.ALBUM_FROM_ARTIST
             bind!!.pageTitleLabel.setText(albumListPageViewModel!!.artist!!.name)
         }
@@ -114,9 +124,7 @@ class AlbumListPageFragment : Fragment(), ClickCallback {
         })
 
         bind!!.appBarLayout.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout: AppBarLayout?, verticalOffset: Int ->
-            if ((bind!!.albumInfoSector.getHeight() + verticalOffset) < (2 * ViewCompat.getMinimumHeight(
-                    bind!!.toolbar
-                ))
+            if ((bind!!.albumInfoSector.getHeight() + verticalOffset) < (2 * bind!!.toolbar.minimumHeight)
             ) {
                 bind!!.toolbar.setTitle(R.string.album_list_page_title)
             } else {

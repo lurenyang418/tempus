@@ -156,7 +156,7 @@ object AssetLinkUtil {
             } else {
                 val defaultColor = MaterialColors.getColor(
                     view, com.google.android.material.R.attr.colorOnSurface,
-                    ContextCompat.getColor(view.getContext(), android.R.color.primary_text_light)
+                    ContextCompat.getColor(view.getContext(), android.R.color.white)
                 )
                 textView.setTextColor(defaultColor)
             }

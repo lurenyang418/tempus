@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.BundleCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaBrowser
@@ -48,7 +49,11 @@ class DownloadedBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickLis
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_downloaded_dialog, container, false)
 
-        songs = this.requireArguments().getParcelableArrayList<Child?>(Constants.DOWNLOAD_GROUP)
+        songs = BundleCompat.getParcelableArrayList(
+            requireArguments(),
+            Constants.DOWNLOAD_GROUP,
+            Child::class.java
+        )
         groupTitle = this.requireArguments().getString(Constants.DOWNLOAD_GROUP_TITLE)
         groupSubtitle = this.requireArguments().getString(Constants.DOWNLOAD_GROUP_SUBTITLE)
 

@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -171,10 +172,14 @@ class HomeTabPodcastFragment : Fragment(), ClickCallback, PodcastCallback {
     }
 
     override fun onPodcastEpisodeClick(bundle: Bundle?) {
+        val episode = if (bundle != null) {
+            BundleCompat.getParcelable(bundle, Constants.PODCAST_OBJECT, PodcastEpisode::class.java)
+        } else {
+            null
+        }
         MediaManager.startPodcast(
-            mediaBrowserListenableFuture, bundle?.getParcelable<PodcastEpisode?>(
-                Constants.PODCAST_OBJECT
-            )
+            mediaBrowserListenableFuture,
+            episode
         )
         activity!!.setBottomSheetInPeek(true)
     }

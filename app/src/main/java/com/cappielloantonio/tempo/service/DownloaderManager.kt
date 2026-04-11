@@ -33,6 +33,7 @@ class DownloaderManager(
         loadDownloads()
     }
 
+    @Suppress("DEPRECATION")
     private fun buildDownloadRequest(mediaItem: MediaItem): DownloadRequest {
         val mediaId = mediaItem.mediaId
         return DownloadHelper

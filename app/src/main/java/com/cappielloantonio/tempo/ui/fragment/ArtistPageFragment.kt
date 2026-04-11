@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import android.widget.ToggleButton
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -124,7 +125,12 @@ class ArtistPageFragment : Fragment(), ClickCallback {
     }
 
     private fun init(view: View) {
-        artistPageViewModel!!.setArtist(requireArguments().getParcelable<ArtistID3>(Constants.ARTIST_OBJECT)!!)
+        val artist = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.ARTIST_OBJECT,
+            ArtistID3::class.java
+        )
+        artistPageViewModel!!.setArtist(checkNotNull(artist))
 
         bind!!.mostStreamedSongTextViewClickable.setOnClickListener(View.OnClickListener { v: View? ->
             val bundle = Bundle()
@@ -410,10 +416,12 @@ class ArtistPageFragment : Fragment(), ClickCallback {
     @Suppress("UNCHECKED_CAST")
     override fun onMediaClick(bundle: Bundle?) {
         val args = bundle ?: return
+        val tracks = BundleCompat.getParcelableArrayList(args, Constants.TRACKS_OBJECT, Child::class.java)
+            ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
-                Constants.TRACKS_OBJECT
-            )!!, args.getInt(Constants.ITEM_POSITION)
+            mediaBrowserListenableFuture,
+            tracks,
+            args.getInt(Constants.ITEM_POSITION)
         )
         activity?.setBottomSheetInPeek(true)
     }

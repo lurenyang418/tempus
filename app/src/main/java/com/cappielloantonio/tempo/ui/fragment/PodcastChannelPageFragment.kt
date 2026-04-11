@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -82,11 +83,12 @@ class PodcastChannelPageFragment : Fragment(), ClickCallback {
     }
 
     private fun init() {
-        podcastChannelPageViewModel!!.setPodcastChannel(
-            requireArguments().getParcelable<PodcastChannel>(
-                Constants.PODCAST_CHANNEL_OBJECT
-            )!!
+        val channel = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.PODCAST_CHANNEL_OBJECT,
+            PodcastChannel::class.java
         )
+        podcastChannelPageViewModel!!.setPodcastChannel(checkNotNull(channel))
     }
 
     private fun initAppBar() {
@@ -185,10 +187,14 @@ class PodcastChannelPageFragment : Fragment(), ClickCallback {
     }
 
     override fun onPodcastEpisodeClick(bundle: Bundle?) {
+        val episode = if (bundle != null) {
+            BundleCompat.getParcelable(bundle, Constants.PODCAST_OBJECT, PodcastEpisode::class.java)
+        } else {
+            null
+        }
         MediaManager.startPodcast(
-            mediaBrowserListenableFuture, bundle?.getParcelable<PodcastEpisode?>(
-                Constants.PODCAST_OBJECT
-            )
+            mediaBrowserListenableFuture,
+            episode
         )
         activity!!.setBottomSheetInPeek(true)
     }
@@ -198,7 +204,11 @@ class PodcastChannelPageFragment : Fragment(), ClickCallback {
     }
 
     override fun onPodcastEpisodeAltClick(bundle: Bundle?) {
-        val episode = bundle?.getParcelable<PodcastEpisode?>(Constants.PODCAST_OBJECT)
+        val episode = if (bundle != null) {
+            BundleCompat.getParcelable(bundle, Constants.PODCAST_OBJECT, PodcastEpisode::class.java)
+        } else {
+            null
+        }
         podcastChannelPageViewModel!!.requestPodcastEpisodeDownload(episode!!)
 
         Snackbar.make(

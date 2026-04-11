@@ -148,6 +148,7 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    @Suppress("DEPRECATION")
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
@@ -463,6 +464,7 @@ class MainActivity : BaseActivity() {
     }
 
     // CONNECTION
+    @Suppress("DEPRECATION")
     private fun connectivityStatusReceiverManager(isActive: Boolean) {
         if (isActive) {
             val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
@@ -544,6 +546,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun checkConnectionType() {
         if (isWifiOnly()) {
             val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager

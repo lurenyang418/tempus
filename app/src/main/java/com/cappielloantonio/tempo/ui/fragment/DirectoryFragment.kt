@@ -1,3 +1,4 @@
+
 package com.cappielloantonio.tempo.ui.fragment
 
 import android.content.ComponentName
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -162,9 +164,7 @@ class DirectoryFragment : Fragment(), ClickCallback {
         directoryViewModel!!.loadMusicDirectory(getArguments()!!.getString(Constants.MUSIC_DIRECTORY_ID))
             .observe(getViewLifecycleOwner(), Observer { directory: Directory? ->
                 bind!!.appBarLayout.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout: AppBarLayout?, verticalOffset: Int ->
-                    if ((bind!!.directoryInfoSector.getHeight() + verticalOffset) < (2 * ViewCompat.getMinimumHeight(
-                            bind!!.toolbar
-                        ))
+                    if ((bind!!.directoryInfoSector.getHeight() + verticalOffset) < (2 * bind!!.toolbar.minimumHeight)
                     ) {
                         bind!!.toolbar.setTitle(directory!!.name)
                     } else {
@@ -200,10 +200,12 @@ class DirectoryFragment : Fragment(), ClickCallback {
     @Suppress("UNCHECKED_CAST")
     override fun onMediaClick(bundle: Bundle?) {
         val args = bundle ?: return
+        val tracks = BundleCompat.getParcelableArrayList(args, Constants.TRACKS_OBJECT, Child::class.java)
+            ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
-                Constants.TRACKS_OBJECT
-            )!!, args.getInt(Constants.ITEM_POSITION)
+            mediaBrowserListenableFuture,
+            tracks,
+            args.getInt(Constants.ITEM_POSITION)
         )
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.BundleCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaBrowser
@@ -39,7 +40,11 @@ class PodcastEpisodeBottomSheetDialog : BottomSheetDialogFragment(), View.OnClic
     ): View? {
         val view = inflater.inflate(R.layout.bottom_sheet_podcast_episode_dialog, container, false)
 
-        podcastEpisode = requireArguments().getParcelable<PodcastEpisode?>(Constants.PODCAST_OBJECT)
+        podcastEpisode = BundleCompat.getParcelable(
+            requireArguments(),
+            Constants.PODCAST_OBJECT,
+            PodcastEpisode::class.java
+        )
 
         podcastEpisodeBottomSheetViewModel =
             ViewModelProvider(requireActivity()).get<PodcastEpisodeBottomSheetViewModel>(

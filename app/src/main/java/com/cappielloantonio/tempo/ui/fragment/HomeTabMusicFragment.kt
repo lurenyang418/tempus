@@ -13,6 +13,7 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -1280,7 +1281,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
         viewPager.setPageTransformer(ViewPager2.PageTransformer { page: View?, position: Float ->
             val myOffset = position * -(2 * pageOffset + pageMargin)
             if (viewPager.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
-                if (ViewCompat.getLayoutDirection(viewPager) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+                if (viewPager.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
                     page!!.setTranslationX(-myOffset)
                 } else {
                     page!!.setTranslationX(myOffset)
@@ -1419,7 +1420,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
     override fun onMediaClick(bundle: Bundle?) {
         bundle ?: return
         if (bundle.containsKey(Constants.MEDIA_MIX)) {
-            val track = bundle.getParcelable<Child?>(Constants.TRACK_OBJECT)
+            val track = BundleCompat.getParcelable(bundle, Constants.TRACK_OBJECT, Child::class.java)
             activity!!.setBottomSheetInPeek(true)
 
             if (mediaBrowserListenableFuture != null) {
@@ -1443,7 +1444,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             }
         } else if (bundle.containsKey(Constants.MEDIA_CHRONOLOGY)) {
             val media: MutableList<Child?>? =
-                bundle.getParcelableArrayList<Child?>(Constants.TRACKS_OBJECT)
+                BundleCompat.getParcelableArrayList(bundle, Constants.TRACKS_OBJECT, Child::class.java)
             MediaManager.startQueue(
                 mediaBrowserListenableFuture,
                 media!!,
@@ -1451,10 +1452,12 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             )
             activity!!.setBottomSheetInPeek(true)
         } else {
+            val tracks = BundleCompat.getParcelableArrayList(bundle, Constants.TRACKS_OBJECT, Child::class.java)
+                ?: return
             MediaManager.startQueue(
-                mediaBrowserListenableFuture, bundle.getParcelableArrayList<Child?>(
-                    Constants.TRACKS_OBJECT
-                )!!, bundle.getInt(Constants.ITEM_POSITION)
+                mediaBrowserListenableFuture,
+                tracks,
+                bundle.getInt(Constants.ITEM_POSITION)
             )
             activity!!.setBottomSheetInPeek(true)
         }
@@ -1486,10 +1489,11 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                 .show()
 
             if (mediaBrowserListenableFuture != null) {
+                val artist = BundleCompat.getParcelable(bundle, Constants.ARTIST_OBJECT, ArtistID3::class.java)
+                    ?: return
                 homeViewModel!!.getArtistInstantMix(
-                    getViewLifecycleOwner(), bundle.getParcelable<ArtistID3>(
-                        Constants.ARTIST_OBJECT
-                    )!!
+                    getViewLifecycleOwner(),
+                    artist
                 ).observe(getViewLifecycleOwner(), Observer { songs: MutableList<Child?>? ->
                     MusicUtil.ratingFilter(songs)
                     if (!songs!!.isEmpty()) {
@@ -1500,10 +1504,11 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             }
         } else if (bundle.containsKey(Constants.MEDIA_BEST_OF) && bundle.getBoolean(Constants.MEDIA_BEST_OF)) {
             if (mediaBrowserListenableFuture != null) {
+                val artist = BundleCompat.getParcelable(bundle, Constants.ARTIST_OBJECT, ArtistID3::class.java)
+                    ?: return
                 homeViewModel!!.getArtistBestOf(
-                    getViewLifecycleOwner(), bundle.getParcelable<ArtistID3>(
-                        Constants.ARTIST_OBJECT
-                    )!!
+                    getViewLifecycleOwner(),
+                    artist
                 ).observe(getViewLifecycleOwner(), Observer { songs: MutableList<Child?>? ->
                     MusicUtil.ratingFilter(songs)
                     if (!songs!!.isEmpty()) {
@@ -1527,7 +1532,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
     override fun onShareClick(bundle: Bundle?) {
         bundle ?: return
-        val share = bundle.getParcelable<Share?>(Constants.SHARE_OBJECT)
+        val share = BundleCompat.getParcelable(bundle, Constants.SHARE_OBJECT, Share::class.java)
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(share!!.url)

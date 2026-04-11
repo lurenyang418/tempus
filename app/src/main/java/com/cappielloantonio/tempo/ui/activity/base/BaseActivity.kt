@@ -112,6 +112,7 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun setNavigationBarColor() {
         getWindow().setNavigationBarColor(SurfaceColors.getColorForElevation(this, 8f))
         getWindow().setStatusBarColor(SurfaceColors.getColorForElevation(this, 0f))

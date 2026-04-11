@@ -1,10 +1,10 @@
+
 package com.cappielloantonio.tempo.ui.fragment
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.SearchView
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -130,13 +131,17 @@ class SongListPageFragment : Fragment(), ClickCallback {
         } else if (requireArguments().getString(Constants.MEDIA_BY_GENRE) != null) {
             songListPageViewModel!!.title = Constants.MEDIA_BY_GENRE
             songListPageViewModel!!.genre =
-                requireArguments().getParcelable<Genre?>(Constants.GENRE_OBJECT)
+                BundleCompat.getParcelable(requireArguments(), Constants.GENRE_OBJECT, Genre::class.java)
             songListPageViewModel!!.toolbarTitle = songListPageViewModel!!.genre!!.genre
             bind!!.pageTitleLabel.setText(songListPageViewModel!!.genre!!.genre)
         } else if (requireArguments().getString(Constants.MEDIA_BY_ARTIST) != null) {
             songListPageViewModel!!.title = Constants.MEDIA_BY_ARTIST
             songListPageViewModel!!.artist =
-                requireArguments().getParcelable<ArtistID3?>(Constants.ARTIST_OBJECT)
+                BundleCompat.getParcelable(
+                    requireArguments(),
+                    Constants.ARTIST_OBJECT,
+                    ArtistID3::class.java
+                )
             songListPageViewModel!!.toolbarTitle =
                 getString(R.string.song_list_page_top, songListPageViewModel!!.artist!!.name)
             bind!!.pageTitleLabel.setText(
@@ -172,9 +177,18 @@ class SongListPageFragment : Fragment(), ClickCallback {
             songListPageViewModel!!.title = Constants.MEDIA_DOWNLOADED
             songListPageViewModel!!.toolbarTitle = getString(R.string.song_list_page_downloaded)
             bind!!.pageTitleLabel.setText(getString(R.string.song_list_page_downloaded))
-        } else if (requireArguments().getParcelable<Parcelable?>(Constants.ALBUM_OBJECT) != null) {
+        } else if (BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.ALBUM_OBJECT,
+                AlbumID3::class.java
+            ) != null
+        ) {
             songListPageViewModel!!.album =
-                requireArguments().getParcelable<AlbumID3?>(Constants.ALBUM_OBJECT)
+                BundleCompat.getParcelable(
+                    requireArguments(),
+                    Constants.ALBUM_OBJECT,
+                    AlbumID3::class.java
+                )
             songListPageViewModel!!.title = Constants.MEDIA_FROM_ALBUM
             songListPageViewModel!!.toolbarTitle = songListPageViewModel!!.album!!.name
             bind!!.pageTitleLabel.setText(songListPageViewModel!!.album!!.name)
@@ -195,9 +209,7 @@ class SongListPageFragment : Fragment(), ClickCallback {
         })
 
         if (bind != null) bind!!.appBarLayout.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout: AppBarLayout?, verticalOffset: Int ->
-            if ((bind!!.albumInfoSector.getHeight() + verticalOffset) < (2 * ViewCompat.getMinimumHeight(
-                    bind!!.toolbar
-                ))
+            if ((bind!!.albumInfoSector.getHeight() + verticalOffset) < (2 * bind!!.toolbar.minimumHeight)
             ) {
                 bind!!.toolbar.setTitle(songListPageViewModel!!.toolbarTitle)
             } else {
@@ -374,9 +386,12 @@ class SongListPageFragment : Fragment(), ClickCallback {
 
         override fun onMediaClick(bundle: Bundle?) {
         hideKeyboard(requireView())
-        val tracks: MutableList<Child?> = bundle?.getParcelableArrayList<Child?>(
-            Constants.TRACKS_OBJECT
-        )?.toMutableList() ?: mutableListOf()
+        val tracks: MutableList<Child?> = if (bundle != null) {
+            BundleCompat.getParcelableArrayList(bundle, Constants.TRACKS_OBJECT, Child::class.java)
+                ?.toMutableList() ?: mutableListOf()
+        } else {
+            mutableListOf()
+        }
         MediaManager.startQueue(
             mediaBrowserListenableFuture, tracks, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
         )
