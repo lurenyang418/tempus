@@ -143,10 +143,10 @@ class AlbumCatalogueAdapter(private val click: ClickCallback, private val showAr
     }
 
     fun sort(order: String) {
-        if (albums == null) return
+        val albums = this.albums ?: return
 
         when (order) {
-            Constants.ALBUM_ORDER_BY_NAME -> albums!!.sortWith(
+            Constants.ALBUM_ORDER_BY_NAME -> albums.sortWith(
                 Comparator { a, b ->
                     val nameA = a?.name?.lowercase(Locale.getDefault()) ?: ""
                     val nameB = b?.name?.lowercase(Locale.getDefault()) ?: ""
@@ -154,7 +154,7 @@ class AlbumCatalogueAdapter(private val click: ClickCallback, private val showAr
                 }
             )
 
-            Constants.ALBUM_ORDER_BY_ARTIST -> albums!!.sortWith(
+            Constants.ALBUM_ORDER_BY_ARTIST -> albums.sortWith(
                 Comparator { a, b ->
                     val artistA = a?.artist?.lowercase(Locale.getDefault()) ?: ""
                     val artistB = b?.artist?.lowercase(Locale.getDefault()) ?: ""
@@ -162,27 +162,27 @@ class AlbumCatalogueAdapter(private val click: ClickCallback, private val showAr
                 }
             )
 
-            Constants.ALBUM_ORDER_BY_YEAR -> albums!!.sortWith(
+            Constants.ALBUM_ORDER_BY_YEAR -> albums.sortWith(
                 Comparator { a, b -> (a?.year ?: 0).compareTo(b?.year ?: 0) }
             )
 
             Constants.ALBUM_ORDER_BY_RANDOM -> Collections.shuffle(albums)
             Constants.ALBUM_ORDER_BY_RECENTLY_ADDED -> {
-                albums!!.sortWith(
+                albums.sortWith(
                     Comparator { a, b -> (a?.created ?: Date(0)).compareTo(b?.created ?: Date(0)) }
                 )
                 Collections.reverse(albums)
             }
 
             Constants.ALBUM_ORDER_BY_RECENTLY_PLAYED -> {
-                albums!!.sortWith(
+                albums.sortWith(
                     Comparator { a, b -> (a?.played ?: Date(0)).compareTo(b?.played ?: Date(0)) }
                 )
                 Collections.reverse(albums)
             }
 
             Constants.ALBUM_ORDER_BY_MOST_PLAYED -> {
-                albums!!.sortWith(
+                albums.sortWith(
                     Comparator { a, b -> (a?.playCount ?: 0L).compareTo(b?.playCount ?: 0L) }
                 )
                 Collections.reverse(albums)

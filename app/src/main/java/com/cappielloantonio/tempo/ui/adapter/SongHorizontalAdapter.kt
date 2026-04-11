@@ -76,6 +76,7 @@ class SongHorizontalAdapter(
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
+            @Suppress("UNCHECKED_CAST")
             songs = results.values as MutableList<Child?>
             notifyDataSetChanged()
 
@@ -183,7 +184,7 @@ class SongHorizontalAdapter(
 
             if (album?.discTitles != null) {
                 val discTitle = album.discTitles!!
-                    .firstOrNull { title -> title?.disc == currSong?.discNumber }
+                    .firstOrNull { title -> title.disc == currSong?.discNumber }
 
                 if (discTitle != null) {
                     val title = discTitle.title

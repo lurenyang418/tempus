@@ -34,7 +34,7 @@ class DownloaderManager(
     }
 
     private fun buildDownloadRequest(mediaItem: MediaItem): DownloadRequest {
-        val mediaId = mediaItem.mediaId ?: throw IllegalArgumentException("MediaItem must have a mediaId")
+        val mediaId = mediaItem.mediaId
         return DownloadHelper
             .forMediaItem(
                 context,

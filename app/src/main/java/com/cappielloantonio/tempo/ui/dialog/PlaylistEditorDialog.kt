@@ -98,7 +98,7 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
             .setOnClickListener(View.OnClickListener { v: View? ->
                 if (validateInput()) {
-                    if (playlistEditorViewModel!!.songsToAdd != null) {
+                    if (playlistEditorViewModel!!.songsToAdd.isNotEmpty()) {
                         playlistEditorViewModel!!.createPlaylist(playlistName)
                     } else if (playlistEditorViewModel!!.playlistToEdit != null) {
                         playlistEditorViewModel!!.updatePlaylist(playlistName)

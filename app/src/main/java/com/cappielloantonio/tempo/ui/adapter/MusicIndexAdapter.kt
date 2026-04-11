@@ -14,7 +14,6 @@ import com.cappielloantonio.tempo.interfaces.ClickCallback
 import com.cappielloantonio.tempo.subsonic.models.Artist
 import com.cappielloantonio.tempo.util.Constants
 import java.util.Locale
-import java.util.Objects
 
 @UnstableApi
 class MusicIndexAdapter(private val click: ClickCallback) :
@@ -54,11 +53,9 @@ class MusicIndexAdapter(private val click: ClickCallback) :
     }
 
     override fun getTextToShowInBubble(pos: Int): String? {
-        return if (artists != null && !artists!!.isEmpty()) Objects.requireNonNull<String?>(
-            artists!![pos]?.name?.uppercase(
-                Locale.getDefault()
-            )
-        )?.get(0)?.toString() else null
+        val artists = this.artists ?: return null
+        if (artists.isEmpty()) return null
+        return artists[pos]?.name?.uppercase(Locale.getDefault())?.get(0)?.toString()
     }
 
     inner class ViewHolder internal constructor(var item: ItemLibraryMusicIndexBinding) :

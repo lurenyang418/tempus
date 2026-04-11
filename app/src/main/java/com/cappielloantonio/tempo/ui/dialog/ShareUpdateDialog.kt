@@ -68,10 +68,9 @@ class ShareUpdateDialog : DialogFragment() {
     }
 
     private fun setShareInfo() {
-        if (shareBottomSheetViewModel!!.getShare() != null) {
-            bind!!.shareDescriptionTextView.setText(shareBottomSheetViewModel!!.getShare().description)
-            // bind.shareExpirationTextView.setText(shareBottomSheetViewModel.getShare().getExpires());
-        }
+        val share = shareBottomSheetViewModel!!.getShare()
+        bind!!.shareDescriptionTextView.setText(share.description)
+        // bind.shareExpirationTextView.setText(share.getExpires());
     }
 
     private fun setShareCalendar() {

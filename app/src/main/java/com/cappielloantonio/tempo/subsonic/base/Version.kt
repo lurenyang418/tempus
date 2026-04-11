@@ -6,7 +6,7 @@ class Version private constructor(versionString: String) : Comparable<Version?> 
     val versionString: String
 
     init {
-        require(!(versionString == null || !versionString.matches(VERSION_PATTERN.toRegex()))) { "Invalid version format" }
+        require(versionString.matches(VERSION_PATTERN.toRegex())) { "Invalid version format" }
         this.versionString = versionString
     }
 
@@ -14,15 +14,15 @@ class Version private constructor(versionString: String) : Comparable<Version?> 
         return compareTo(version) < 0
     }
 
-    override fun compareTo(that: Version?): Int {
-        if (that == null) {
+    override fun compareTo(other: Version?): Int {
+        if (other == null) {
             return 1
         }
 
         val thisParts: Array<String?> =
             this.versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val thatParts: Array<String?> =
-            that.versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            other.versionString.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
         val length = max(thisParts.size, thatParts.size)
 

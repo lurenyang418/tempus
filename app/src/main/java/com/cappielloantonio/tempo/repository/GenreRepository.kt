@@ -23,7 +23,7 @@ class GenreRepository {
                     call: Call<ApiResponse?>,
                     response: Response<ApiResponse?>
                 ) {
-                    if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse != null && response.body()!!.subsonicResponse.genres != null) {
+                    if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.genres != null) {
                         val genreList: List<Genre>? =
                             response.body()!!.subsonicResponse.genres!!.genres
 

@@ -148,7 +148,7 @@ class AlbumRepository {
                         val albums: List<AlbumID3>? =
                             response.body()!!.subsonicResponse.artist!!.albums
                         val sortedAlbums = ArrayList(albums!!)
-                        sortedAlbums.sortWith(Comparator.comparing<AlbumID3?, Int?>(AlbumID3::year))
+                        sortedAlbums.sortBy { it.year }
                         Collections.reverse(sortedAlbums)
                         artistsAlbum.setValue(sortedAlbums)
                     }
@@ -219,15 +219,16 @@ class AlbumRepository {
                 MutableLiveData<MutableList<Int?>?>()
 
             getFirstAlbum(object : DecadesCallback {
-                override fun onLoadYear(first: Int) {
+                override fun onLoadYear(year: Int) {
+                    val first = year
                     getLastAlbum(object : DecadesCallback {
-                        override fun onLoadYear(last: Int) {
-                            if (first != -1 && last != -1) {
+                        override fun onLoadYear(year: Int) {
+                            if (first != -1 && year != -1) {
                                 val decadeList: MutableList<Int?> =
                                     ArrayList<Int?>()
 
                                 var startDecade = first - (first % 10)
-                                val lastDecade = last - (last % 10)
+                                val lastDecade = year - (year % 10)
 
                                 while (startDecade <= lastDecade) {
                                     decadeList.add(startDecade)

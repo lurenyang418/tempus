@@ -58,12 +58,11 @@ class AutomotiveRepository {
                     response: Response<ApiResponse?>
                 ) {
                     if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.albumList2 != null && response.body()!!.subsonicResponse.albumList2!!.albums != null) {
-                        val albums: List<AlbumID3>? =
-                            response.body()!!.subsonicResponse.albumList2!!.albums
+                        val albums = response.body()!!.subsonicResponse.albumList2!!.albums ?: return
 
                         // add by MFO
                         // Hack for artist view
-                        if ("alphabeticalByArtist" == type) for (album in albums!!) {
+                        if ("alphabeticalByArtist" == type) for (album in albums) {
                             val artistName = album.artist
                             val albumName = album.name
                             album.name = artistName
@@ -73,7 +72,7 @@ class AutomotiveRepository {
                         // end add by MFO
                         val mediaItems: MutableList<MediaItem?> = ArrayList<MediaItem?>()
 
-                        for (album in albums!!) {
+                        for (album in albums) {
                             val artworkUri = contentUri(album.coverArtId)
 
                             val mediaMetadata = MediaMetadata.Builder()
@@ -138,9 +137,8 @@ class AutomotiveRepository {
                                 response.body()!!.subsonicResponse.starred2!!.songs
 
                             setChildrenMetadata(ArrayList(songs!!))
-
-                            val mediaItems =
-                                MappingUtil.mapMediaItems(songs!!.toMutableList() as MutableList<Child?>)
+                            @Suppress("UNCHECKED_CAST")
+                            val mediaItems = MappingUtil.mapMediaItems(songs.toMutableList() as MutableList<Child?>)
 
                             val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
                                 LibraryResult.ofItemList(
@@ -186,8 +184,8 @@ class AutomotiveRepository {
                             response.body()!!.subsonicResponse.randomSongs!!.songs
 
                         setChildrenMetadata(ArrayList(songs!!))
-
-                        val mediaItems = MappingUtil.mapMediaItems(songs!!.toMutableList() as MutableList<Child?>)
+                        @Suppress("UNCHECKED_CAST")
+                        val mediaItems = MappingUtil.mapMediaItems(songs.toMutableList() as MutableList<Child?>)
 
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
                             LibraryResult.ofItemList(
@@ -221,12 +219,12 @@ class AutomotiveRepository {
 
         chronologyDao!!.getLastPlayed(server, count)!!
             .observeForever(object : Observer<MutableList<Chronology?>?> {
-                override fun onChanged(chronology: MutableList<Chronology?>?) {
-                    if (chronology != null && !chronology.isEmpty()) {
-                        val songs: List<Child> = chronology.filterNotNull()
+                override fun onChanged(value: MutableList<Chronology?>?) {
+                    if (value != null && !value.isEmpty()) {
+                        val songs: List<Child> = value.filterNotNull()
 
                         setChildrenMetadata(ArrayList(songs))
-
+                        @Suppress("UNCHECKED_CAST")
                         val mediaItems = MappingUtil.mapMediaItems(songs.toMutableList() as MutableList<Child?>)
 
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
@@ -263,12 +261,11 @@ class AutomotiveRepository {
                     response: Response<ApiResponse?>
                 ) {
                     if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.starred2 != null && response.body()!!.subsonicResponse.starred2!!.albums != null) {
-                        val albums: List<AlbumID3>? =
-                            response.body()!!.subsonicResponse.starred2!!.albums
+                        val albums = response.body()!!.subsonicResponse.starred2!!.albums ?: return
 
                         val mediaItems: MutableList<MediaItem?> = ArrayList<MediaItem?>()
 
-                        for (album in albums!!) {
+                        for (album in albums) {
                             val artworkUri = contentUri(album.coverArtId)
 
                             val mediaMetadata = MediaMetadata.Builder()
@@ -728,7 +725,7 @@ class AutomotiveRepository {
 
                         setChildrenMetadata(ArrayList(tracks!!))
 
-                        val mediaItems = MappingUtil.mapMediaItems(tracks!!.toMutableList())
+                        val mediaItems = MappingUtil.mapMediaItems(tracks.toMutableList())
 
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
                             LibraryResult.ofItemList(
@@ -769,12 +766,11 @@ class AutomotiveRepository {
                     response: Response<ApiResponse?>
                 ) {
                     if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.artist != null && response.body()!!.subsonicResponse.artist!!.albums != null) {
-                        val albums: List<AlbumID3>? =
-                            response.body()!!.subsonicResponse.artist!!.albums
+                        val albums = response.body()!!.subsonicResponse.artist!!.albums ?: return
 
                         val mediaItems: MutableList<MediaItem?> = ArrayList<MediaItem?>()
 
-                        for (album in albums!!) {
+                        for (album in albums) {
                             val artworkUri = contentUri(album.coverArtId)
 
                             val mediaMetadata = MediaMetadata.Builder()
@@ -832,7 +828,7 @@ class AutomotiveRepository {
 
                         setChildrenMetadata(ArrayList(tracks!!))
 
-                        val mediaItems = MappingUtil.mapMediaItems(tracks!!.toMutableList())
+                        val mediaItems = MappingUtil.mapMediaItems(tracks.toMutableList())
 
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
                             LibraryResult.ofItemList(
@@ -872,7 +868,7 @@ class AutomotiveRepository {
 
                         setChildrenMetadata(ArrayList(tracks!!))
 
-                        val mediaItems = MappingUtil.mapMediaItems(tracks!!.toMutableList())
+                        val mediaItems = MappingUtil.mapMediaItems(tracks.toMutableList())
 
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
                             LibraryResult.ofItemList(
@@ -961,7 +957,8 @@ class AutomotiveRepository {
                             val tracks: List<Child>? =
                                 response.body()!!.subsonicResponse.searchResult3!!.songs
                             setChildrenMetadata(ArrayList(tracks!!))
-                            mediaItems.addAll(MappingUtil.mapMediaItems(tracks!!.toMutableList() as MutableList<Child?>))
+                            @Suppress("UNCHECKED_CAST")
+                            mediaItems.addAll(MappingUtil.mapMediaItems(tracks.toMutableList() as MutableList<Child?>))
                         }
 
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
@@ -1158,6 +1155,7 @@ class AutomotiveRepository {
 
                     if (songs != null) {
                         setChildrenMetadata(ArrayList(songs))
+                        @Suppress("UNCHECKED_CAST")
                         val mediaItems = MappingUtil.mapMediaItems(songs.toMutableList() as MutableList<Child?>)
                         val libraryResult: LibraryResult<ImmutableList<MediaItem>> =
                             LibraryResult.ofItemList(

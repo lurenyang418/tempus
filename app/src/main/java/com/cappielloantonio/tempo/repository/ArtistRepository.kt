@@ -81,13 +81,13 @@ class ArtistRepository {
             Log.d("ArtistSync", "Getting tracks for album: " + album.name)
             val albumTracks = albumRepository.getAlbumTracks(album.id)
             val observer = object : Observer<MutableList<Child?>?> {
-                override fun onChanged(songs: MutableList<Child?>?) {
+                override fun onChanged(value: MutableList<Child?>?) {
                     Log.d(
                         "ArtistSync",
-                        "Got " + (if (songs != null) songs.size else 0) + " songs from album"
+                        "Got " + (if (value != null) value.size else 0) + " songs from album"
                     )
-                    if (songs != null) {
-                        allSongs.addAll(songs.filterNotNull())
+                    if (value != null) {
+                        allSongs.addAll(value.filterNotNull())
                     }
                     albumTracks.removeObserver(this)
 
@@ -339,8 +339,9 @@ class ArtistRepository {
                         fetchAllAlbumSongsWithCallback(
                             ArrayList(shuffledAlbums.take(albumLimit)), object : ArtistSongsCallback {
                                 override fun onSongsCollected(songs: MutableList<Child>?) {
-                                    Collections.shuffle(songs)
-                                    randomSongs.setValue(ArrayList(songs!!.take(count)))
+                                    val songList = songs ?: return
+                                    Collections.shuffle(songList)
+                                    randomSongs.setValue(ArrayList(songList.take(count)))
                                 }
                             })
                     } else {

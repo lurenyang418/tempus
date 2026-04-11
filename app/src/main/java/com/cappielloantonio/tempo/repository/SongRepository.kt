@@ -82,8 +82,8 @@ class SongRepository {
                             id,
                             count,
                             object : MediaCallbackInternal {
-                                override fun onSongsAvailable(remainder: MutableList<Child>?) {
-                                    for (r in remainder!!) {
+                                override fun onSongsAvailable(songs: MutableList<Child>?) {
+                                    for (r in songs!!) {
                                         if (!trackIds.contains(r.id)) {
                                             current.add(r)
                                             trackIds.add(r.id)
@@ -123,8 +123,8 @@ class SongRepository {
                 type,
                 targetCount,
                 object : MediaCallbackInternal {
-                    override fun onSongsAvailable(batch: MutableList<Child>?) {
-                        this@MediaCallbackAccumulator.onBatchReceived(batch)
+                    override fun onSongsAvailable(songs: MutableList<Child>?) {
+                        this@MediaCallbackAccumulator.onBatchReceived(songs)
                     }
                 })
         }

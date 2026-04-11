@@ -23,8 +23,8 @@ class DownloaderService : DownloadService(
     0
 ) {
     override fun getDownloadManager(): DownloadManager {
-        val downloadManager = DownloadUtil.getDownloadManager(this)!!
-        val downloadNotificationHelper = DownloadUtil.getDownloadNotificationHelper(this)!!
+        val downloadManager = DownloadUtil.getDownloadManager(this)
+        val downloadNotificationHelper = DownloadUtil.getDownloadNotificationHelper(this)
         downloadManager.addListener(
             TerminalStateNotificationHelper(
                 this,

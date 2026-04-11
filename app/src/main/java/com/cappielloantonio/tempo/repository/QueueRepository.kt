@@ -146,7 +146,7 @@ class QueueRepository {
     private fun isMediaInQueue(queue: MutableList<Queue?>?, media: Child?): Boolean {
         if (queue == null || media == null) return false
         return queue.any { queueItem ->
-            queueItem != null && media.id != null &&
+                queueItem != null &&
                     queueItem.id == media.id
         }
     }

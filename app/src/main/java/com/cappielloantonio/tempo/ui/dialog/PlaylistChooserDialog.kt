@@ -106,7 +106,7 @@ class PlaylistChooserDialog : DialogFragment(), ClickCallback {
     }
 
     override fun onPlaylistClick(bundle: Bundle?) {
-        if (playlistChooserViewModel!!.songsToAdd != null && !playlistChooserViewModel!!.songsToAdd.isEmpty()) {
+        if (!playlistChooserViewModel!!.songsToAdd.isEmpty()) {
             val playlist = bundle?.getParcelable<Playlist?>(Constants.PLAYLIST_OBJECT)
             playlistChooserViewModel!!.addSongsToPlaylist(this, getDialog()!!, playlist!!.id)
         } else {

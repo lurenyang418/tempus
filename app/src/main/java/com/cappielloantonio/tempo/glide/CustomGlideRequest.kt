@@ -86,7 +86,6 @@ object CustomGlideRequest {
             )
 
             ResourceType.Unknown -> return ColorDrawable(SurfaceColors.SURFACE_5.getColor(context))
-            else -> return ColorDrawable(SurfaceColors.SURFACE_5.getColor(context))
         }
     }
 

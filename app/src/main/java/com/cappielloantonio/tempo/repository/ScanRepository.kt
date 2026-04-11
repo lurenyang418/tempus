@@ -17,7 +17,7 @@ class ScanRepository {
                     call: Call<ApiResponse?>,
                     response: Response<ApiResponse?>
                 ) {
-                    if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse != null) {
+                    if (response.isSuccessful() && response.body() != null) {
                         if (response.body()!!.subsonicResponse.error != null) {
                             callback.onError(Exception(response.body()!!.subsonicResponse.error!!.message))
                         } else if (response.body()!!.subsonicResponse.scanStatus != null) {
@@ -44,7 +44,7 @@ class ScanRepository {
                     call: Call<ApiResponse?>,
                     response: Response<ApiResponse?>
                 ) {
-                    if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse != null) {
+                    if (response.isSuccessful() && response.body() != null) {
                         if (response.body()!!.subsonicResponse.error != null) {
                             callback.onError(Exception(response.body()!!.subsonicResponse.error!!.message))
                         } else if (response.body()!!.subsonicResponse.scanStatus != null) {

@@ -81,12 +81,13 @@ object MediaManager {
 
                     attachedBrowserRef = WeakReference<MediaBrowser?>(browser)
                 } else {
-                    val mediaId = if (browser?.getCurrentMediaItem() != null)
-                        browser.getCurrentMediaItem()!!.mediaId
+                    val activeBrowser = browser ?: return
+                    val mediaId = if (activeBrowser.getCurrentMediaItem() != null)
+                        activeBrowser.getCurrentMediaItem()!!.mediaId
                     else
                         null
                     val playing =
-                        browser?.getPlaybackState() == Player.STATE_READY && browser?.getPlayWhenReady() == true
+                        activeBrowser.getPlaybackState() == Player.STATE_READY && activeBrowser.getPlayWhenReady()
                     playbackViewModel.update(mediaId, playing)
                 }
             }
@@ -547,14 +548,14 @@ object MediaManager {
             songRepository.getContinuousMix(mediaItem.mediaId, 25)
 
         instantMix.observeForever(object : Observer<MutableList<Child?>?> {
-            override fun onChanged(media: MutableList<Child?>?) {
-                if (media == null || media.isEmpty()) {
+            override fun onChanged(value: MutableList<Child?>?) {
+                if (value == null || value.isEmpty()) {
                     return
                 }
 
                 if (existingBrowserFuture != null) {
-                    Log.d(TAG, "Continuous play: adding " + media.size + " tracks")
-                    enqueue(existingBrowserFuture, media, true)
+                    Log.d(TAG, "Continuous play: adding " + value.size + " tracks")
+                    enqueue(existingBrowserFuture, value, true)
                 }
                 instantMix.removeObserver(this)
             }

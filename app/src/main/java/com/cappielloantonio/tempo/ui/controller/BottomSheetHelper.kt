@@ -79,8 +79,8 @@ class BottomSheetHelper(
     fun animate(slideOffset: Float) {
         if (playerBottomSheetFragment != null) {
             val condensedSlideOffset = max(0.0f, min(0.2f, slideOffset - 0.2f)) / 0.2f
-            playerBottomSheetFragment!!.playerHeader?.setAlpha(1 - condensedSlideOffset)
-            playerBottomSheetFragment!!.playerHeader?.setVisibility(if (condensedSlideOffset > 0.99) View.GONE else View.VISIBLE)
+                playerBottomSheetFragment!!.playerHeader.setAlpha(1 - condensedSlideOffset)
+                playerBottomSheetFragment!!.playerHeader.setVisibility(if (condensedSlideOffset > 0.99) View.GONE else View.VISIBLE)
         }
     }
 

@@ -50,7 +50,7 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val song = songs!![holder.getLayoutPosition()]!!
+        val song = songs[holder.getLayoutPosition()]!!
 
         holder.item.queueSongTitleTextView.setText(song.title)
         holder.item.queueSongSubtitleTextView.setText(
@@ -88,9 +88,7 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
 
         if (getDownloadDirectoryUri() == null) {
             val downloaderManager = DownloadUtil.getDownloadTracker(holder.itemView.getContext())
-            if (downloaderManager != null) {
-                isDownloaded = downloaderManager.isDownloaded(song.id)
-            }
+            isDownloaded = downloaderManager.isDownloaded(song.id)
         } else {
             isDownloaded = getUri(song) != null
         }
@@ -150,7 +148,7 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
                     try {
                         val mediaBrowser = mediaBrowserListenableFuture!!.get()
                         val pos = holder.getBindingAdapterPosition()
-                        val s = songs!![pos]!!
+                        val s = songs[pos]!!
                         if (currentPlayingId != null && currentPlayingId == s.id) {
                             if (isPlaying) {
                                 mediaBrowser?.pause()
@@ -195,10 +193,7 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
         }
 
     override fun getItemCount(): Int {
-        if (songs == null) {
-            return 0
-        }
-        return songs!!.size
+        return songs.size
     }
 
     override fun getItemId(position: Int): Long {
@@ -229,12 +224,12 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
             if (mediaId != null) findPositionsById(mediaId) else mutableListOf<Int?>()
 
         for (pos in oldPositions) {
-            if (pos!! >= 0 && pos < songs!!.size) {
+            if (pos!! >= 0 && pos < songs.size) {
                 notifyItemChanged(pos, "payload_playback")
             }
         }
         for (pos in currentPlayingPositions) {
-            if (!oldPositions.contains(pos) && pos!! >= 0 && pos < songs!!.size) {
+            if (!oldPositions.contains(pos) && pos!! >= 0 && pos < songs.size) {
                 notifyItemChanged(pos, "payload_playback")
             }
         }
@@ -243,8 +238,8 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
     private fun findPositionsById(id: String?): MutableList<Int?> {
         if (id == null) return mutableListOf<Int?>()
         val positions: MutableList<Int?> = ArrayList<Int?>()
-        for (i in songs!!.indices) {
-            if (id == songs!![i]?.id) {
+        for (i in songs.indices) {
+            if (id == songs[i]?.id) {
                 positions.add(i)
             }
         }
@@ -252,7 +247,7 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
     }
 
     fun getItem(id: Int): Child? {
-        return songs!![id]
+        return songs[id]
     }
 
     inner class ViewHolder internal constructor(var item: ItemPlayerQueueSongBinding) :
@@ -268,7 +263,7 @@ class PlayerSongQueueAdapter(private val click: ClickCallback) :
 
         fun onClick() {
             val bundle = Bundle()
-            bundle.putParcelableArrayList(Constants.TRACKS_OBJECT, ArrayList<Child?>(songs!!))
+            bundle.putParcelableArrayList(Constants.TRACKS_OBJECT, ArrayList<Child?>(songs))
             bundle.putInt(Constants.ITEM_POSITION, getBindingAdapterPosition())
 
             click.onMediaClick(bundle)

@@ -49,9 +49,7 @@ class SharingRepository {
                     call: Call<ApiResponse?>,
                     response: Response<ApiResponse?>
                 ) {
-                    if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.shares != null && response.body()!!.subsonicResponse.shares!!.shares != null && response.body()!!.subsonicResponse.shares!!.shares!!.get(
-                            0
-                        ) != null
+                    if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.shares != null && response.body()!!.subsonicResponse.shares!!.shares != null
                     ) {
                         share.setValue(response.body()!!.subsonicResponse.shares!!.shares!!.get(0))
                     } else {
