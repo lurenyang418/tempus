@@ -57,10 +57,10 @@ class FavoriteRepository {
             })
     }
 
-    val favorites: MutableList<Favorite?>?
+    val favorites: MutableList<Favorite>
         get() {
-            var favorites: MutableList<Favorite?>? =
-                ArrayList<Favorite?>()
+            var favorites: MutableList<Favorite> =
+                ArrayList<Favorite>()
 
             val getAllThreadSafe = GetAllThreadSafe(favoriteDao!!)
             val thread = Thread(getAllThreadSafe)
@@ -77,7 +77,7 @@ class FavoriteRepository {
         }
 
     private class GetAllThreadSafe(private val favoriteDao: FavoriteDao) : Runnable {
-        var favorites: MutableList<Favorite?>? = ArrayList<Favorite?>()
+            var favorites: MutableList<Favorite> = ArrayList<Favorite>()
             private set
 
         override fun run() {

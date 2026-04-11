@@ -223,7 +223,7 @@ class SearchFragment : Fragment(), ClickCallback {
             view.setOnClickListener(View.OnClickListener { v: View? -> search(suggestion) })
 
             tailingImageView.setOnClickListener(View.OnClickListener { v: View? ->
-                searchViewModel!!.deleteRecentSearch(suggestion!!)
+                searchViewModel!!.deleteRecentSearch(suggestion)
                 setRecentSuggestions()
             })
 

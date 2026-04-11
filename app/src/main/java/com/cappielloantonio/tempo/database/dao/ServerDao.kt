@@ -11,7 +11,7 @@ import com.cappielloantonio.tempo.model.Server
 @Dao
 interface ServerDao {
     @get:Query("SELECT * FROM server")
-    val all: LiveData<MutableList<Server?>?>?
+    val all: LiveData<MutableList<Server>>
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     fun insert(server: Server)

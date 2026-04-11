@@ -217,11 +217,11 @@ class AutomotiveRepository {
     ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
         val listenableFuture = SettableFuture.create<LibraryResult<ImmutableList<MediaItem>>>()
 
-        chronologyDao!!.getLastPlayed(server, count)!!
-            .observeForever(object : Observer<MutableList<Chronology?>?> {
-                override fun onChanged(value: MutableList<Chronology?>?) {
-                    if (value != null && !value.isEmpty()) {
-                        val songs: List<Child> = value.filterNotNull()
+        chronologyDao!!.getLastPlayed(server, count)
+            .observeForever(object : Observer<MutableList<Chronology>> {
+                override fun onChanged(value: MutableList<Chronology>) {
+                    if (value.isNotEmpty()) {
+                        val songs: List<Child> = value
 
                         setChildrenMetadata(ArrayList(songs))
                         @Suppress("UNCHECKED_CAST")
@@ -242,7 +242,7 @@ class AutomotiveRepository {
                         )
                     }
 
-                    chronologyDao.getLastPlayed(server, count)!!.removeObserver(this)
+                    chronologyDao.getLastPlayed(server, count).removeObserver(this)
                 }
             })
 
@@ -1215,7 +1215,7 @@ class AutomotiveRepository {
 
         override fun run() {
             val sessionMediaItems = sessionMediaItemDao.get(timestamp)
-            sessionMediaItems!!.forEach(Consumer { sessionMediaItem: SessionMediaItem? ->
+            sessionMediaItems.forEach(Consumer { sessionMediaItem: SessionMediaItem? ->
                 mediaItems.add(
                     sessionMediaItem!!.getMediaItem()
                 )

@@ -8,10 +8,10 @@ import com.cappielloantonio.tempo.model.Download
 class DownloadRepository {
     private val downloadDao = instance!!.downloadDao()
 
-    val liveDownload: LiveData<MutableList<Download?>?>?
+    val liveDownload: LiveData<MutableList<Download>>
         get() = downloadDao!!.all
 
-    val allDownloads: MutableList<Download?>?
+    val allDownloads: MutableList<Download>
         get() {
             val getDownloads = GetAllDownloadsThreadSafe(downloadDao!!)
             val thread = Thread(getDownloads)
@@ -44,7 +44,7 @@ class DownloadRepository {
     }
 
     private class GetAllDownloadsThreadSafe(private val downloadDao: DownloadDao) : Runnable {
-        var downloads: MutableList<Download?>? = null
+        var downloads: MutableList<Download> = mutableListOf()
             private set
 
         override fun run() {
@@ -125,7 +125,7 @@ class DownloadRepository {
         thread.start()
     }
 
-    fun delete(ids: MutableList<String?>?) {
+    fun delete(ids: MutableList<String>) {
         val delete = DeleteMultipleThreadSafe(downloadDao!!, ids)
         val thread = Thread(delete)
         thread.start()
@@ -140,7 +140,7 @@ class DownloadRepository {
 
     private class DeleteMultipleThreadSafe(
         private val downloadDao: DownloadDao,
-        private val ids: MutableList<String?>?
+        private val ids: MutableList<String>
     ) : Runnable {
         override fun run() {
             downloadDao.deleteByIds(ids)

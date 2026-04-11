@@ -31,11 +31,11 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun getDownloadedTracks(owner: LifecycleOwner): LiveData<MutableList<Child?>?> {
-        downloadRepository.liveDownload!!.observe(
+        downloadRepository.liveDownload.observe(
             owner,
-            Observer { downloads: MutableList<Download?>? ->
+            Observer { downloads: MutableList<Download> ->
                 downloadedTrackSample.postValue(
-                    downloads!!.map { it as? Child? }.toMutableList()
+                    downloads.map { it as? Child? }.toMutableList()
                 )
             })
         return downloadedTrackSample
@@ -75,8 +75,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 return@Runnable
             }
 
-            val downloads: MutableList<Download>? = downloadRepository.allDownloads?.filterNotNull()?.toMutableList()
-            if (downloads == null || downloads.isEmpty()) {
+            val downloads: MutableList<Download> = downloadRepository.allDownloads
+            if (downloads.isEmpty()) {
                 refreshResult.postValue(0)
                 return@Runnable
             }
@@ -108,13 +108,15 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                 }
             }
             if (!toRemove.isEmpty()) {
-                val ids = ArrayList<String?>()
+                val ids = ArrayList<String>()
                 for (download in toRemove) {
                     ids.add(download.id)
                     ExternalAudioReader.removeMetadata(download)
                 }
 
-                downloadRepository.delete(ids)
+                if (ids.isNotEmpty()) {
+                    downloadRepository.delete(ids)
+                }
                 ExternalAudioReader.refreshCache()
                 refreshResult.postValue(ids.size)
             } else {

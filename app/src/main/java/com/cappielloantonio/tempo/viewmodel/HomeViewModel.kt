@@ -59,7 +59,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val years = MutableLiveData<MutableList<Int?>?>(null)
     private val recentlyAddedAlbumSample = MutableLiveData<MutableList<AlbumID3?>?>(null)
 
-    private val thisGridTopSong = MutableLiveData<MutableList<Chronology?>?>(null)
+    private val thisGridTopSong = MutableLiveData<MutableList<Chronology>?>(null)
     private val mediaInstantMix = MutableLiveData<MutableList<Child?>?>(null)
     private val artistInstantMix = MutableLiveData<MutableList<Child?>?>(null)
     private val artistBestOf = MutableLiveData<MutableList<Child?>?>(null)
@@ -99,7 +99,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val randomShuffleSample: LiveData<MutableList<Child?>?>
         get() = songRepository.getRandomSample(100, null, null)
 
-    fun getChronologySample(owner: LifecycleOwner): LiveData<MutableList<Chronology?>?> {
+    fun getChronologySample(owner: LifecycleOwner): LiveData<MutableList<Chronology>?> {
         val cal = Calendar.getInstance()
         val server = getServerId()
 
@@ -109,9 +109,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         cal.set(Calendar.WEEK_OF_YEAR, currentWeek - 1)
         val end = cal.getTimeInMillis()
 
-        chronologyRepository.getChronology(server, start, end)!!.observe(
+        chronologyRepository.getChronology(server, start, end).observe(
             owner,
-            Observer { value: MutableList<Chronology?>? -> thisGridTopSong.postValue(value) })
+            Observer { value: MutableList<Chronology> -> thisGridTopSong.postValue(value) })
         return thisGridTopSong
     }
 
@@ -340,9 +340,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             end = cal.getTimeInMillis()
         }
 
-        chronologyRepository.getChronology(server, start, end)!!.observe(
+        chronologyRepository.getChronology(server, start, end).observe(
             owner,
-            Observer { value: MutableList<Chronology?>? -> thisGridTopSong.postValue(value) })
+            Observer { value: MutableList<Chronology> -> thisGridTopSong.postValue(value) })
     }
 
     fun refreshDiscoverySongSample(owner: LifecycleOwner) {
@@ -436,7 +436,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private val favorites: ArrayList<Favorite>
-        get() = java.util.ArrayList<Favorite>(favoriteRepository.favorites?.filterNotNull() ?: emptyList())
+        get() = java.util.ArrayList<Favorite>(favoriteRepository.favorites)
 
     private fun getFavoritesToSave(favorites: java.util.ArrayList<Favorite>): java.util.ArrayList<Favorite> {
         val filteredMap = HashMap<String?, Favorite?>()

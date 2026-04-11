@@ -10,10 +10,10 @@ import com.cappielloantonio.tempo.model.Queue
 @Dao
 interface QueueDao {
     @get:Query("SELECT * FROM queue")
-    val all: LiveData<MutableList<Queue?>?>?
+    val all: LiveData<MutableList<Queue>>
 
     @get:Query("SELECT * FROM queue")
-    val allSimple: MutableList<Queue?>?
+    val allSimple: MutableList<Queue>
 
     @get:Query("SELECT * FROM queue ORDER BY last_play DESC LIMIT 1")
     val lastPlayed: Queue?

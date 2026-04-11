@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'kotlin-parcelize'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 
 android {
     compileSdk 36
@@ -55,10 +54,6 @@ android {
         targetCompatibility JavaVersion.VERSION_21
     }
 
-    kotlinOptions {
-        jvmTarget = "21"
-    }
-
     buildFeatures {
         viewBinding true
         buildConfig true
@@ -103,13 +98,18 @@ dependencies {
     implementation 'androidx.media3:media3-ui:1.10.0'
     implementation 'androidx.media3:media3-exoplayer-hls:1.10.0'
 
-    kapt 'com.github.bumptech.glide:compiler:4.16.0'
-    kapt 'androidx.room:room-compiler:2.8.0'
+    ksp 'com.github.bumptech.glide:ksp:4.16.0'
+    ksp 'androidx.room:room-compiler:2.8.0'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.12.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.3.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.12.0'
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
 }
 
 java {

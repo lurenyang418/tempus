@@ -47,11 +47,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         return searchingRepository.getSuggestions(query)
     }
 
-    val recentSearchSuggestion: MutableList<String?>
+    val recentSearchSuggestion: MutableList<String>
         get() {
-            val suggestions =
-                ArrayList<String?>()
-            suggestions.addAll(searchingRepository.recentSearchSuggestion!!)
+            val suggestions = ArrayList<String>()
+            suggestions.addAll(searchingRepository.recentSearchSuggestion)
 
             return suggestions
         }

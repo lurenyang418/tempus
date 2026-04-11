@@ -12,7 +12,7 @@ interface SessionMediaItemDao {
     fun get(id: String?): SessionMediaItem?
 
     @Query("SELECT * FROM session_media_item WHERE timestamp = :timestamp")
-    fun get(timestamp: Long): MutableList<SessionMediaItem?>?
+    fun get(timestamp: Long): MutableList<SessionMediaItem>
 
     @Insert(onConflict = OnConflictStrategy.Companion.IGNORE)
     fun insert(sessionMediaItem: SessionMediaItem)

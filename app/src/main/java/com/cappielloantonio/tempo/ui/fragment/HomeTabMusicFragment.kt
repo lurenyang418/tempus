@@ -872,7 +872,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
         setTopSongsMediaBrowserListenableFuture()
         reapplyTopSongsPlayback()
         homeViewModel!!.getChronologySample(getViewLifecycleOwner())
-            .observe(getViewLifecycleOwner(), Observer { chronologies: MutableList<Chronology?>? ->
+            .observe(getViewLifecycleOwner(), Observer { chronologies: MutableList<Chronology>? ->
                 if (chronologies == null || chronologies.isEmpty()) {
                     if (bind != null) bind!!.homeGridTracksSector.setVisibility(View.GONE)
                     if (bind != null) bind!!.afterGridDivider.setVisibility(View.GONE)
@@ -888,8 +888,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                         )
                     )
 
-                    @Suppress("UNCHECKED_CAST")
-                    val topSongs = chronologies.filterNotNull().map { it as Child? }.toMutableList()
+                    val topSongs = chronologies.map { it as Child? }.toMutableList()
 
                     topSongAdapter!!.setItems(topSongs)
                     reapplyTopSongsPlayback()

@@ -174,14 +174,12 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
         bind!!.playerQueueRecyclerView.setAdapter(playerSongQueueAdapter)
         reapplyPlayback()
 
-        playerBottomSheetViewModel!!.queueSong!!.observe(
+        playerBottomSheetViewModel!!.queueSong.observe(
             getViewLifecycleOwner(),
-            Observer { queue: MutableList<Queue?>? ->
-                if (queue != null) {
-                    playerSongQueueAdapter!!.items =
-                        queue.map { it as? Child? }.toMutableList()
-                    reapplyPlayback()
-                }
+            Observer { queue: MutableList<Queue> ->
+                playerSongQueueAdapter!!.items =
+                    queue.map { it as? Child? }.toMutableList()
+                reapplyPlayback()
             })
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(

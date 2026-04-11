@@ -12,7 +12,7 @@ class ChronologyRepository {
         server: String?,
         start: Long,
         end: Long
-    ): LiveData<MutableList<Chronology?>?>? {
+    ): LiveData<MutableList<Chronology>> {
         return chronologyDao!!.getAllFrom(start, end, server)
     }
 

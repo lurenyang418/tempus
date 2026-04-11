@@ -10,7 +10,7 @@ import com.cappielloantonio.tempo.model.Favorite
 @Dao
 interface FavoriteDao {
     @get:Query("SELECT * FROM favorite")
-    val all: MutableList<Favorite?>?
+    val all: MutableList<Favorite>
 
     @Insert(onConflict = OnConflictStrategy.Companion.IGNORE)
     fun insert(favorite: Favorite)

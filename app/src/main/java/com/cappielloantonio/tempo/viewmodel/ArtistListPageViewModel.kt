@@ -35,11 +35,11 @@ class ArtistListPageViewModel(application: Application) : AndroidViewModel(appli
 
         when (title) {
             Constants.ARTIST_STARRED -> artistList = artistRepository.getStarredArtists(false, -1)
-            Constants.ARTIST_DOWNLOADED -> downloadRepository.liveDownload!!.observe(
+            Constants.ARTIST_DOWNLOADED -> downloadRepository.liveDownload.observe(
                 owner,
-                Observer { downloads: MutableList<Download?>? ->
-                    val unique = downloads!!
-                        .distinctBy { it?.artist }
+                Observer { downloads: MutableList<Download> ->
+                    val unique = downloads
+                        .distinctBy { it.artist }
                         .toMutableList()
                 })
         }

@@ -10,10 +10,10 @@ import com.cappielloantonio.tempo.model.RecentSearch
 @Dao
 interface RecentSearchDao {
     @get:Query("SELECT search FROM recent_search ORDER BY timestamp DESC")
-    val recent: MutableList<String?>?
+    val recent: MutableList<String>
 
     @get:Query("SELECT search FROM recent_search ORDER BY search DESC")
-    val alpha: MutableList<String?>?
+    val alpha: MutableList<String>
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     fun insert(search: RecentSearch)

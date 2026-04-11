@@ -10,10 +10,10 @@ import com.cappielloantonio.tempo.model.Download
 @Dao
 interface DownloadDao {
     @get:Query("SELECT * FROM download WHERE download_state = 1 ORDER BY artist, album, disc_number, track ASC")
-    val all: LiveData<MutableList<Download?>?>?
+    val all: LiveData<MutableList<Download>>
 
     @get:Query("SELECT * FROM download WHERE download_state = 1 ORDER BY artist, album, disc_number, track ASC")
-    val allSync: MutableList<Download?>?
+    val allSync: MutableList<Download>
 
     @Query("SELECT * FROM download WHERE id = :id")
     fun getOne(id: String?): Download?
@@ -31,7 +31,7 @@ interface DownloadDao {
     fun delete(id: String?)
 
     @Query("DELETE FROM download WHERE id IN (:ids)")
-    fun deleteByIds(ids: MutableList<String?>?)
+    fun deleteByIds(ids: MutableList<String>)
 
     @Query("DELETE FROM download")
     fun deleteAll()

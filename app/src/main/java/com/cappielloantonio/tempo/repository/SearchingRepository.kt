@@ -181,10 +181,10 @@ class SearchingRepository {
         thread.start()
     }
 
-    val recentSearchSuggestion: MutableList<String?>?
+    val recentSearchSuggestion: MutableList<String>
         get() {
-            var recent: MutableList<String?>? =
-                ArrayList<String?>()
+            var recent: MutableList<String> =
+                ArrayList<String>()
 
             val suggestionsThread = RecentThreadSafe(recentSearchDao!!)
             val thread = Thread(suggestionsThread)
@@ -219,7 +219,7 @@ class SearchingRepository {
     }
 
     private class RecentThreadSafe(private val recentSearchDao: RecentSearchDao) : Runnable {
-        var recent: MutableList<String?>? = ArrayList<String?>()
+        var recent: MutableList<String> = ArrayList<String>()
             private set
 
         override fun run() {

@@ -100,14 +100,13 @@ class LoginFragment : Fragment(), ClickCallback {
 
         serverAdapter = ServerAdapter(this)
         bind!!.serverListRecyclerView.setAdapter(serverAdapter)
-        loginViewModel!!.serverList!!.observe(
+        loginViewModel!!.serverList.observe(
             getViewLifecycleOwner(),
-            Observer { servers: MutableList<Server?>? ->
-                if (!servers.isNullOrEmpty()) {
+            Observer { servers: MutableList<Server> ->
+                if (servers.isNotEmpty()) {
                     if (bind != null) bind!!.noServerAddedTextView.setVisibility(View.GONE)
                     if (bind != null) bind!!.serverListRecyclerView.setVisibility(View.VISIBLE)
-                    @Suppress("UNCHECKED_CAST")
-                    serverAdapter!!.setItems(servers as MutableList<Server>)
+                    serverAdapter!!.setItems(servers)
                 } else {
                     if (bind != null) bind!!.noServerAddedTextView.setVisibility(View.VISIBLE)
                     if (bind != null) bind!!.serverListRecyclerView.setVisibility(View.GONE)

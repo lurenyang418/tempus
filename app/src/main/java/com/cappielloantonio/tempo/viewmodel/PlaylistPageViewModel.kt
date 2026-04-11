@@ -61,11 +61,11 @@ class PlaylistPageViewModel(application: Application) : AndroidViewModel(applica
     fun isPinned(owner: LifecycleOwner): LiveData<Boolean?> {
         val isPinnedLive = MutableLiveData<Boolean?>()
 
-        playlistRepository.pinnedPlaylists!!.observe(
+        playlistRepository.pinnedPlaylists.observe(
             owner,
-            Observer { playlists: MutableList<Playlist?>? ->
+            Observer { playlists: MutableList<Playlist> ->
                 isPinnedLive.postValue(
-                    playlists?.any { obj -> obj?.id == playlist?.id } == true)
+                    playlists.any { obj -> obj.id == playlist?.id })
             })
 
         return isPinnedLive

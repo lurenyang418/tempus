@@ -11,10 +11,10 @@ import com.cappielloantonio.tempo.subsonic.models.Playlist
 @Dao
 interface PlaylistDao {
     @get:Query("SELECT * FROM playlist")
-    val all: LiveData<MutableList<Playlist?>?>?
+    val all: LiveData<MutableList<Playlist>>
 
     @get:Query("SELECT * FROM playlist")
-    val allSync: MutableList<Playlist?>?
+    val allSync: MutableList<Playlist>
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     fun insert(playlist: Playlist)

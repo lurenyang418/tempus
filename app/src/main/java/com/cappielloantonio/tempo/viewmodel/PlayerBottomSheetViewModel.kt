@@ -76,7 +76,7 @@ class PlayerBottomSheetViewModel(application: Application) : AndroidViewModel(ap
         lyricsRepository = LyricsRepository()
     }
 
-    val queueSong: LiveData<MutableList<Queue?>?>?
+    val queueSong: LiveData<MutableList<Queue>>
         get() = queueRepository.liveQueue
 
     fun setFavorite(context: Context?, media: Child?) {

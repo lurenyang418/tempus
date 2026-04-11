@@ -18,7 +18,7 @@ import java.util.stream.Collectors
 class QueueRepository {
     private val queueDao = instance!!.queueDao()
 
-    val liveQueue: LiveData<MutableList<Queue?>?>?
+    val liveQueue: LiveData<MutableList<Queue>>
         get() = queueDao!!.all
 
     val media: MutableList<Child?>
@@ -113,7 +113,7 @@ class QueueRepository {
 
     fun insert(media: Child, reset: Boolean, afterIndex: Int) {
         try {
-            var mediaList: MutableList<Queue?> = ArrayList<Queue?>()
+            var mediaList: MutableList<Queue> = ArrayList<Queue>()
 
             if (!reset) {
                 val getMediaThreadSafe = GetMediaThreadSafe(queueDao!!)
@@ -128,14 +128,14 @@ class QueueRepository {
             mediaList.add(afterIndex, queueItem)
 
             for (i in mediaList.indices) {
-                mediaList.get(i)!!.trackOrder = i
+                mediaList[i].trackOrder = i
             }
 
             val delete = Thread(QueueRepository.DeleteAllThreadSafe(queueDao!!))
             delete.start()
             delete.join()
 
-            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, mediaList.filterNotNull().toMutableList()))
+            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, mediaList))
             insertAll.start()
             insertAll.join()
         } catch (e: InterruptedException) {
@@ -143,17 +143,16 @@ class QueueRepository {
         }
     }
 
-    private fun isMediaInQueue(queue: MutableList<Queue?>?, media: Child?): Boolean {
+    private fun isMediaInQueue(queue: MutableList<Queue>?, media: Child?): Boolean {
         if (queue == null || media == null) return false
         return queue.any { queueItem ->
-                queueItem != null &&
-                    queueItem.id == media.id
+            queueItem.id == media.id
         }
     }
 
     fun insertAll(toAdd: MutableList<Child?>, reset: Boolean, afterIndex: Int) {
         try {
-            var media: MutableList<Queue?> = ArrayList<Queue?>()
+            var media: MutableList<Queue> = ArrayList<Queue>()
 
             if (!reset) {
                 val getMediaThreadSafe = GetMediaThreadSafe(queueDao!!)
@@ -165,7 +164,7 @@ class QueueRepository {
             }
 
             var filteredToAdd: MutableList<Child?>? = toAdd
-            val finalMedia: MutableList<Queue?>? = media
+            val finalMedia: MutableList<Queue>? = media
             filteredToAdd = toAdd
                 .filter { child -> !isMediaInQueue(finalMedia, child) }
                 .toMutableList()
@@ -176,14 +175,14 @@ class QueueRepository {
             }
 
             for (i in media.indices) {
-                media.get(i)!!.trackOrder = i
+                media[i].trackOrder = i
             }
 
             val delete = Thread(QueueRepository.DeleteAllThreadSafe(queueDao!!))
             delete.start()
             delete.join()
 
-            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, media.filterNotNull().toMutableList()))
+            val insertAll = Thread(QueueRepository.InsertAllThreadSafe(queueDao, media))
             insertAll.start()
             insertAll.join()
         } catch (e: InterruptedException) {
@@ -275,14 +274,14 @@ class QueueRepository {
         }
 
     private class GetMediaThreadSafe(private val queueDao: QueueDao) : Runnable {
-        private var media: MutableList<Queue?>? = null
+        private var media: MutableList<Queue> = mutableListOf()
 
         override fun run() {
             media = queueDao.allSimple
         }
 
-        fun getMedia(): MutableList<Queue?> {
-            return media!!
+        fun getMedia(): MutableList<Queue> {
+            return media
         }
     }
 

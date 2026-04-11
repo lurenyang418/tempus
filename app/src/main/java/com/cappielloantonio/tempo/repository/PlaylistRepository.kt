@@ -252,7 +252,7 @@ class PlaylistRepository {
     @OptIn(UnstableApi::class)
     private fun updateLocalPinnedPlaylistName(id: String?, newName: String?) {
         Thread(Runnable {
-            val pinned: List<Playlist> = playlistDao!!.allSync?.filterNotNull() ?: emptyList()
+            val pinned: List<Playlist> = playlistDao!!.allSync
             for (p in pinned) {
                 if (p.id == id) {
                     p.name = newName
@@ -281,7 +281,7 @@ class PlaylistRepository {
     }
 
     @OptIn(UnstableApi::class)
-    val pinnedPlaylists: LiveData<MutableList<Playlist?>?>?
+    val pinnedPlaylists: LiveData<MutableList<Playlist>>
         get() = playlistDao!!.all
 
     @OptIn(UnstableApi::class)
@@ -306,7 +306,7 @@ class PlaylistRepository {
     @OptIn(UnstableApi::class)
     fun updatePinnedPlaylists(forceIds: MutableList<String?>?) {
         Thread(Runnable {
-            val pinned: List<Playlist> = playlistDao!!.allSync?.filterNotNull() ?: emptyList()
+            val pinned: List<Playlist> = playlistDao!!.allSync
             if (pinned.isNotEmpty()) {
                 getSubsonicClientInstance(false)
                     .playlistClient!!

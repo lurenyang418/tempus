@@ -8,7 +8,7 @@ import com.cappielloantonio.tempo.model.Server
 class ServerRepository {
     private val serverDao = instance!!.serverDao()
 
-    val liveServer: LiveData<MutableList<Server?>?>?
+    val liveServer: LiveData<MutableList<Server>>
         get() = serverDao!!.all
 
     fun insert(server: Server) {
