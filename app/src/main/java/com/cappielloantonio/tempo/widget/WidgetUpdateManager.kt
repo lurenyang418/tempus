@@ -207,7 +207,7 @@ object WidgetUpdateManager {
                 var songLink: String? = null
                 var albumLink: String? = null
                 var artistLink: String? = null
-                if (mi != null && mi.mediaMetadata != null) {
+                if (mi != null) {
                     if (mi.mediaMetadata.title != null) title = mi.mediaMetadata.title.toString()
                     if (mi.mediaMetadata.artist != null) artist = mi.mediaMetadata.artist.toString()
                     if (mi.mediaMetadata.albumTitle != null) album =
@@ -309,7 +309,6 @@ object WidgetUpdateManager {
             LayoutSize.LARGE -> return WidgetViewsFactory.buildLarge(ctx)
             LayoutSize.EXPANDED -> return WidgetViewsFactory.buildExpanded(ctx)
             LayoutSize.COMPACT -> return WidgetViewsFactory.buildCompact(ctx)
-            else -> return WidgetViewsFactory.buildCompact(ctx)
         }
     }
 
@@ -345,11 +344,6 @@ object WidgetUpdateManager {
             )
 
             LayoutSize.COMPACT -> return WidgetViewsFactory.populateCompact(
-                ctx, title, artist, album, art, playing,
-                elapsedText!!, totalText!!, progress, shuffleEnabled, repeatMode
-            )
-
-            else -> return WidgetViewsFactory.populateCompact(
                 ctx, title, artist, album, art, playing,
                 elapsedText!!, totalText!!, progress, shuffleEnabled, repeatMode
             )

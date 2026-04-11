@@ -172,8 +172,9 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
             val albumRepository = AlbumRepository()
             albumRepository.getAlbumTracks(album!!.id)
                 .observe(getViewLifecycleOwner(), Observer { songs: MutableList<Child?>? ->
-                    Collections.shuffle(songs)
-                    MediaManager.startQueue(mediaBrowserListenableFuture, songs!!, 0)
+                    val safeSongs = songs ?: return@Observer
+                    Collections.shuffle(safeSongs)
+                    MediaManager.startQueue(mediaBrowserListenableFuture, safeSongs, 0)
                     (requireActivity() as MainActivity).setBottomSheetInPeek(true)
                     dismissBottomSheet()
                 })
@@ -230,7 +231,10 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
                 getViewLifecycleOwner(),
                 Observer { songs: MutableList<Child?>? ->
                     val bundle = Bundle()
-                    bundle.putParcelableArrayList(Constants.TRACKS_OBJECT, ArrayList<Child?>(songs))
+                    bundle.putParcelableArrayList(
+                        Constants.TRACKS_OBJECT,
+                        ArrayList(songs ?: emptyList())
+                    )
 
                     val dialog = PlaylistChooserDialog()
                     dialog.setArguments(bundle)
@@ -326,7 +330,7 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
 
         if (getDownloadDirectoryUri() == null) {
             val mediaItems = currentAlbumMediaItems
-            if (mediaItems == null || mediaItems.isEmpty()) {
+            if (mediaItems.isEmpty()) {
                 removeAllTextView!!.setVisibility(View.GONE)
             } else if (DownloadUtil.getDownloadTracker(requireContext())
                     .areDownloaded(mediaItems)

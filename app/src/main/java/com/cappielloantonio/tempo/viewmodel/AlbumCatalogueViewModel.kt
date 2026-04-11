@@ -49,11 +49,12 @@ class AlbumCatalogueViewModel(application: Application) : AndroidViewModel(appli
                 }
 
                 val liveAlbum = albumList.getValue()
+                val albums = media?.filterIsInstance<AlbumID3?>() ?: emptyList()
 
-                liveAlbum!!.addAll((media as kotlin.collections.MutableList<AlbumID3?>?)!!)
+                liveAlbum!!.addAll(albums)
                 albumList.setValue(liveAlbum)
 
-                if (media.size == size) {
+                if (albums.size == size) {
                     loadAlbums(size)
                     loading.setValue(true)
                 } else {
@@ -75,9 +76,7 @@ class AlbumCatalogueViewModel(application: Application) : AndroidViewModel(appli
                     response: Response<ApiResponse?>
                 ) {
                     if (response.isSuccessful() && response.body() != null && response.body()!!.subsonicResponse.albumList2 != null && response.body()!!.subsonicResponse.albumList2!!.albums != null) {
-                        val albumList: MutableList<AlbumID3?> =
-                            ArrayList<AlbumID3?>(response.body()!!.subsonicResponse.albumList2!!.albums)
-                        callback.onLoadMedia(albumList)
+                        callback.onLoadMedia(response.body()!!.subsonicResponse.albumList2!!.albums?.toMutableList())
                     }
                 }
 

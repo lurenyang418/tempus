@@ -352,7 +352,7 @@ class PlayerBottomSheetViewModel(application: Application) : AndroidViewModel(ap
     private fun hasStructuredLyrics(lyricsList: LyricsList?): Boolean {
         return lyricsList != null && lyricsList.structuredLyrics != null && !lyricsList.structuredLyrics!!.isEmpty() && lyricsList.structuredLyrics!!.get(
             0
-        ) != null && lyricsList.structuredLyrics!!.get(0).line != null && !lyricsList.structuredLyrics!!.get(
+        ).line != null && !lyricsList.structuredLyrics!!.get(
             0
         ).line!!.isEmpty()
     }

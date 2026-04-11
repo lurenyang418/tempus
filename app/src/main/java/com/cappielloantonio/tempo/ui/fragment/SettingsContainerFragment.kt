@@ -127,14 +127,12 @@ class SettingsContainerFragment : PreferenceFragmentCompat() {
         settingViewModel =
             ViewModelProvider(requireActivity()).get<SettingViewModel>(SettingViewModel::class.java)
 
-        if (view != null) {
-            getListView().setPadding(
-                0,
-                0,
-                0,
-                getResources().getDimension(R.dimen.global_padding_bottom).toInt()
-            )
-        }
+        getListView().setPadding(
+            0,
+            0,
+            0,
+            getResources().getDimension(R.dimen.global_padding_bottom).toInt()
+        )
 
         return view
     }
@@ -341,9 +339,10 @@ class SettingsContainerFragment : PreferenceFragmentCompat() {
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList())
                 preference!!.setSummary(requireContext().getString(R.string.settings_system_language))
             } else {
-                val appLocale = LocaleListCompat.forLanguageTags(newValue as String?)
+                val languageTag = newValue as String
+                val appLocale = LocaleListCompat.forLanguageTags(languageTag)
                 AppCompatDelegate.setApplicationLocales(appLocale)
-                preference!!.setSummary(Locale.forLanguageTag(newValue).getDisplayName())
+                preference!!.setSummary(Locale.forLanguageTag(languageTag).getDisplayName())
             }
             true
         })

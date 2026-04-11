@@ -209,14 +209,15 @@ class SongListPageFragment : Fragment(), ClickCallback {
     private fun initButtons() {
         songListPageViewModel!!.getSongList()
             .observe(getViewLifecycleOwner(), Observer { songs: MutableList<Child?>? ->
+                val safeSongs = songs ?: return@Observer
                 if (bind != null) {
                     setSongListPageSorter()
 
                     bind!!.songListShuffleImageView.setOnClickListener(View.OnClickListener { v: View? ->
-                        Collections.shuffle(songs)
+                        Collections.shuffle(safeSongs)
                         MediaManager.startQueue(
                             mediaBrowserListenableFuture,
-                            songs!!.subList(0, min(500, songs.size)),
+                            safeSongs.subList(0, min(500, safeSongs.size)),
                             0
                         )
                         activity!!.setBottomSheetInPeek(true)

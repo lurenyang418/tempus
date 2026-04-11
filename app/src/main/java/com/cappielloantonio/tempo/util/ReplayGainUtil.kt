@@ -33,11 +33,8 @@ object ReplayGainUtil {
         if (tracks != null && !tracks.getGroups().isEmpty()) {
             for (i in tracks.getGroups().indices) {
                 val group = tracks.getGroups().get(i)
-
-                if (group != null && group.getMediaTrackGroup() != null) {
-                    for (j in 0..<group.getMediaTrackGroup().length) {
-                        metadata.add(group.getTrackFormat(j).metadata)
-                    }
+                for (j in 0..<group.getMediaTrackGroup().length) {
+                    metadata.add(group.getTrackFormat(j).metadata)
                 }
             }
         }
@@ -111,7 +108,7 @@ object ReplayGainUtil {
 
     private fun parseReplayGainTag(entry: String): Float {
         try {
-            return entry.toString().replace("[^\\d.-]".toRegex(), "").toFloat()
+            return entry.replace("[^\\d.-]".toRegex(), "").toFloat()
         } catch (exception: NumberFormatException) {
             return 0f
         }

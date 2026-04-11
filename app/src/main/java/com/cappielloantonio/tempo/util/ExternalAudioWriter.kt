@@ -94,10 +94,7 @@ object ExternalAudioWriter {
         if (album.isNotEmpty()) baseName += " ($album)"
         val metadataKey = normalizeForComparison(baseName)
 
-        val mediaUri = if (mediaItem != null && mediaItem.requestMetadata != null)
-            mediaItem.requestMetadata.mediaUri
-        else
-            null
+        val mediaUri = mediaItem?.requestMetadata?.mediaUri
         if (mediaUri == null) {
             notifyFailure(context, "Invalid media URI.")
             ExternalDownloadMetadataStore.remove(metadataKey)
@@ -364,12 +361,7 @@ object ExternalAudioWriter {
             )
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
-        val requestCode: Int
-        if (child.id != null) {
-            requestCode = abs(child.id.hashCode())
-        } else {
-            requestCode = abs(fileUri.toString().hashCode())
-        }
+        val requestCode = abs(child.id.hashCode())
 
         return PendingIntent.getActivity(
             context,
@@ -389,15 +381,11 @@ object ExternalAudioWriter {
     ): InputStream {
         when (scheme) {
             "http", "https" -> {
-                if (connection == null) {
-                    throw IOException("Connection not initialized")
-                }
                 return connection.getInputStream()
             }
 
             "content" -> {
-                val contentStream: InputStream =
-                    context.getContentResolver().openInputStream(mediaUri)!!
+                val contentStream = context.getContentResolver().openInputStream(mediaUri)
                 if (contentStream == null) {
                     throw IOException("Cannot open content stream")
                 }
@@ -405,7 +393,7 @@ object ExternalAudioWriter {
             }
 
             "file" -> {
-                if (sourceFile == null || !sourceFile.exists()) {
+                if (!sourceFile.exists()) {
                     throw IOException("Missing source file")
                 }
                 return FileInputStream(sourceFile)

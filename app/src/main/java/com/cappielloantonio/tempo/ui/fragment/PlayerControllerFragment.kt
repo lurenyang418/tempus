@@ -475,20 +475,16 @@ class PlayerControllerFragment : Fragment() {
         chip.setVisibility(View.VISIBLE)
 
         chip.setOnClickListener(View.OnClickListener { v: View? ->
-            if (assetLink != null) {
-                activity!!.openAssetLink(assetLink)
-            }
+            activity!!.openAssetLink(assetLink)
         })
 
         chip.setOnLongClickListener(OnLongClickListener { v: View? ->
-            if (assetLink != null) {
-                copyToClipboard(requireContext(), assetLink)
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.asset_link_copied_toast, id),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            copyToClipboard(requireContext(), assetLink)
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.asset_link_copied_toast, id),
+                Toast.LENGTH_SHORT
+            ).show()
             true
         })
 

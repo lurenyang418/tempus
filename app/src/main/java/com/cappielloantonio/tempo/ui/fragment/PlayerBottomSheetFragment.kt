@@ -402,7 +402,8 @@ class PlayerBottomSheetFragment : Fragment() {
     private fun setHeaderBookmarksButton() {
         if (isSyncronizationEnabled()) {
             playerBottomSheetViewModel!!.playQueue.observeForever(object : Observer<PlayQueue?> {
-                override fun onChanged(playQueue: PlayQueue?) {
+                override fun onChanged(value: PlayQueue?) {
+                    val playQueue = value
                     playerBottomSheetViewModel!!.playQueue.removeObserver(this)
 
                     if (bind == null) return

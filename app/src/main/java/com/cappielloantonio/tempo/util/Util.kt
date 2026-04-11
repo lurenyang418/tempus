@@ -1,7 +1,6 @@
 package com.cappielloantonio.tempo.util
 
 import java.io.UnsupportedEncodingException
-import java.lang.Boolean
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.ConcurrentHashMap
@@ -16,11 +15,11 @@ object Util {
     @JvmStatic
     fun <T> distinctByKey(keyExtractor: Function<in T?, Any?>): Predicate<T?>? {
         try {
-            val uniqueMap: MutableMap<Any?, Boolean?> = ConcurrentHashMap<Any?, Boolean?>()
+            val uniqueMap: MutableMap<Any?, Boolean> = ConcurrentHashMap<Any?, Boolean>()
             return Predicate<T?> { t: T? ->
                 uniqueMap.putIfAbsent(
                     keyExtractor.apply(t),
-                    java.lang.Boolean.TRUE as Boolean?
+                    true
                 ) == null
             }
         } catch (exception: NullPointerException) {

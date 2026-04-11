@@ -9,7 +9,6 @@ import com.cappielloantonio.tempo.R
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
-import java.lang.String
 import java.text.SimpleDateFormat
 import java.util.AbstractMap
 import java.util.Date
@@ -46,7 +45,7 @@ object UIUtil {
     }
 
     private fun getLocalesFromResources(context: Context): LocaleListCompat {
-        val tagsList: MutableList<String?> = ArrayList<String?>()
+        val tagsList: MutableList<String> = ArrayList<String>()
 
         val xpp: XmlPullParser = context.getResources().getXml(R.xml.locale_config)
 
@@ -56,7 +55,7 @@ object UIUtil {
 
                 if (xpp.getEventType() == XmlPullParser.START_TAG) {
                     if ("locale" == tagName && xpp.getAttributeCount() > 0 && xpp.getAttributeName(0) == "name") {
-                        tagsList.add(xpp.getAttributeValue(0) as String?)
+                        tagsList.add(xpp.getAttributeValue(0))
                     }
                 }
 
@@ -68,7 +67,7 @@ object UIUtil {
             e.printStackTrace()
         }
 
-        return LocaleListCompat.forLanguageTags(String.join(",", tagsList))
+        return LocaleListCompat.forLanguageTags(tagsList.joinToString(","))
     }
 
     @JvmStatic

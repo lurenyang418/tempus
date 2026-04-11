@@ -10,16 +10,15 @@ import com.cappielloantonio.tempo.subsonic.models.Child
 import com.cappielloantonio.tempo.subsonic.models.Playlist
 import com.cappielloantonio.tempo.subsonic.models.Share
 import com.google.common.collect.Lists
-import java.util.Objects
 
 class PlaylistEditorViewModel(application: Application) : AndroidViewModel(application) {
     private val playlistRepository: PlaylistRepository
     private val sharingRepository: SharingRepository
 
-    private var toAdd: java.util.ArrayList<Child?>? = null
+    private var toAdd: java.util.ArrayList<Child?> = java.util.ArrayList<Child?>()
     private var toEdit: Playlist? = null
 
-    private var songLiveList = MutableLiveData<MutableList<Child>?>()
+    private var songLiveList = MutableLiveData<MutableList<Child?>?>()
 
     init {
         playlistRepository = PlaylistRepository()
@@ -43,7 +42,7 @@ class PlaylistEditorViewModel(application: Application) : AndroidViewModel(appli
     }
 
     var songsToAdd: ArrayList<Child?>
-        get() = toAdd!!
+        get() = toAdd
         set(songs) {
             toAdd = songs
         }
@@ -54,13 +53,13 @@ class PlaylistEditorViewModel(application: Application) : AndroidViewModel(appli
             this.toEdit = playlist
 
             if (playlist != null) {
-                this.songLiveList = playlistRepository.getPlaylistSongs(toEdit!!.id) as MutableLiveData<MutableList<Child>?>
+                this.songLiveList = playlistRepository.getPlaylistSongs(toEdit!!.id)
             } else {
-                this.songLiveList = MutableLiveData<MutableList<Child>?>()
+                this.songLiveList = MutableLiveData<MutableList<Child?>?>()
             }
         }
 
-    val playlistSongLiveList: LiveData<MutableList<Child>?>
+    val playlistSongLiveList: LiveData<MutableList<Child?>?>
         get() = songLiveList
 
     fun removeFromPlaylistSongLiveList(position: Int) {
@@ -70,7 +69,7 @@ class PlaylistEditorViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun orderPlaylistSongLiveListAfterSwap(songs: MutableList<Child?>?) {
-        songLiveList.postValue(songs as MutableList<Child>?)
+        songLiveList.postValue(songs)
     }
 
     private val playlistSongIds: ArrayList<String?>
@@ -80,7 +79,7 @@ class PlaylistEditorViewModel(application: Application) : AndroidViewModel(appli
 
             if (songs != null && !songs.isEmpty()) {
                 for (song in songs) {
-                    ids.add(song.id)
+                    ids.add(song?.id)
                 }
             }
 

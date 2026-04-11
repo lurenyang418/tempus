@@ -203,7 +203,8 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
 
                 fromPosition = viewHolder.getBindingAdapterPosition()
                 toPosition = target.getBindingAdapterPosition()
-                Collections.swap(playerSongQueueAdapter!!.items, fromPosition, toPosition)
+                val queueItems = playerSongQueueAdapter!!.items ?: return false
+                Collections.swap(queueItems, fromPosition, toPosition)
                 recyclerView.getAdapter()!!.notifyItemMoved(fromPosition, toPosition)
 
                 return false
@@ -250,10 +251,8 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
         val tracks: MutableList<Child?> = bundle?.getParcelableArrayList<Child?>(
             Constants.TRACKS_OBJECT
         )?.toMutableList() ?: mutableListOf()
-        @Suppress("UNCHECKED_CAST")
-        val future: ListenableFuture<MediaBrowser>? = mediaBrowserListenableFuture as? ListenableFuture<MediaBrowser>
         MediaManager.startQueue(
-            future, tracks, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
+            mediaBrowserListenableFuture, tracks, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
         )
     }
 
@@ -345,7 +344,8 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
             try {
                 val mediaBrowser = mediaBrowserListenableFuture!!.get()
                 val startPosition = mediaBrowser.getCurrentMediaItemIndex() + 1
-                val endPosition = playerSongQueueAdapter!!.items!!.size - 1
+                val queueItems = playerSongQueueAdapter!!.items ?: return@Runnable
+                val endPosition = queueItems.size - 1
 
                 if (startPosition < endPosition) {
                     val pool = ArrayList<Int?>()
@@ -363,14 +363,14 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
                         val positionB: Int = pool.get(toPosition)!!
                         pool.removeAt(toPosition)
 
-                        Collections.swap(playerSongQueueAdapter!!.items, positionA, positionB)
+                        Collections.swap(queueItems, positionA, positionB)
                         bind!!.playerQueueRecyclerView.getAdapter()!!
                             .notifyItemMoved(positionA, positionB)
                     }
 
                     MediaManager.shuffle(
                         mediaBrowserListenableFuture,
-                        playerSongQueueAdapter!!.items!!,
+                        queueItems,
                         startPosition,
                         endPosition
                     )
@@ -389,12 +389,13 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
             try {
                 val mediaBrowser = mediaBrowserListenableFuture!!.get()
                 val startPosition = mediaBrowser.getCurrentMediaItemIndex() + 1
-                val endPosition = playerSongQueueAdapter!!.items!!.size
+                val queueItems = playerSongQueueAdapter!!.items ?: return@Runnable
+                val endPosition = queueItems.size
 
                 @Suppress("UNCHECKED_CAST")
                 MediaManager.removeRange(
                     mediaBrowserListenableFuture as ListenableFuture<MediaBrowser?>?,
-                    playerSongQueueAdapter!!.items!!,
+                    queueItems,
                     startPosition,
                     endPosition
                 )
@@ -455,33 +456,23 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
             }
 
             val downloaderManager = DownloadUtil.getDownloadTracker(requireContext())
+            downloaderManager.download(mediaItemsToDownload, downloadModels)
+            downloadCount = queueSongs.size
+            Toast.makeText(
+                requireContext(),
+                getResources().getQuantityString(
+                    R.plurals.songs_download_started,
+                    downloadCount,
+                    downloadCount
+                ),
+                Toast.LENGTH_SHORT
+            ).show()
 
-            if (downloaderManager != null) {
-                downloaderManager.download(mediaItemsToDownload, downloadModels)
-                downloadCount = queueSongs.size
-                Toast.makeText(
-                    requireContext(),
-                    getResources().getQuantityString(
-                        R.plurals.songs_download_started,
-                        downloadCount,
-                        downloadCount
-                    ),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                Handler().postDelayed(Runnable {
-                    if (playerSongQueueAdapter != null) {
-                        playerSongQueueAdapter!!.notifyDataSetChanged()
-                    }
-                }, 1000)
-            } else {
-                Log.e(TAG, "DownloaderManager not initialized. Check DownloadUtil.")
-                Toast.makeText(
-                    requireContext(),
-                    "Download service unavailable.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            Handler().postDelayed(Runnable {
+                if (playerSongQueueAdapter != null) {
+                    playerSongQueueAdapter!!.notifyDataSetChanged()
+                }
+            }, 1000)
         } else {
             for (song in queueSongs.filterNotNull()) {
                 if (getUri(song) == null) {
@@ -530,7 +521,8 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
         playerBottomSheetViewModel.playQueue.observe(
             getViewLifecycleOwner(),
             object : Observer<PlayQueue?> {
-                override fun onChanged(playQueue: PlayQueue?) {
+                override fun onChanged(value: PlayQueue?) {
+                    val playQueue = value
                     playerBottomSheetViewModel.playQueue.removeObserver(this)
 
                     if (playQueue != null && playQueue.entries != null && !playQueue.entries!!.isEmpty()) {

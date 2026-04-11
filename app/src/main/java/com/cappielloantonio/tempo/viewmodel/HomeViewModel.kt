@@ -436,7 +436,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private val favorites: ArrayList<Favorite>
-        get() = java.util.ArrayList<Favorite>(favoriteRepository.favorites)
+        get() = java.util.ArrayList<Favorite>(favoriteRepository.favorites?.filterNotNull() ?: emptyList())
 
     private fun getFavoritesToSave(favorites: java.util.ArrayList<Favorite>): java.util.ArrayList<Favorite> {
         val filteredMap = HashMap<String?, Favorite?>()

@@ -154,6 +154,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
         initializeMediaBrowser()
 
+        @Suppress("UNCHECKED_CAST")
         MediaManager.registerPlaybackObserver(mediaBrowserListenableFuture as ListenableFuture<MediaBrowser?>?, playbackViewModel!!)
         observeStarredSongsPlayback()
         observeTopSongsPlayback()
@@ -320,14 +321,14 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             homeViewModel!!.allStarredTracks.observe(
                 getViewLifecycleOwner(),
                 object : Observer<MutableList<Child?>?> {
-                    override fun onChanged(songs: MutableList<Child?>?) {
-                        if (songs != null && !songs.isEmpty()) {
+                    override fun onChanged(value: MutableList<Child?>?) {
+                        if (value != null && !value.isEmpty()) {
                             var songsToSyncCount = 0
                             val toSyncSample: MutableList<String?> = ArrayList<String?>()
 
                             if (getDownloadDirectoryUri() == null) {
                                 val manager = DownloadUtil.getDownloadTracker(requireContext())
-                                for (song in songs) {
+                                for (song in value) {
                                     if (song != null && !manager.isDownloaded(song.id)) {
                                         songsToSyncCount++
                                         if (toSyncSample.size < 3) {
@@ -336,7 +337,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                                     }
                                 }
                             } else {
-                                for (song in songs) {
+                                for (song in value) {
                                     if (song != null && getUri(song) == null) {
                                         songsToSyncCount++
                                         if (toSyncSample.size < 3) {
@@ -392,20 +393,20 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                 homeViewModel!!.allStarredTracks.observe(
                     getViewLifecycleOwner(),
                     object : Observer<MutableList<Child?>?> {
-                        override fun onChanged(songs: MutableList<Child?>?) {
-                            if (songs != null && !songs.isEmpty()) {
+                        override fun onChanged(value: MutableList<Child?>?) {
+                            if (value != null && !value.isEmpty()) {
                                 var downloadedCount = 0
 
                                 if (getDownloadDirectoryUri() == null) {
                                     val manager = DownloadUtil.getDownloadTracker(requireContext())
-                                    for (song in songs) {
+                                    for (song in value) {
                                         if (song != null && !manager.isDownloaded(song.id)) {
                                             manager.download(mapDownload(song), Download(song))
                                             downloadedCount++
                                         }
                                     }
                                 } else {
-                                    for (song in songs) {
+                                    for (song in value) {
                                         if (song != null && getUri(song) == null) {
                                             downloadToUserDirectory(requireContext(), song)
                                             downloadedCount++
@@ -441,9 +442,9 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             homeViewModel!!.getStarredAlbums(getViewLifecycleOwner())
                 .observe(getViewLifecycleOwner(), object : Observer<MutableList<AlbumID3?>?> {
                     @Suppress("UNCHECKED_CAST")
-                    override fun onChanged(albums: MutableList<AlbumID3?>?) {
-                        if (albums != null && !albums.isEmpty()) {
-                            checkIfAlbumsNeedSync(albums as MutableList<AlbumID3>)
+                    override fun onChanged(value: MutableList<AlbumID3?>?) {
+                        if (value != null && !value.isEmpty()) {
+                            checkIfAlbumsNeedSync(value as MutableList<AlbumID3>)
                         }
                     }
                 })
@@ -460,20 +461,20 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             homeViewModel!!.allStarredAlbumSongs!!.observe(
                 getViewLifecycleOwner(),
                 object : Observer<MutableList<Child?>?> {
-                    override fun onChanged(allSongs: MutableList<Child?>?) {
-                        if (allSongs != null && !allSongs.isEmpty()) {
+                    override fun onChanged(value: MutableList<Child?>?) {
+                        if (value != null && !value.isEmpty()) {
                             var songsToDownload = 0
 
                             if (getDownloadDirectoryUri() == null) {
                                 val manager = DownloadUtil.getDownloadTracker(requireContext())
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && !manager.isDownloaded(song.id)) {
                                         manager.download(mapDownload(song), Download(song))
                                         songsToDownload++
                                     }
                                 }
                             } else {
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && getUri(song) == null) {
                                         downloadToUserDirectory(requireContext(), song)
                                         songsToDownload++
@@ -507,8 +508,8 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
         homeViewModel!!.allStarredAlbumSongs!!.observe(
             getViewLifecycleOwner(),
             object : Observer<MutableList<Child?>?> {
-                override fun onChanged(allSongs: MutableList<Child?>?) {
-                    if (allSongs != null) {
+                override fun onChanged(value: MutableList<Child?>?) {
+                    if (value != null) {
                         var songsToDownload = 0
                         val albumsNeedingSync: MutableList<kotlin.String?> =
                             ArrayList<kotlin.String?>()
@@ -518,7 +519,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
                             for (album in albums) {
                                 var albumNeedsSync = false
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && song.albumId != null && song.albumId == album.id && !manager.isDownloaded(
                                             song.id
                                         )
@@ -534,7 +535,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                         } else {
                             for (album in albums) {
                                 var albumNeedsSync = false
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && song.albumId != null && song.albumId == album.id && getUri(
                                             song
                                         ) == null
@@ -595,9 +596,9 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             homeViewModel!!.getStarredArtists(getViewLifecycleOwner())
                 .observe(getViewLifecycleOwner(), object : Observer<MutableList<ArtistID3?>?> {
                     @Suppress("UNCHECKED_CAST")
-                    override fun onChanged(artists: MutableList<ArtistID3?>?) {
-                        if (artists != null && !artists.isEmpty()) {
-                            checkIfArtistsNeedSync(artists as MutableList<ArtistID3>)
+                    override fun onChanged(value: MutableList<ArtistID3?>?) {
+                        if (value != null && !value.isEmpty()) {
+                            checkIfArtistsNeedSync(value as MutableList<ArtistID3>)
                         }
                     }
                 })
@@ -614,20 +615,20 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
             homeViewModel!!.allStarredArtistSongs!!.observe(
                 getViewLifecycleOwner(),
                 object : Observer<MutableList<Child?>?> {
-                    override fun onChanged(allSongs: MutableList<Child?>?) {
-                        if (allSongs != null && !allSongs.isEmpty()) {
+                    override fun onChanged(value: MutableList<Child?>?) {
+                        if (value != null && !value.isEmpty()) {
                             var songsToDownload = 0
 
                             if (getDownloadDirectoryUri() == null) {
                                 val manager = DownloadUtil.getDownloadTracker(requireContext())
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && !manager.isDownloaded(song.id)) {
                                         manager.download(mapDownload(song), Download(song))
                                         songsToDownload++
                                     }
                                 }
                             } else {
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && getUri(song) == null) {
                                         downloadToUserDirectory(requireContext(), song)
                                         songsToDownload++
@@ -661,8 +662,8 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
         homeViewModel!!.allStarredArtistSongs!!.observe(
             getViewLifecycleOwner(),
             object : Observer<MutableList<Child?>?> {
-                override fun onChanged(allSongs: MutableList<Child?>?) {
-                    if (allSongs != null) {
+                override fun onChanged(value: MutableList<Child?>?) {
+                    if (value != null) {
                         var songsToDownload = 0
                         val artistsNeedingSync: MutableList<kotlin.String?> =
                             ArrayList<kotlin.String?>()
@@ -672,7 +673,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
                             for (artist in artists) {
                                 var artistNeedsSync = false
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && song.artistId != null && song.artistId == artist.id && !manager.isDownloaded(
                                             song.id
                                         )
@@ -688,7 +689,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                         } else {
                             for (artist in artists) {
                                 var artistNeedsSync = false
-                                for (song in allSongs) {
+                                for (song in value) {
                                     if (song != null && song.artistId != null && song.artistId == artist.id && getUri(
                                             song
                                         ) == null
@@ -1431,11 +1432,11 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                 ).show()
                 homeViewModel!!.getMediaInstantMix(getViewLifecycleOwner(), track!!)
                     .observe(getViewLifecycleOwner(), object : Observer<MutableList<Child?>?> {
-                        override fun onChanged(songs: MutableList<Child?>?) {
-                            if (playbackStarted[0] || songs == null || songs.isEmpty()) return
+                        override fun onChanged(value: MutableList<Child?>?) {
+                            if (playbackStarted[0] || value == null || value.isEmpty()) return
                             Handler(Looper.getMainLooper()).postDelayed({
                                 if (playbackStarted[0]) return@postDelayed
-                                MediaManager.startQueue(mediaBrowserListenableFuture, songs, 0)
+                                MediaManager.startQueue(mediaBrowserListenableFuture, value, 0)
                                 playbackStarted[0] = true
                             }, 300)
                         }

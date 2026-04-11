@@ -116,10 +116,7 @@ object MappingUtil {
 
             bundle.putString(
                 "assetLinkSong",
-                if (media.id != null) AssetLinkUtil.buildLink(
-                    AssetLinkUtil.TYPE_SONG,
-                    media.id
-                ) else null
+                AssetLinkUtil.buildLink(AssetLinkUtil.TYPE_SONG, media.id)
             )
             bundle.putString(
                 "assetLinkAlbum",
@@ -161,7 +158,7 @@ object MappingUtil {
                         .setArtworkUri(artworkUri)
                         .setUserRating(HeartRating(media.starred != null))
                         .setSupportedCommands(
-                            ImmutableList.of<String?>(
+                            ImmutableList.of(
                                 Constants.CUSTOM_COMMAND_TOGGLE_HEART_ON,
                                 Constants.CUSTOM_COMMAND_TOGGLE_HEART_OFF
                             )
@@ -200,7 +197,7 @@ object MappingUtil {
             old.requestMetadata.extras!!.getString("id")
 
         if (mediaId != null && DownloadUtil.getDownloadTracker(getContext()!!)
-                ?.isDownloaded(mediaId) == true
+            .isDownloaded(mediaId)
         ) {
             return old
         }
@@ -361,7 +358,7 @@ object MappingUtil {
             return if (local != null) local else MusicUtil.getStreamUri(podcastEpisode.streamId)!!
         }
         return if (DownloadUtil.getDownloadTracker(getContext()!!)
-                ?.isDownloaded(podcastEpisode.streamId) == true
+                .isDownloaded(podcastEpisode.streamId)
         )
             getDownloadUri(podcastEpisode.streamId)
         else

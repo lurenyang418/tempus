@@ -147,8 +147,8 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
 
         playlistEditorViewModel!!.playlistSongLiveList.observe(
             requireActivity(),
-            Observer { songs: MutableList<Child>? ->
-                if (songs != null) playlistDialogSongHorizontalAdapter!!.items = songs.map { it }.toMutableList()
+            Observer { songs: MutableList<Child?>? ->
+                if (songs != null) playlistDialogSongHorizontalAdapter!!.items = songs.toMutableList()
             })
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(

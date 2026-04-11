@@ -349,10 +349,8 @@ class SearchFragment : Fragment(), ClickCallback {
         val tracks: MutableList<Child?> = bundle?.getParcelableArrayList<Child?>(
             Constants.TRACKS_OBJECT
         )?.toMutableList() ?: mutableListOf()
-        @Suppress("UNCHECKED_CAST")
-        val future: ListenableFuture<MediaBrowser>? = mediaBrowserListenableFuture as? ListenableFuture<MediaBrowser>
         MediaManager.startQueue(
-            future, tracks, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
+            mediaBrowserListenableFuture, tracks, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
         )
         songHorizontalAdapter!!.notifyDataSetChanged()
         activity!!.setBottomSheetInPeek(true)
@@ -366,9 +364,7 @@ class SearchFragment : Fragment(), ClickCallback {
         val playlistWithSongs = bundle?.getParcelable<PlaylistWithSongs?>(Constants.PLAYLIST_OBJECT)
         if (playlistWithSongs != null) {
             val entries: MutableList<Child?> = playlistWithSongs.entries?.toMutableList() ?: mutableListOf()
-            @Suppress("UNCHECKED_CAST")
-            val future: ListenableFuture<MediaBrowser>? = mediaBrowserListenableFuture as? ListenableFuture<MediaBrowser>
-            MediaManager.startQueue(future, entries, 0)
+            MediaManager.startQueue(mediaBrowserListenableFuture, entries, 0)
         }
     }
 

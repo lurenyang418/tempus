@@ -40,8 +40,8 @@ class PlaylistPageViewModel(application: Application) : AndroidViewModel(applica
         val remoteData: LiveData<MutableList<Child?>?> =
             playlistRepository.getPlaylistSongs(playlist!!.id)
         remoteData.observeForever(object : Observer<MutableList<Child?>?> {
-            override fun onChanged(songs: MutableList<Child?>?) {
-                songLiveList.postValue(songs)
+            override fun onChanged(value: MutableList<Child?>?) {
+                songLiveList.postValue(value)
                 remoteData.removeObserver(this)
             }
         })

@@ -109,9 +109,9 @@ class AlbumBottomSheetViewModel(application: Application) : AndroidViewModel(app
 
             tracksLiveData.observeForever(object : Observer<MutableList<Child?>?> {
                 @OptIn(markerClass = [UnstableApi::class])
-                override fun onChanged(songs: MutableList<Child?>?) {
-                    if (songs != null && !songs.isEmpty()) {
-                        val nonNullSongs = songs.filterNotNull()
+                override fun onChanged(value: MutableList<Child?>?) {
+                    if (value != null && !value.isEmpty()) {
+                        val nonNullSongs = value.filterNotNull()
                         if (nonNullSongs.isNotEmpty()) {
                             val safeContext = context ?: return
                             DownloadUtil.getDownloadTracker(safeContext).download(

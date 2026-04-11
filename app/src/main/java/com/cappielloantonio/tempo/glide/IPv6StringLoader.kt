@@ -76,6 +76,7 @@ class IPv6StringLoader : ModelLoader<String?, InputStream?> {
             // HttpURLConnection does not provide a direct cancel mechanism.
         }
 
+        @Suppress("UNCHECKED_CAST")
         override fun getDataClass(): Class<InputStream?> {
             return InputStream::class.java as Class<InputStream?>
         }
