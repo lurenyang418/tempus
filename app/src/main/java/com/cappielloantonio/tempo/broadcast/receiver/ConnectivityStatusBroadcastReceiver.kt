@@ -13,15 +13,13 @@ import com.cappielloantonio.tempo.ui.activity.MainActivity
 class ConnectivityStatusBroadcastReceiver(private val activity: MainActivity) :
     BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent) {
-        if (ConnectivityManager.CONNECTIVITY_ACTION == intent.getAction()) {
-            val noConnectivity =
-                intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+        val noConnectivity =
+            intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
 
-            if (noConnectivity) {
-                activity.binding?.offlineModeTextView?.setVisibility(View.VISIBLE)
-            } else {
-                activity.binding?.offlineModeTextView?.setVisibility(View.GONE)
-            }
+        if (noConnectivity) {
+            activity.binding?.offlineModeTextView?.setVisibility(View.VISIBLE)
+        } else {
+            activity.binding?.offlineModeTextView?.setVisibility(View.GONE)
         }
     }
 }

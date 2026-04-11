@@ -6,12 +6,12 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.TextUtils
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -74,16 +74,25 @@ class PlaylistEditorDialog(private val playlistCallback: PlaylistCallback?) : Di
     }
 
     private fun setParameterInfo() {
-        if (requireArguments().getParcelableArrayList<Parcelable?>(Constants.TRACKS_OBJECT) != null) {
-            playlistEditorViewModel!!.songsToAdd =
-                requireArguments().getParcelableArrayList<Child?>(
-                    Constants.TRACKS_OBJECT
-                )!!
+        val tracks = BundleCompat.getParcelableArrayList(
+            requireArguments(),
+            Constants.TRACKS_OBJECT,
+            Child::class.java
+        )
+        if (tracks != null) {
+            playlistEditorViewModel!!.songsToAdd = tracks
             playlistEditorViewModel!!.playlistToEdit = null
-        } else if (requireArguments().getParcelable<Parcelable?>(Constants.PLAYLIST_OBJECT) != null) {
+        } else if (BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.PLAYLIST_OBJECT,
+                Playlist::class.java
+            ) != null
+        ) {
             playlistEditorViewModel!!.songsToAdd = arrayListOf()
-            playlistEditorViewModel!!.playlistToEdit = requireArguments().getParcelable<Playlist?>(
-                Constants.PLAYLIST_OBJECT
+            playlistEditorViewModel!!.playlistToEdit = BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.PLAYLIST_OBJECT,
+                Playlist::class.java
             )
 
             if (playlistEditorViewModel!!.playlistToEdit != null) {

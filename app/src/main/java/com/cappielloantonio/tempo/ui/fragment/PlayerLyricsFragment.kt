@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextPaint
@@ -283,7 +284,7 @@ class PlayerLyricsFragment : Fragment() {
                     return@observe
                 }
 
-                syncLyricsHandler = Handler()
+                syncLyricsHandler = Handler(Looper.getMainLooper())
                 syncLyricsRunnable = Runnable {
                     if (syncLyricsHandler != null) {
                         if (bind != null) {

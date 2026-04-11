@@ -19,7 +19,6 @@ class RetrofitClient(subsonic: Subsonic) {
     init {
         val gson = GsonBuilder()
             .registerTypeAdapter(Date::class.java, EmptyDateTypeAdapter())
-            .setLenient()
             .create()
 
         retrofit = Retrofit.Builder()

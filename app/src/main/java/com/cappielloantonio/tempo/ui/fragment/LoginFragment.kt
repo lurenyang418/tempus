@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -125,7 +126,11 @@ class LoginFragment : Fragment(), ClickCallback {
     }
 
     override fun onServerClick(bundle: Bundle?) {
-        val server = bundle?.getParcelable<Server?>("server_object")
+        val server = if (bundle != null) {
+            BundleCompat.getParcelable(bundle, "server_object", Server::class.java)
+        } else {
+            null
+        }
         saveServerPreference(
             server!!.serverId,
             server.address,

@@ -3,7 +3,7 @@ package com.cappielloantonio.tempo.ui.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.os.Parcelable
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -52,12 +52,41 @@ class RatingDialog : DialogFragment() {
     }
 
     private fun setElementInfo() {
-        if (requireArguments().getParcelable<Parcelable?>(Constants.TRACK_OBJECT) != null) {
-            ratingViewModel!!.setSong(requireArguments().getParcelable<Child?>(Constants.TRACK_OBJECT))
-        } else if (requireArguments().getParcelable<Parcelable?>(Constants.ALBUM_OBJECT) != null) {
-            ratingViewModel!!.setAlbum(requireArguments().getParcelable<AlbumID3?>(Constants.ALBUM_OBJECT))
-        } else if (requireArguments().getParcelable<Parcelable?>(Constants.ARTIST_OBJECT) != null) {
-            ratingViewModel!!.setArtist(requireArguments().getParcelable<ArtistID3?>(Constants.ARTIST_OBJECT))
+        if (BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.TRACK_OBJECT,
+                Child::class.java
+            ) != null
+        ) {
+            ratingViewModel!!.setSong(
+                BundleCompat.getParcelable(requireArguments(), Constants.TRACK_OBJECT, Child::class.java)
+            )
+        } else if (BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.ALBUM_OBJECT,
+                AlbumID3::class.java
+            ) != null
+        ) {
+            ratingViewModel!!.setAlbum(
+                BundleCompat.getParcelable(
+                    requireArguments(),
+                    Constants.ALBUM_OBJECT,
+                    AlbumID3::class.java
+                )
+            )
+        } else if (BundleCompat.getParcelable(
+                requireArguments(),
+                Constants.ARTIST_OBJECT,
+                ArtistID3::class.java
+            ) != null
+        ) {
+            ratingViewModel!!.setArtist(
+                BundleCompat.getParcelable(
+                    requireArguments(),
+                    Constants.ARTIST_OBJECT,
+                    ArtistID3::class.java
+                )
+            )
         }
     }
 

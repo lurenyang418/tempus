@@ -3,6 +3,7 @@ package com.cappielloantonio.tempo.ui.fragment
 import android.content.ComponentName
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.transition.Fade
 import android.transition.Transition
 import android.transition.TransitionManager
@@ -43,7 +44,7 @@ class PlayerCoverFragment : Fragment() {
     private var bind: InnerFragmentPlayerCoverBinding? = null
     private var mediaBrowserListenableFuture: ListenableFuture<MediaBrowser>? = null
 
-    private val handler = Handler()
+        private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,

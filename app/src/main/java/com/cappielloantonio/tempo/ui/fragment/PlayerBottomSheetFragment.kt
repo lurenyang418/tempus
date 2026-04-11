@@ -3,6 +3,7 @@ package com.cappielloantonio.tempo.ui.fragment
 import android.content.ComponentName
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -384,7 +385,7 @@ class PlayerBottomSheetFragment : Fragment() {
     }
 
     private fun defineProgressBarHandler(mediaBrowser: MediaBrowser) {
-        progressBarHandler = Handler()
+        progressBarHandler = Handler(Looper.getMainLooper())
         progressBarRunnable = Runnable {
             setProgress(mediaBrowser)
             progressBarHandler!!.postDelayed(progressBarRunnable!!, 1000)
@@ -445,7 +446,7 @@ class PlayerBottomSheetFragment : Fragment() {
                     true
                 })
 
-            Handler().postDelayed(Runnable {
+            Handler(Looper.getMainLooper()).postDelayed(Runnable {
                 if (bind != null) bind!!.playerHeaderLayout.playerHeaderBookmarkMediaButton.setVisibility(
                     View.GONE
                 )

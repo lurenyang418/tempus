@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.core.os.BundleCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -63,7 +64,11 @@ class PlaylistChooserDialog : DialogFragment(), ClickCallback {
 
     private fun setSongInfo() {
         playlistChooserViewModel!!.songsToAdd =
-            requireArguments().getParcelableArrayList<Child?>(Constants.TRACKS_OBJECT)!!
+            BundleCompat.getParcelableArrayList(
+                requireArguments(),
+                Constants.TRACKS_OBJECT,
+                Child::class.java
+            ) ?: arrayListOf()
     }
 
     private fun launchPlaylistEditor() {
@@ -107,7 +112,11 @@ class PlaylistChooserDialog : DialogFragment(), ClickCallback {
 
     override fun onPlaylistClick(bundle: Bundle?) {
         if (!playlistChooserViewModel!!.songsToAdd.isEmpty()) {
-            val playlist = bundle?.getParcelable<Playlist?>(Constants.PLAYLIST_OBJECT)
+            val playlist = if (bundle != null) {
+                BundleCompat.getParcelable(bundle, Constants.PLAYLIST_OBJECT, Playlist::class.java)
+            } else {
+                null
+            }
             playlistChooserViewModel!!.addSongsToPlaylist(this, getDialog()!!, playlist!!.id)
         } else {
             Toast.makeText(

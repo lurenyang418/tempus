@@ -1252,7 +1252,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
     }
 
     private fun initHomeReorganizer() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
             if (bind != null) bind!!.homeSectorRearrangementButton.setVisibility(
                 View.VISIBLE
@@ -1267,7 +1267,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
     }
 
     private fun refreshSharesView() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable {
             if (getView() != null && bind != null && isSharingEnabled()) {
                 homeViewModel!!.refreshShares(getViewLifecycleOwner())
@@ -1389,7 +1389,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
     }
 
     private fun refreshPlaylistView() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
 
         val runnable = Runnable {
             if (getView() != null && bind != null && homeViewModel != null) homeViewModel!!.getPinnedPlaylists(

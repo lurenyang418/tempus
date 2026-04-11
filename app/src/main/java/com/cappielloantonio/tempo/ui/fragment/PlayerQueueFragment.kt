@@ -3,6 +3,7 @@ package com.cappielloantonio.tempo.ui.fragment
 import android.content.ComponentName
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -466,7 +467,7 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
                 Toast.LENGTH_SHORT
             ).show()
 
-            Handler().postDelayed(Runnable {
+            Handler(Looper.getMainLooper()).postDelayed(Runnable {
                 if (playerSongQueueAdapter != null) {
                     playerSongQueueAdapter!!.notifyDataSetChanged()
                 }
@@ -490,7 +491,7 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                Handler().postDelayed(Runnable {
+                Handler(Looper.getMainLooper()).postDelayed(Runnable {
                     if (playerSongQueueAdapter != null) {
                         playerSongQueueAdapter!!.notifyDataSetChanged()
                     }
@@ -550,7 +551,7 @@ class PlayerQueueFragment : Fragment(), ClickCallback {
                 }
             })
 
-        Handler().postDelayed(Runnable {
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
             if (isMenuOpen) {
                 toggleFabMenu()
             }

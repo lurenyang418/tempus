@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
@@ -320,7 +321,7 @@ class LibraryFragment : Fragment(), ClickCallback {
     }
 
     private fun refreshPlaylistView() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
 
         val runnable = Runnable {
             if (getView() != null && bind != null && libraryViewModel != null) libraryViewModel!!.refreshPlaylistSample(

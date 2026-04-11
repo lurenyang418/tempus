@@ -3,6 +3,7 @@ package com.cappielloantonio.tempo.ui.fragment
 import android.content.ComponentName
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -191,7 +192,7 @@ class HomeTabPodcastFragment : Fragment(), ClickCallback, PodcastCallback {
     }
 
     override fun onDismiss() {
-        Handler().postDelayed(Runnable {
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
             if (podcastViewModel != null) podcastViewModel!!.refreshPodcastChannels(
                 getViewLifecycleOwner()
             )

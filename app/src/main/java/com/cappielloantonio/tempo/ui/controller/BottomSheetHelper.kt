@@ -1,6 +1,7 @@
 package com.cappielloantonio.tempo.ui.controller
 
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import com.cappielloantonio.tempo.ui.fragment.PlayerBottomSheetFragment
@@ -54,13 +55,13 @@ class BottomSheetHelper(
     }
 
     fun checkAfterStateChanged(mainViewModel: MainViewModel) {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         val runnable = Runnable { setStateInPeek(mainViewModel.isQueueLoaded) }
         handler.postDelayed(runnable, 100)
     }
 
     fun collapseDelayed() {
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         val runnable =
             Runnable { bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED) }
         handler.postDelayed(runnable, 100)
