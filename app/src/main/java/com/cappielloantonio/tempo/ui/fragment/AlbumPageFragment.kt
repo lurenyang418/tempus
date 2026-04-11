@@ -173,7 +173,10 @@ class AlbumPageFragment : Fragment(), ClickCallback {
                 getViewLifecycleOwner(),
                 Observer { songs: MutableList<Child?>? ->
                     val bundle = Bundle()
-                    bundle.putParcelableArrayList(Constants.TRACKS_OBJECT, ArrayList<Child?>(songs))
+                    bundle.putParcelableArrayList(
+                        Constants.TRACKS_OBJECT,
+                        ArrayList(songs ?: emptyList())
+                    )
 
                     val dialog = PlaylistChooserDialog()
                     dialog.setArguments(bundle)
@@ -448,10 +451,11 @@ class AlbumPageFragment : Fragment(), ClickCallback {
     }
 
     override fun onMediaClick(bundle: Bundle?) {
+        val args = bundle ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture, bundle?.getParcelableArrayList<Child?>(
+            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
                 Constants.TRACKS_OBJECT
-            )!!, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
+            )!!, args.getInt(Constants.ITEM_POSITION)
         )
         activity!!.setBottomSheetInPeek(true)
     }

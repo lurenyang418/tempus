@@ -103,6 +103,7 @@ class ArtistPageFragment : Fragment(), ClickCallback {
         super.onStart()
 
         initializeMediaBrowser()
+        @Suppress("UNCHECKED_CAST")
         MediaManager.registerPlaybackObserver(mediaBrowserListenableFuture as ListenableFuture<MediaBrowser?>?, playbackViewModel!!)
         observePlayback()
     }
@@ -275,9 +276,9 @@ class ArtistPageFragment : Fragment(), ClickCallback {
                 getViewLifecycleOwner(),
                 object : Observer<MutableList<Child?>?> {
                     @Suppress("UNCHECKED_CAST")
-                    override fun onChanged(songs: MutableList<Child?>?) {
-                        if (songs != null && !songs.isEmpty()) {
-                            MediaManager.startQueue(mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?, songs, 0)
+                    override fun onChanged(value: MutableList<Child?>?) {
+                        if (value != null && !value.isEmpty()) {
+                            MediaManager.startQueue(mediaBrowserListenableFuture, value, 0)
                             activity!!.setBottomSheetInPeek(true)
                             artistPageViewModel!!.artistShuffleList.removeObserver(this)
                         }
@@ -290,9 +291,9 @@ class ArtistPageFragment : Fragment(), ClickCallback {
                 getViewLifecycleOwner(),
                 object : Observer<MutableList<Child?>?> {
                     @Suppress("UNCHECKED_CAST")
-                    override fun onChanged(songs: MutableList<Child?>?) {
-                        if (songs != null && !songs.isEmpty()) {
-                            MediaManager.startQueue(mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?, songs, 0)
+                    override fun onChanged(value: MutableList<Child?>?) {
+                        if (value != null && !value.isEmpty()) {
+                            MediaManager.startQueue(mediaBrowserListenableFuture, value, 0)
                             activity!!.setBottomSheetInPeek(true)
                             artistPageViewModel!!.artistInstantMix!!.removeObserver(this)
                         }
@@ -408,10 +409,11 @@ class ArtistPageFragment : Fragment(), ClickCallback {
 
     @Suppress("UNCHECKED_CAST")
     override fun onMediaClick(bundle: Bundle?) {
+        val args = bundle ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?, bundle?.getParcelableArrayList<Child?>(
+            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
                 Constants.TRACKS_OBJECT
-            )!!, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
+            )!!, args.getInt(Constants.ITEM_POSITION)
         )
         activity?.setBottomSheetInPeek(true)
     }
@@ -463,6 +465,6 @@ class ArtistPageFragment : Fragment(), ClickCallback {
 
     @Suppress("UNCHECKED_CAST")
     private fun setMediaBrowserListenableFuture() {
-        songHorizontalAdapter!!.setMediaBrowserListenableFuture(mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?)
+        songHorizontalAdapter!!.setMediaBrowserListenableFuture(mediaBrowserListenableFuture)
     }
 }

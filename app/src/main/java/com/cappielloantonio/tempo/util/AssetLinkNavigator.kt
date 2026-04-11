@@ -48,7 +48,8 @@ class AssetLinkNavigator(private val activity: MainActivity) {
     private fun openSong(id: String) {
         val liveData = songRepository.getSong(id)
         val observer: Observer<Child?> = object : Observer<Child?> {
-            override fun onChanged(child: Child?) {
+            override fun onChanged(value: Child?) {
+                val child = value
                 liveData.removeObserver(this)
                 if (child == null) {
                     Toast.makeText(activity, R.string.asset_link_error_song, Toast.LENGTH_SHORT)
@@ -72,7 +73,8 @@ class AssetLinkNavigator(private val activity: MainActivity) {
     private fun openAlbum(id: String) {
         val liveData = albumRepository.getAlbum(id)
         val observer: Observer<AlbumID3?> = object : Observer<AlbumID3?> {
-            override fun onChanged(album: AlbumID3?) {
+            override fun onChanged(value: AlbumID3?) {
+                val album = value
                 liveData.removeObserver(this)
                 if (album == null) {
                     Toast.makeText(activity, R.string.asset_link_error_album, Toast.LENGTH_SHORT)
@@ -90,7 +92,8 @@ class AssetLinkNavigator(private val activity: MainActivity) {
     private fun openArtist(id: String) {
         val liveData = artistRepository.getArtist(id)
         val observer: Observer<ArtistID3?> = object : Observer<ArtistID3?> {
-            override fun onChanged(artist: ArtistID3?) {
+            override fun onChanged(value: ArtistID3?) {
+                val artist = value
                 liveData.removeObserver(this)
                 if (artist == null) {
                     Toast.makeText(activity, R.string.asset_link_error_artist, Toast.LENGTH_SHORT)
@@ -108,7 +111,8 @@ class AssetLinkNavigator(private val activity: MainActivity) {
     private fun openPlaylist(id: String) {
         val liveData = playlistRepository.getPlaylist(id)
         val observer: Observer<Playlist?> = object : Observer<Playlist?> {
-            override fun onChanged(playlist: Playlist?) {
+            override fun onChanged(value: Playlist?) {
+                val playlist = value
                 liveData.removeObserver(this)
                 if (playlist == null) {
                     Toast.makeText(activity, R.string.asset_link_error_playlist, Toast.LENGTH_SHORT)

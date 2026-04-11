@@ -234,14 +234,15 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
         playlistPageViewModel!!.playlistSongLiveList.observe(
             getViewLifecycleOwner(),
             Observer { songs: MutableList<Child?>? ->
+                val queueSongs = songs ?: return@Observer
                 if (bind != null) {
                     bind!!.playlistPagePlayButton.setOnClickListener(View.OnClickListener { v: View? ->
-                        MediaManager.startQueue(mediaBrowserListenableFuture, songs!!, 0)
+                        MediaManager.startQueue(mediaBrowserListenableFuture, queueSongs, 0)
                         activity!!.setBottomSheetInPeek(true)
                     })
 
                     bind!!.playlistPageShuffleButton.setOnClickListener(View.OnClickListener { v: View? ->
-                        val shuffledSongs: MutableList<Child?> = ArrayList<Child?>(songs)
+                        val shuffledSongs: MutableList<Child?> = ArrayList(queueSongs)
                         Collections.shuffle(shuffledSongs)
                         MediaManager.startQueue(mediaBrowserListenableFuture, shuffledSongs, 0)
                         activity!!.setBottomSheetInPeek(true)
@@ -379,10 +380,11 @@ class PlaylistPageFragment : Fragment(), ClickCallback {
     }
 
     override fun onMediaClick(bundle: Bundle?) {
+        val args = bundle ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture, bundle?.getParcelableArrayList<Child?>(
+            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
                 Constants.TRACKS_OBJECT
-            )!!, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
+            )!!, args.getInt(Constants.ITEM_POSITION)
         )
         activity!!.setBottomSheetInPeek(true)
     }

@@ -98,7 +98,7 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
 
                 var file: DocumentFile?
                 try {
-                    file = DocumentFile.fromSingleUri(getApplication<Application>()!!, uri)
+                    file = DocumentFile.fromSingleUri(getApplication<Application>(), uri)
                 } catch (exception: SecurityException) {
                     file = null
                 }

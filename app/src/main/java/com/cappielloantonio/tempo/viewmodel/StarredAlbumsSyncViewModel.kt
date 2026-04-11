@@ -33,13 +33,13 @@ class StarredAlbumsSyncViewModel(application: Application) : AndroidViewModel(ap
     val allStarredAlbumSongs: LiveData<MutableList<Child?>?>
         get() {
             albumRepository.getStarredAlbums(false, -1).observeForever(object : Observer<MutableList<AlbumID3?>?> {
-                override fun onChanged(albums: MutableList<AlbumID3?>?) {
-                    if (!albums.isNullOrEmpty()) {
+                override fun onChanged(value: MutableList<AlbumID3?>?) {
+                    if (!value.isNullOrEmpty()) {
                         collectAllAlbumSongs(
-                            albums.filterNotNull(),
+                            value.filterNotNull(),
                             object : AlbumSongsCallback {
-                                override fun onSongsCollected(value: MutableList<Child?>?) {
-                                    starredAlbumSongs.postValue(value)
+                                override fun onSongsCollected(songs: MutableList<Child?>?) {
+                                    starredAlbumSongs.postValue(songs)
                                 }
                             })
                     } else {
@@ -56,13 +56,13 @@ class StarredAlbumsSyncViewModel(application: Application) : AndroidViewModel(ap
     fun getStarredAlbumSongs(activity: Activity?): LiveData<MutableList<Child?>?> {
         albumRepository.getStarredAlbums(false, -1)
             .observe((activity as LifecycleOwner?)!!, object : Observer<MutableList<AlbumID3?>?> {
-                override fun onChanged(albums: MutableList<AlbumID3?>?) {
-                    if (!albums.isNullOrEmpty()) {
+                override fun onChanged(value: MutableList<AlbumID3?>?) {
+                    if (!value.isNullOrEmpty()) {
                         collectAllAlbumSongs(
-                            albums.filterNotNull(),
+                            value.filterNotNull(),
                             object : AlbumSongsCallback {
-                                override fun onSongsCollected(value: MutableList<Child?>?) {
-                                    starredAlbumSongs.postValue(value)
+                                override fun onSongsCollected(songs: MutableList<Child?>?) {
+                                    starredAlbumSongs.postValue(songs)
                                 }
                             })
                     } else {
@@ -81,9 +81,9 @@ class StarredAlbumsSyncViewModel(application: Application) : AndroidViewModel(ap
             val albumTracks: LiveData<MutableList<Child?>?> =
                 albumRepository.getAlbumTracks(album.id)
             albumTracks.observeForever(object : Observer<MutableList<Child?>?> {
-                override fun onChanged(songs: MutableList<Child?>?) {
-                    if (songs != null) {
-                        allSongs.addAll(songs)
+                override fun onChanged(value: MutableList<Child?>?) {
+                    if (value != null) {
+                        allSongs.addAll(value)
                     }
                     latch.countDown()
 

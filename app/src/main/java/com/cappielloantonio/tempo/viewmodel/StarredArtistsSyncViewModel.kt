@@ -33,13 +33,13 @@ class StarredArtistsSyncViewModel(application: Application) : AndroidViewModel(a
         get() {
             artistRepository.getStarredArtists(false, -1).observeForever(
                 object : Observer<MutableList<ArtistID3?>?> {
-                override fun onChanged(artists: MutableList<ArtistID3?>?) {
-                    if (!artists.isNullOrEmpty()) {
+                override fun onChanged(value: MutableList<ArtistID3?>?) {
+                    if (!value.isNullOrEmpty()) {
                         collectAllArtistSongs(
-                            artists.filterNotNull(),
+                            value.filterNotNull(),
                             object : StarredArtistsSyncViewModel.ArtistSongsCallback {
-                                override fun onSongsCollected(value: MutableList<Child?>?) {
-                                    starredArtistSongs.postValue(value)
+                                override fun onSongsCollected(songs: MutableList<Child?>?) {
+                                    starredArtistSongs.postValue(songs)
                                 }
                             })
                     } else {
@@ -55,13 +55,13 @@ class StarredArtistsSyncViewModel(application: Application) : AndroidViewModel(a
     fun getStarredArtistSongs(activity: Activity?): LiveData<MutableList<Child?>?> {
         artistRepository.getStarredArtists(false, -1)
             .observe((activity as LifecycleOwner?)!!, object : Observer<MutableList<ArtistID3?>?> {
-                override fun onChanged(artists: MutableList<ArtistID3?>?) {
-                    if (!artists.isNullOrEmpty()) {
+                override fun onChanged(value: MutableList<ArtistID3?>?) {
+                    if (!value.isNullOrEmpty()) {
                         collectAllArtistSongs(
-                            artists.filterNotNull(),
+                            value.filterNotNull(),
                             object : StarredArtistsSyncViewModel.ArtistSongsCallback {
-                                override fun onSongsCollected(value: MutableList<Child?>?) {
-                                    starredArtistSongs.postValue(value)
+                                override fun onSongsCollected(songs: MutableList<Child?>?) {
+                                    starredArtistSongs.postValue(songs)
                                 }
                             })
                     } else {

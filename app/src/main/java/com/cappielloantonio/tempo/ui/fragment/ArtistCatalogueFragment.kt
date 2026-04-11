@@ -199,7 +199,7 @@ class ArtistCatalogueFragment : Fragment(), ClickCallback {
                 if (artist?.name != null &&
                     artist.name!!.lowercase(Locale.getDefault()).contains(searchQuery)
                 ) {
-                    filteredArtists.add(artist!!)
+                    filteredArtists.add(artist)
                 }
             }
             @Suppress("UNCHECKED_CAST")

@@ -54,7 +54,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_DISCOVERY,
-                getApplication<Application>()!!.getString(R.string.home_title_discovery),
+                getApplication<Application>().getString(R.string.home_title_discovery),
                 true,
                 1
             )
@@ -62,7 +62,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_MADE_FOR_YOU,
-                getApplication<Application>()!!.getString(R.string.home_title_made_for_you),
+                getApplication<Application>().getString(R.string.home_title_made_for_you),
                 true,
                 2
             )
@@ -70,7 +70,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_BEST_OF,
-                getApplication<Application>()!!.getString(R.string.home_title_best_of),
+                getApplication<Application>().getString(R.string.home_title_best_of),
                 true,
                 3
             )
@@ -78,7 +78,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_RADIO_STATION,
-                getApplication<Application>()!!.getString(R.string.home_title_radio_station),
+                getApplication<Application>().getString(R.string.home_title_radio_station),
                 true,
                 4
             )
@@ -86,7 +86,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_TOP_SONGS,
-                getApplication<Application>()!!.getString(R.string.home_title_top_songs),
+                getApplication<Application>().getString(R.string.home_title_top_songs),
                 true,
                 5
             )
@@ -94,7 +94,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_STARRED_TRACKS,
-                getApplication<Application>()!!.getString(R.string.home_title_starred_tracks),
+                getApplication<Application>().getString(R.string.home_title_starred_tracks),
                 true,
                 6
             )
@@ -102,7 +102,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_STARRED_ALBUMS,
-                getApplication<Application>()!!.getString(R.string.home_title_starred_albums),
+                getApplication<Application>().getString(R.string.home_title_starred_albums),
                 true,
                 7
             )
@@ -110,7 +110,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_STARRED_ARTISTS,
-                getApplication<Application>()!!.getString(R.string.home_title_starred_artists),
+                getApplication<Application>().getString(R.string.home_title_starred_artists),
                 true,
                 8
             )
@@ -118,7 +118,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_NEW_RELEASES,
-                getApplication<Application>()!!.getString(R.string.home_title_new_releases),
+                getApplication<Application>().getString(R.string.home_title_new_releases),
                 true,
                 9
             )
@@ -126,7 +126,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_FLASHBACK,
-                getApplication<Application>()!!.getString(R.string.home_title_flashback),
+                getApplication<Application>().getString(R.string.home_title_flashback),
                 true,
                 10
             )
@@ -134,7 +134,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_MOST_PLAYED,
-                getApplication<Application>()!!.getString(R.string.home_title_most_played),
+                getApplication<Application>().getString(R.string.home_title_most_played),
                 true,
                 11
             )
@@ -142,7 +142,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_LAST_PLAYED,
-                getApplication<Application>()!!.getString(R.string.home_title_last_played),
+                getApplication<Application>().getString(R.string.home_title_last_played),
                 true,
                 12
             )
@@ -150,7 +150,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_RECENTLY_ADDED,
-                getApplication<Application>()!!.getString(R.string.home_title_recently_added),
+                getApplication<Application>().getString(R.string.home_title_recently_added),
                 true,
                 13
             )
@@ -158,7 +158,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_PINNED_PLAYLISTS,
-                getApplication<Application>()!!.getString(R.string.home_title_pinned_playlists),
+                getApplication<Application>().getString(R.string.home_title_pinned_playlists),
                 true,
                 14
             )
@@ -166,7 +166,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         sectors.add(
             HomeSector(
                 Constants.HOME_SECTOR_SHARED,
-                getApplication<Application>()!!.getString(R.string.home_title_shares),
+                getApplication<Application>().getString(R.string.home_title_shares),
                 true,
                 15
             )

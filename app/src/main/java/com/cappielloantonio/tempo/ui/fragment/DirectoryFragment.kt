@@ -199,10 +199,11 @@ class DirectoryFragment : Fragment(), ClickCallback {
 
     @Suppress("UNCHECKED_CAST")
     override fun onMediaClick(bundle: Bundle?) {
+        val args = bundle ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?, bundle?.getParcelableArrayList<Child?>(
+            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
                 Constants.TRACKS_OBJECT
-            )!!, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
+            )!!, args.getInt(Constants.ITEM_POSITION)
         )
     }
 
@@ -235,7 +236,7 @@ class DirectoryFragment : Fragment(), ClickCallback {
             if (!allSongs.isEmpty()) {
                 activity!!.runOnUiThread(Runnable {
                     @Suppress("UNCHECKED_CAST")
-                    MediaManager.startQueue(mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?, allSongs.filterNotNull().toMutableList(), 0)
+                    MediaManager.startQueue(mediaBrowserListenableFuture, allSongs.filterNotNull().toMutableList(), 0)
                     activity!!.setBottomSheetInPeek(true)
                     Toast.makeText(
                         requireContext(),

@@ -226,7 +226,7 @@ class DownloadFragment : Fragment(), ClickCallback {
             val songs = downloadHorizontalAdapter!!.shuffling
             if (songs != null && !songs.isEmpty()) {
                 Collections.shuffle(songs)
-                MediaManager.startQueue(mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?, songs, 0)
+                MediaManager.startQueue(mediaBrowserListenableFuture, songs, 0)
                 activity!!.setBottomSheetInPeek(true)
             }
         }
@@ -361,10 +361,11 @@ class DownloadFragment : Fragment(), ClickCallback {
 
     @Suppress("UNCHECKED_CAST")
     override fun onMediaClick(bundle: Bundle?) {
+        val args = bundle ?: return
         MediaManager.startQueue(
-            mediaBrowserListenableFuture as ListenableFuture<MediaBrowser>?, bundle?.getParcelableArrayList<Child?>(
+            mediaBrowserListenableFuture, args.getParcelableArrayList<Child?>(
                 Constants.TRACKS_OBJECT
-            )!!, bundle?.getInt(Constants.ITEM_POSITION) ?: 0
+            )!!, args.getInt(Constants.ITEM_POSITION)
         )
         activity?.setBottomSheetInPeek(true)
     }
