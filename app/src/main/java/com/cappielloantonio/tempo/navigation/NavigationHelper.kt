@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -108,14 +107,12 @@ class NavigationHelper(/*
         insetsController = WindowInsetsControllerCompat(window, decorView)
 
         if (visibility) {
-            WindowCompat.setDecorFitsSystemWindows(window, true)
             insetsController.show(WindowInsetsCompat.Type.navigationBars())
             insetsController.show(WindowInsetsCompat.Type.statusBars())
             insetsController.setSystemBarsBehavior(
                 WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
             )
         } else {
-            WindowCompat.setDecorFitsSystemWindows(window, false)
             insetsController.hide(WindowInsetsCompat.Type.navigationBars())
             insetsController.hide(WindowInsetsCompat.Type.statusBars())
             insetsController.setSystemBarsBehavior(

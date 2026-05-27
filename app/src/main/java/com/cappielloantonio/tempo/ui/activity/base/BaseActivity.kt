@@ -1,6 +1,8 @@
 package com.cappielloantonio.tempo.ui.activity.base
 
 import android.Manifest
+import android.content.res.Configuration
+import android.graphics.Color
 import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.os.Build
@@ -10,6 +12,8 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.media3.session.MediaBrowser
@@ -22,7 +26,6 @@ import com.cappielloantonio.tempo.ui.dialog.BatteryOptimizationDialog
 import com.cappielloantonio.tempo.util.Flavors.initializeCastContext
 import com.cappielloantonio.tempo.util.Preferences.askForOptimization
 import com.cappielloantonio.tempo.util.Preferences.isDisplayAlwaysOn
-import com.google.android.material.elevation.SurfaceColors
 import com.google.common.util.concurrent.ListenableFuture
 
 @UnstableApi
@@ -31,6 +34,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        configureEdgeToEdge()
         initializeCastContext(this)
         initializeDownloader()
         checkBatteryOptimization()
@@ -40,7 +44,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        setNavigationBarColor()
+        updateSystemBarAppearance()
         initializeBrowser()
     }
 
@@ -113,9 +117,29 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     @Suppress("DEPRECATION")
-    private fun setNavigationBarColor() {
-        getWindow().setNavigationBarColor(SurfaceColors.getColorForElevation(this, 8f))
-        getWindow().setStatusBarColor(SurfaceColors.getColorForElevation(this, 0f))
+    private fun configureEdgeToEdge() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = true
+        }
+
+        updateSystemBarAppearance()
+    }
+
+    private fun updateSystemBarAppearance() {
+        val isLightTheme =
+            (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) !=
+                Configuration.UI_MODE_NIGHT_YES
+
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightStatusBars = isLightTheme
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            controller.isAppearanceLightNavigationBars = isLightTheme
+        }
     }
 
     companion object {

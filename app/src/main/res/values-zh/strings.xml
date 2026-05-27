@@ -1,4 +1,4 @@
-﻿<resources>
+<resources>
     <string name="activity_battery_optimizations_conclusion">如果遇到问题，请访问 https://dontkillmyapp.com。 省电优化选项可能会影响应用的性能，网站上提供了如何禁用这些选项的详细说明。</string>
     <string name="activity_battery_optimizations_summary">请禁用针对锁屏播放的电池优化。</string>
     <string name="activity_battery_optimizations_title">电池优化</string>

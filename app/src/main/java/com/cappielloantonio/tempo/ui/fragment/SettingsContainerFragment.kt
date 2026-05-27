@@ -327,7 +327,17 @@ class SettingsContainerFragment : PreferenceFragmentCompat() {
         localePref!!.setEntries(entries)
         localePref.setEntryValues(entryValues)
 
-        val value = localePref.getValue()
+        val supportedValues = locales.values.filterNotNull().toSet()
+        val value = localePref.getValue().let {
+            if (it == null || (it != "default" && !supportedValues.contains(it))) {
+                localePref.setValue("default")
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList())
+                "default"
+            } else {
+                it
+            }
+        }
+
         if ("default" == value) {
             localePref.setSummary(requireContext().getString(R.string.settings_system_language))
         } else {

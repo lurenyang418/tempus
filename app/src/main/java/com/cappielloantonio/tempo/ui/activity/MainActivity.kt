@@ -8,9 +8,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -77,11 +81,14 @@ import com.cappielloantonio.tempo.util.Preferences.showServerUnreachableDialog
 import com.cappielloantonio.tempo.util.Preferences.showTempusUpdateDialog
 import com.cappielloantonio.tempo.util.Preferences.switchInUseServerAddress
 import com.cappielloantonio.tempo.viewmodel.MainViewModel
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.search.SearchBar
 import com.google.common.util.concurrent.MoreExecutors
 import java.util.concurrent.ExecutionException
 
@@ -118,6 +125,10 @@ class MainActivity : BaseActivity() {
         this.binding = ActivityMainBinding.inflate(getLayoutInflater())
         val view: View = binding!!.getRoot()
         setContentView(view)
+        installTopInsetHandling()
+        applyTopInsets(binding!!.offlineModeTextView)
+        applyBottomInsets(binding!!.bottomNavigation)
+        applyBottomInsets(binding!!.playerBottomSheet)
 
         mainViewModel = ViewModelProvider(this).get<MainViewModel>(MainViewModel::class.java)
         assetLinkNavigator = AssetLinkNavigator(this)
@@ -248,6 +259,105 @@ class MainActivity : BaseActivity() {
         bottomSheetController!!.addCallback(bottomSheetCallback)
         bottomSheetController!!.replaceFragment(R.id.player_bottom_sheet)
         bottomSheetController!!.checkAfterStateChanged(mainViewModel!!)
+    }
+
+    private fun installTopInsetHandling() {
+        supportFragmentManager.registerFragmentLifecycleCallbacks(
+            object : FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentViewCreated(
+                    fm: FragmentManager,
+                    f: Fragment,
+                    v: View,
+                    savedInstanceState: Bundle?
+                ) {
+                    super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+                    val topBar = findTopInsetTarget(v) ?: return
+                    applyTopInsets(topBar)
+                }
+            },
+            true
+        )
+    }
+
+    private fun applyTopInsets(view: View) {
+        val initialLeftPadding = view.paddingLeft
+        val initialTopPadding = view.paddingTop
+        val initialRightPadding = view.paddingRight
+        val initialBottomPadding = view.paddingBottom
+        val initialHeight = view.layoutParams?.height ?: 0
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { target, insets ->
+            val systemBarInsets = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+
+            target.setPadding(
+                initialLeftPadding + systemBarInsets.left,
+                initialTopPadding + systemBarInsets.top,
+                initialRightPadding + systemBarInsets.right,
+                initialBottomPadding
+            )
+
+            if (initialHeight > 0) {
+                target.layoutParams = target.layoutParams.apply {
+                    height = initialHeight + systemBarInsets.top
+                }
+            }
+
+            insets
+        }
+
+        ViewCompat.requestApplyInsets(view)
+    }
+
+    private fun applyBottomInsets(view: View) {
+        val initialLeftPadding = view.paddingLeft
+        val initialTopPadding = view.paddingTop
+        val initialRightPadding = view.paddingRight
+        val initialBottomPadding = view.paddingBottom
+        val initialHeight = view.layoutParams?.height ?: 0
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { target, insets ->
+            val systemBarInsets = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+
+            target.setPadding(
+                initialLeftPadding + systemBarInsets.left,
+                initialTopPadding,
+                initialRightPadding + systemBarInsets.right,
+                initialBottomPadding + systemBarInsets.bottom
+            )
+
+            if (initialHeight > 0) {
+                target.layoutParams = target.layoutParams.apply {
+                    height = initialHeight + systemBarInsets.bottom
+                }
+            }
+
+            insets
+        }
+
+        ViewCompat.requestApplyInsets(view)
+    }
+
+    private fun findTopInsetTarget(root: View): View? {
+        if (root is AppBarLayout || root is MaterialToolbar || root is SearchBar) {
+            return root
+        }
+
+        if (root !is ViewGroup) {
+            return null
+        }
+
+        for (index in 0 until root.childCount) {
+            val target = findTopInsetTarget(root.getChildAt(index))
+            if (target != null) {
+                return target
+            }
+        }
+
+        return null
     }
 
     fun setBottomSheetInPeek(isVisible: Boolean) {
