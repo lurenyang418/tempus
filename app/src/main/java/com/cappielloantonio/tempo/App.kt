@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.cappielloantonio.tempo.github.Github
 import com.cappielloantonio.tempo.helper.ThemeHelper
 import com.cappielloantonio.tempo.subsonic.Subsonic
 import com.cappielloantonio.tempo.subsonic.SubsonicPreferences
@@ -53,7 +52,6 @@ class App : Application() {
         private var instance: App? = null
         private var context: Context? = null
         private var subsonic: Subsonic? = null
-        private var github: Github? = null
         @JvmField
         var preferences: SharedPreferences? = null
 
@@ -124,15 +122,6 @@ class App : Application() {
 
             return Subsonic(preferences)
         }
-
-        @JvmStatic
-        val githubClientInstance: Github
-            get() {
-                if (github == null) {
-                    github = Github()
-                }
-                return github!!
-            }
 
         @JvmStatic
         fun refreshSubsonicClient() {

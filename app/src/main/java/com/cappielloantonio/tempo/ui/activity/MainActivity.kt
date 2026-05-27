@@ -32,8 +32,6 @@ import com.cappielloantonio.tempo.BuildConfig
 import com.cappielloantonio.tempo.R
 import com.cappielloantonio.tempo.broadcast.receiver.ConnectivityStatusBroadcastReceiver
 import com.cappielloantonio.tempo.databinding.ActivityMainBinding
-import com.cappielloantonio.tempo.github.models.LatestRelease
-import com.cappielloantonio.tempo.github.utils.UpdateUtil
 import com.cappielloantonio.tempo.navigation.NavigationController
 import com.cappielloantonio.tempo.navigation.NavigationHelper
 import com.cappielloantonio.tempo.service.MediaManager.check
@@ -46,7 +44,6 @@ import com.cappielloantonio.tempo.ui.activity.base.BaseActivity
 import com.cappielloantonio.tempo.ui.controller.BottomSheetController
 import com.cappielloantonio.tempo.ui.controller.BottomSheetHelper
 import com.cappielloantonio.tempo.ui.dialog.ConnectionAlertDialog
-import com.cappielloantonio.tempo.ui.dialog.GithubTempoUpdateDialog
 import com.cappielloantonio.tempo.ui.dialog.ServerUnreachableDialog
 import com.cappielloantonio.tempo.ui.fragment.PlayerBottomSheetFragment
 import com.cappielloantonio.tempo.util.AssetLinkNavigator
@@ -58,7 +55,6 @@ import com.cappielloantonio.tempo.util.Preferences.getHideBottomNavbarOnPortrait
 import com.cappielloantonio.tempo.util.Preferences.getPassword
 import com.cappielloantonio.tempo.util.Preferences.getSalt
 import com.cappielloantonio.tempo.util.Preferences.getToken
-import com.cappielloantonio.tempo.util.Preferences.isGithubUpdateEnabled
 import com.cappielloantonio.tempo.util.Preferences.isInUseServerAddressLocal
 import com.cappielloantonio.tempo.util.Preferences.isServerSwitchable
 import com.cappielloantonio.tempo.util.Preferences.isWifiOnly
@@ -78,7 +74,6 @@ import com.cappielloantonio.tempo.util.Preferences.setStarredSyncEnabled
 import com.cappielloantonio.tempo.util.Preferences.setToken
 import com.cappielloantonio.tempo.util.Preferences.setUser
 import com.cappielloantonio.tempo.util.Preferences.showServerUnreachableDialog
-import com.cappielloantonio.tempo.util.Preferences.showTempusUpdateDialog
 import com.cappielloantonio.tempo.util.Preferences.switchInUseServerAddress
 import com.cappielloantonio.tempo.viewmodel.MainViewModel
 import com.google.android.material.appbar.AppBarLayout
@@ -142,7 +137,6 @@ class MainActivity : BaseActivity() {
         init()
         checkConnectionType()
         this.openSubsonicExtensions
-        checkTempoUpdate()
 
         maybeSchedulePlaybackIntent(getIntent())
 
@@ -643,18 +637,6 @@ class MainActivity : BaseActivity() {
                     })
             }
         }
-
-    private fun checkTempoUpdate() {
-        if (isGithubUpdateEnabled() && showTempusUpdateDialog()) {
-            mainViewModel!!.checkTempoUpdate()
-                .observe(this, Observer { latestRelease: LatestRelease? ->
-                    if (latestRelease != null && UpdateUtil.showUpdateDialog(latestRelease)) {
-                        val dialog = GithubTempoUpdateDialog(latestRelease)
-                        dialog.show(getSupportFragmentManager(), null)
-                    }
-                })
-        }
-    }
 
     @Suppress("DEPRECATION")
     private fun checkConnectionType() {

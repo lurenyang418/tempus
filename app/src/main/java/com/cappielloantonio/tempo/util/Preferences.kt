@@ -73,8 +73,6 @@ object Preferences {
     private const val HOME_SECTOR_LIST = "home_sector_list"
     private const val SONG_RATING_PER_ITEM = "song_rating_per_item"
     private const val RATING_PER_ITEM = "rating_per_item"
-    private const val NEXT_UPDATE_CHECK = "next_update_check"
-    private const val GITHUB_UPDATE_CHECK = "github_update_check"
     private const val CONTINUOUS_PLAY = "continuous_play"
     private const val LAST_INSTANT_MIX = "last_instant_mix"
     private const val ALLOW_PLAYLIST_DUPLICATES = "allow_playlist_duplicates"
@@ -631,24 +629,6 @@ object Preferences {
     @JvmStatic
     fun showItemRating(): Boolean {
         return App.getInstance().preferences!!.getBoolean(RATING_PER_ITEM, false)
-    }
-
-    
-    @JvmStatic
-    fun isGithubUpdateEnabled(): Boolean {
-        return App.getInstance().preferences!!.getBoolean(GITHUB_UPDATE_CHECK, true)
-    }
-
-    @JvmStatic
-    fun showTempusUpdateDialog(): Boolean {
-        return App.getInstance().preferences!!.getLong(
-                NEXT_UPDATE_CHECK, 0
-        ) + 86400000 < System.currentTimeMillis()
-    }
-
-    @JvmStatic
-    fun setTempusUpdateReminder() {
-        App.getInstance().preferences!!.edit().putLong(NEXT_UPDATE_CHECK, System.currentTimeMillis()).apply()
     }
 
     @JvmStatic

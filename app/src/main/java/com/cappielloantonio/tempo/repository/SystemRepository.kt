@@ -2,8 +2,6 @@ package com.cappielloantonio.tempo.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.cappielloantonio.tempo.App.Companion.getSubsonicClientInstance
-import com.cappielloantonio.tempo.App.Companion.githubClientInstance
-import com.cappielloantonio.tempo.github.models.LatestRelease
 import com.cappielloantonio.tempo.interfaces.SystemCallback
 import com.cappielloantonio.tempo.subsonic.base.ApiResponse
 import com.cappielloantonio.tempo.subsonic.models.OpenSubsonicExtension
@@ -100,27 +98,4 @@ class SystemRepository {
             return extensionsResult
         }
 
-    fun checkTempoUpdate(): MutableLiveData<LatestRelease?> {
-        val latestRelease = MutableLiveData<LatestRelease?>()
-
-        githubClientInstance
-            .releaseClient
-            ?.latestRelease
-            ?.enqueue(object : Callback<LatestRelease?> {
-                override fun onResponse(
-                    call: Call<LatestRelease?>,
-                    response: Response<LatestRelease?>
-                ) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        latestRelease.postValue(response.body())
-                    }
-                }
-
-                override fun onFailure(call: Call<LatestRelease?>, t: Throwable) {
-                    latestRelease.postValue(null)
-                }
-            })
-
-        return latestRelease
-    }
 }
