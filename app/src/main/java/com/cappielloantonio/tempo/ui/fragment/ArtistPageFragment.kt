@@ -291,21 +291,6 @@ class ArtistPageFragment : Fragment(), ClickCallback {
                     }
                 })
         })
-
-        bind!!.artistPageRadioButton.setOnClickListener(View.OnClickListener { v: View? ->
-            artistPageViewModel!!.artistInstantMix!!.observe(
-                getViewLifecycleOwner(),
-                object : Observer<MutableList<Child?>?> {
-                    @Suppress("UNCHECKED_CAST")
-                    override fun onChanged(value: MutableList<Child?>?) {
-                        if (value != null && !value.isEmpty()) {
-                            MediaManager.startQueue(mediaBrowserListenableFuture, value, 0)
-                            activity!!.setBottomSheetInPeek(true)
-                            artistPageViewModel!!.artistInstantMix!!.removeObserver(this)
-                        }
-                    }
-                })
-        })
     }
 
     private fun initTopSongsView() {

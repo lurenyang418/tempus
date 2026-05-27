@@ -32,10 +32,10 @@ class PodcastChannelEditorDialog(private val podcastCallback: PodcastCallback) :
             .setView(bind!!.getRoot())
             .setTitle(R.string.podcast_channel_editor_dialog_title)
             .setPositiveButton(
-                R.string.radio_editor_dialog_positive_button,
+                R.string.server_signup_dialog_positive_button,
                 DialogInterface.OnClickListener { dialog: DialogInterface?, id: Int -> })
             .setNegativeButton(
-                R.string.radio_editor_dialog_negative_button,
+                R.string.server_signup_dialog_negative_button,
                 DialogInterface.OnClickListener { dialog: DialogInterface?, id: Int -> dialog!!.cancel() })
             .create()
     }

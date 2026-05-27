@@ -89,25 +89,6 @@ object DownloadUtil {
         )
     }
 
-    @get:Synchronized
-    val httpDataSourceFactoryForRadio: DataSource.Factory
-        get() {
-            val cookieManager = CookieManager()
-            cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER)
-            CookieHandler.setDefault(cookieManager)
-
-
-            // Create a factory with ICY metadata support for radio streams
-            val defaultRequestProperties: MutableMap<String, String> =
-                HashMap()
-            defaultRequestProperties.put("Icy-MetaData", "1")
-            defaultRequestProperties.put("User-Agent", "Tempus/1.0")
-
-            return DefaultHttpDataSource.Factory()
-                .setAllowCrossProtocolRedirects(true)
-                .setDefaultRequestProperties(defaultRequestProperties)
-        }
-
     @Synchronized
     fun getUpstreamDataSourceFactory(context: Context): DataSource.Factory {
         val upstreamFactory = DefaultDataSource.Factory(
@@ -116,15 +97,6 @@ object DownloadUtil {
         )
         dataSourceFactory = buildReadOnlyCacheDataSource(upstreamFactory, getDownloadCache(context))
         return dataSourceFactory!!
-    }
-
-    @Synchronized
-    fun getUpstreamDataSourceFactoryForRadio(context: Context): DataSource.Factory {
-        val upstreamFactory = DefaultDataSource.Factory(
-            context,
-            httpDataSourceFactoryForRadio
-        )
-        return buildReadOnlyCacheDataSource(upstreamFactory, getDownloadCache(context))
     }
 
     @Synchronized

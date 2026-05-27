@@ -135,8 +135,8 @@ class AlbumBottomSheetDialog : BottomSheetDialogFragment(), View.OnClickListener
             )
         })
 
-        val playRadio = view.findViewById<TextView>(R.id.play_radio_text_view)
-        playRadio.setOnClickListener { v ->
+        val playInstantMix = view.findViewById<TextView>(R.id.play_instant_mix_text_view)
+        playInstantMix.setOnClickListener { v ->
             val activity = getActivity() as MainActivity?
             if (activity == null) return@setOnClickListener
 

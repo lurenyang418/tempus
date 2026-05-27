@@ -83,9 +83,8 @@
 
                     <Button
                         android:id="@+id/artist_page_shuffle_button"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="6dp"
                         android:layout_marginEnd="6dp"
                         android:padding="10dp"
@@ -95,19 +94,6 @@
                         app:iconGravity="textStart"
                         app:iconPadding="18dp" />
 
-                    <Button
-                        android:id="@+id/artist_page_radio_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
-                        android:padding="10dp"
-                        android:text="@string/artist_page_radio_button"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_feed"
-                        app:iconGravity="textStart"
-                        app:iconPadding="18dp" />
                 </LinearLayout>
 
                 <ToggleButton

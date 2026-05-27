@@ -69,7 +69,6 @@ import com.cappielloantonio.tempo.util.Preferences.isStarredSyncEnabled
 import com.cappielloantonio.tempo.util.UIUtil.getSpanCount
 import com.cappielloantonio.tempo.viewmodel.HomeViewModel
 import com.cappielloantonio.tempo.viewmodel.PlaybackViewModel
-import com.google.android.material.snackbar.Snackbar
 import androidx.media3.session.MediaController
 import com.google.common.util.concurrent.ListenableFuture
 import java.util.stream.Collectors
@@ -89,7 +88,6 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
     private var discoverSongAdapter: DiscoverSongAdapter? = null
     private var similarMusicAdapter: SimilarTrackAdapter? = null
-    private var radioArtistAdapter: ArtistAdapter? = null
     private var bestOfArtistAdapter: ArtistAdapter? = null
     private var starredSongAdapter: SongHorizontalAdapter? = null
     private var topSongAdapter: SongHorizontalAdapter? = null
@@ -132,7 +130,6 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
         initSyncStarredArtistsView()
         initDiscoverSongSlideView()
         initSimilarSongView()
-        initArtistRadio()
         initArtistBestOf()
         initStarredTracksView()
         initStarredAlbumsView()
@@ -198,11 +195,6 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
         bind!!.similarTracksTextViewRefreshable.setOnLongClickListener(OnLongClickListener { v: View? ->
             homeViewModel!!.refreshSimilarSongSample(getViewLifecycleOwner())
-            true
-        })
-
-        bind!!.radioArtistTextViewRefreshable.setOnLongClickListener(OnLongClickListener { v: View? ->
-            homeViewModel!!.refreshRadioArtistSample(getViewLifecycleOwner())
             true
         })
 
@@ -833,36 +825,6 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
         artistBestOfSnapHelper.attachToRecyclerView(bind!!.bestOfArtistRecyclerView)
     }
 
-    private fun initArtistRadio() {
-        if (homeViewModel!!.checkHomeSectorVisibility(Constants.HOME_SECTOR_RADIO_STATION)) return
-
-        bind!!.radioArtistRecyclerView.setLayoutManager(
-            LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-        )
-        bind!!.radioArtistRecyclerView.setHasFixedSize(true)
-
-        radioArtistAdapter = ArtistAdapter(this, true, false)
-        bind!!.radioArtistRecyclerView.setAdapter(radioArtistAdapter)
-        homeViewModel!!.getStarredArtistsSample(getViewLifecycleOwner())
-            .observe(getViewLifecycleOwner(), Observer { artists: MutableList<ArtistID3?>? ->
-                if (artists == null) {
-                    if (bind != null) bind!!.homeRadioArtistSector.setVisibility(View.GONE)
-                } else {
-                    if (bind != null) bind!!.homeRadioArtistSector.setVisibility(if (!artists.isEmpty()) View.VISIBLE else View.GONE)
-                    if (bind != null) bind!!.afterRadioArtistDivider.setVisibility(if (!artists.isEmpty()) View.VISIBLE else View.GONE)
-
-                    radioArtistAdapter!!.setItems(artists)
-                }
-            })
-
-        val artistRadioSnapHelper = CustomLinearSnapHelper()
-        artistRadioSnapHelper.attachToRecyclerView(bind!!.radioArtistRecyclerView)
-    }
-
     private fun initTopSongsView() {
         if (homeViewModel!!.checkHomeSectorVisibility(Constants.HOME_SECTOR_TOP_SONGS)) return
 
@@ -1318,10 +1280,6 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
                     )
 
                     Constants.HOME_SECTOR_BEST_OF -> bind!!.homeLinearLayoutContainer.addView(bind!!.homeBestOfArtistSector)
-                    Constants.HOME_SECTOR_RADIO_STATION -> bind!!.homeLinearLayoutContainer.addView(
-                        bind!!.homeRadioArtistSector
-                    )
-
                     Constants.HOME_SECTOR_TOP_SONGS -> bind!!.homeLinearLayoutContainer.addView(bind!!.homeGridTracksSector)
                     Constants.HOME_SECTOR_STARRED_TRACKS -> bind!!.homeLinearLayoutContainer.addView(
                         bind!!.starredTracksSector
@@ -1479,30 +1437,7 @@ class HomeTabMusicFragment : Fragment(), ClickCallback {
 
     override fun onArtistClick(bundle: Bundle?) {
         bundle ?: return
-        if (bundle.containsKey(Constants.MEDIA_MIX) && bundle.getBoolean(Constants.MEDIA_MIX)) {
-            Snackbar.make(
-                requireView(),
-                R.string.artist_adapter_radio_station_starting,
-                Snackbar.LENGTH_LONG
-            )
-                .setAnchorView(activity!!.binding!!.playerBottomSheet)
-                .show()
-
-            if (mediaBrowserListenableFuture != null) {
-                val artist = BundleCompat.getParcelable(bundle, Constants.ARTIST_OBJECT, ArtistID3::class.java)
-                    ?: return
-                homeViewModel!!.getArtistInstantMix(
-                    getViewLifecycleOwner(),
-                    artist
-                ).observe(getViewLifecycleOwner(), Observer { songs: MutableList<Child?>? ->
-                    MusicUtil.ratingFilter(songs)
-                    if (!songs!!.isEmpty()) {
-                        MediaManager.startQueue(mediaBrowserListenableFuture, songs, 0)
-                        activity!!.setBottomSheetInPeek(true)
-                    }
-                })
-            }
-        } else if (bundle.containsKey(Constants.MEDIA_BEST_OF) && bundle.getBoolean(Constants.MEDIA_BEST_OF)) {
+        if (bundle.containsKey(Constants.MEDIA_BEST_OF) && bundle.getBoolean(Constants.MEDIA_BEST_OF)) {
             if (mediaBrowserListenableFuture != null) {
                 val artist = BundleCompat.getParcelable(bundle, Constants.ARTIST_OBJECT, ArtistID3::class.java)
                     ?: return

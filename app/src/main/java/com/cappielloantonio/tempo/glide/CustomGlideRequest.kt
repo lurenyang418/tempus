@@ -75,11 +75,6 @@ object CustomGlideRequest {
                 R.drawable.ic_placeholder_podcast
             )
 
-            ResourceType.Radio -> return AppCompatResources.getDrawable(
-                context,
-                R.drawable.ic_placeholder_radio
-            )
-
             ResourceType.Song -> return AppCompatResources.getDrawable(
                 context,
                 R.drawable.ic_placeholder_song
@@ -140,7 +135,6 @@ object CustomGlideRequest {
         Directory,
         Playlist,
         Podcast,
-        Radio,
         Song,
     }
 

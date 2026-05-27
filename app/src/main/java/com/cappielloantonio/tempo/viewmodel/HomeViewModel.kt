@@ -61,7 +61,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private val thisGridTopSong = MutableLiveData<MutableList<Chronology>?>(null)
     private val mediaInstantMix = MutableLiveData<MutableList<Child?>?>(null)
-    private val artistInstantMix = MutableLiveData<MutableList<Child?>?>(null)
     private val artistBestOf = MutableLiveData<MutableList<Child?>?>(null)
     private val pinnedPlaylists = MutableLiveData<MutableList<Playlist?>?>(null)
     private val shares = MutableLiveData<MutableList<Share?>?>(null)
@@ -257,19 +256,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         return mediaInstantMix
     }
 
-    fun getArtistInstantMix(
-        owner: LifecycleOwner,
-        artist: ArtistID3
-    ): LiveData<MutableList<Child?>?> {
-        artistInstantMix.setValue(mutableListOf<Child?>())
-
-        artistRepository.getTopSongs(artist.name, 10).observe(
-            owner,
-            Observer { value: MutableList<Child?>? -> artistInstantMix.postValue(value) })
-
-        return artistInstantMix
-    }
-
     fun getArtistBestOf(owner: LifecycleOwner, artist: ArtistID3): LiveData<MutableList<Child?>?> {
         artistBestOf.setValue(mutableListOf<Child?>())
 
@@ -355,12 +341,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         songRepository.getStarredSongs(true, 10).observe(
             owner,
             Observer { value: MutableList<Child?>? -> starredTracksSample.postValue(value) })
-    }
-
-    fun refreshRadioArtistSample(owner: LifecycleOwner) {
-        artistRepository.getStarredArtists(true, 10).observe(
-            owner,
-            Observer { value: MutableList<ArtistID3?>? -> starredArtistsSample.postValue(value) })
     }
 
     fun refreshBestOfArtist(owner: LifecycleOwner) {

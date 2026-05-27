@@ -87,7 +87,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <TextView
-            android:id="@+id/play_radio_text_view"
+            android:id="@+id/play_instant_mix_text_view"
             style="@style/LabelMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

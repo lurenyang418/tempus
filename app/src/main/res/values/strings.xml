@@ -9,7 +9,6 @@
     <string name="aa_music_folder">Folder</string>
     <string name="aa_playlists">Playlists</string>
 	<string name="aa_podcast">Podcast</string>
-	<string name="aa_radio">Radio</string>
     <string name="aa_random">Random</string>
     <string name="aa_genres">Genres</string>
     <string name="aa_recent_albums">Recent</string>
@@ -48,18 +47,15 @@
     <string name="album_page_shuffle_button">Shuffle</string>
     <string name="album_page_tracks_count_and_duration">%1$d songs  •  %2$d minutes</string>
     <string name="app_name">Tempus</string>
-    <string name="artist_adapter_radio_station_starting">Searching…</string>
     <string name="artist_bottom_sheet_instant_mix">Instant mix</string>
     <string name="artist_bottom_sheet_shuffle">Shuffle</string>
     <string name="artist_catalogue_title">Artists</string>
     <string name="artist_catalogue_title_expanded">Browse Artists</string>
-    <string name="artist_error_retrieving_radio">Error retrieving artist\'s radio</string>
     <string name="artist_error_retrieving_tracks">Error retrieving artist\'s tracks</string>
     <string name="artist_list_page_downloaded">Downloaded artists</string>
     <string name="artist_list_page_starred">Starred artists</string>
     <string name="artist_list_page_title">Artists</string>
     <string name="artist_no_artist_info_toast">No additional artist info</string>
-    <string name="artist_page_radio_button">Radio</string>
     <string name="artist_page_shuffle_button">Shuffle</string>
     <string name="artist_page_switch_layout_button">Switch layout</string>
     <string name="artist_page_title_album_more_like_this_button">More like this</string>
@@ -137,10 +133,8 @@
     <string name="home_rearrangement_dialog_subtitle">Please note that in order for the changes made to take effect, it is necessary to restart the application.</string>
     <string name="home_section_music">Music</string>
     <string name="home_section_podcast">Podcast</string>
-    <string name="home_section_radio">Radio</string>
     <string name="home_subtitle_best_of">Top songs of your favorite artists</string>
     <string name="home_subtitle_made_for_you">Start mix from a song you liked</string>
-    <string name="home_subtitle_new_internet_radio_station">Add a new radio</string>
     <string name="home_subtitle_new_podcast_channel">Add a new podcast channel</string>
     <string name="home_sync_starred_cancel">Cancel</string>
     <string name="home_sync_starred_download">Download</string>
@@ -158,7 +152,6 @@
     <string name="home_title_discovery">Discovery</string>
     <string name="home_title_discovery_shuffle_all_button">Shuffle all</string>
     <string name="home_title_flashback">Flashback</string>
-    <string name="home_title_internet_radio_station">Internet radio stations</string>
     <string name="home_title_last_played">Last played</string>
     <string name="home_title_last_played_see_all_button">See all</string>
     <string name="home_title_last_week">Last week</string>
@@ -172,7 +165,6 @@
     <string name="home_title_pinned_playlists">Playlists</string>
     <string name="home_title_podcast_channels">Channels</string>
     <string name="home_title_podcast_channels_see_all_button">See all</string>
-    <string name="home_title_radio_station">Radio stations</string>
     <string name="home_title_recently_added">Recently added</string>
     <string name="home_title_recently_added_see_all_button">See all</string>
     <string name="home_title_shares">Shares</string>
@@ -290,19 +282,6 @@
     <string name="podcast_info_empty_subtitle">Once you add a channel, you\'ll find it here</string>
     <string name="podcast_info_empty_title">No podcasts found!</string>
     <string name="podcast_release_date_duration_formatter">%1$s  •  %2$s</string>
-    <string name="radio_editor_dialog_hint_homepage_url">Radio Homepage URL</string>
-    <string name="radio_editor_dialog_hint_name">Radio Name</string>
-    <string name="radio_editor_dialog_hint_stream_url">Radio Stream URL</string>
-    <string name="radio_editor_dialog_negative_button">Cancel</string>
-    <string name="radio_editor_dialog_neutral_button">Delete</string>
-    <string name="radio_editor_dialog_positive_button">Save</string>
-    <string name="radio_editor_dialog_added">Radio station added</string>
-    <string name="radio_editor_dialog_updated">Radio station updated</string>
-    <string name="radio_editor_dialog_title">Internet Radio Station</string>
-    <string name="radio_station_info_empty_button">Click to hide the section\nThe effects will be visible on restart</string>
-    <string name="radio_station_info_empty_subtitle">Once you add a radio station, you\'ll find it here</string>
-    <string name="radio_station_info_empty_title">No stations found!</string>
-    <string name="radio_dialog_not_supported_snackbar">Internet radio management are not supported by this server.</string>
     <string name="rating_dialog_negative_button">Cancel</string>
     <string name="rating_dialog_positive_button">Save</string>
     <string name="rating_dialog_title">Rate</string>
@@ -390,7 +369,6 @@
 	<string name="settings_androidauto_home_view">Grid view for home</string>
     <string name="settings_androidauto_playlist_view">Grid view for playlists</string>
     <string name="settings_androidauto_podcast_view">Grid view for podcast</string>
-    <string name="settings_androidauto_radio_view">Grid view for radio</string>
 	<string name="settings_androidauto_first_tab">First tab display</string>
 	<string name="settings_androidauto_second_tab">Second tab display</string>
 	<string name="settings_androidauto_third_tab">Third tab display</string>
@@ -408,8 +386,6 @@
     <string name="settings_queue_syncing_title">Sync play queue for this user [Not Fully Baked]</string>
     <string name="settings_show_mini_shuffle_button">Show Shuffle button</string>
     <string name="settings_show_mini_shuffle_button_summary">If enabled, show the shuffle button, remove the heart in the mini player</string>
-    <string name="settings_radio">Show radio</string>
-    <string name="settings_radio_summary">If enabled, show the radio section. Restart the app for it to take full effect.</string>
     <string name="settings_enable_drawer_on_landscape">Enable drawer on portrait</string>
     <string name="settings_enable_drawer_on_landscape_summary">Unlocks the lateral landscape menu drawer on portrait.</string>
     <string name="settings_hide_bottom_navbar_on_portrait">Hide bottom navbar on portrait [Experimental]</string>
@@ -428,7 +404,7 @@
     <string name="settings_streaming_cache_size">Size of streaming cache</string>
     <string name="settings_streaming_cache_storage_title">Streaming cache storage</string>
     <string name="settings_sub_summary_scrobble">It\'s important to note that scrobbling also relies on the server being enabled to receive this data.</string>
-    <string name="settings_summary_skip_min_star_rating">When listening to an artist\'s radio, an instant mix or when shuffling all, tracks below a certain user rating will be ignored.</string>
+    <string name="settings_summary_skip_min_star_rating">When listening to an instant mix or when shuffling all, tracks below a certain user rating will be ignored.</string>
     <string name="settings_summary_replay_gain">Replay gain is a feature that allows you to adjust the volume level of audio tracks for a consistent listening experience. This setting is only effective if the track contains the necessary metadata.</string>
     <string name="settings_summary_scrobble">Scrobbling is a feature that allows your device to send information about the songs you listen to the music server. This information helps create personalized recommendations based on your music preferences.</string>
     <string name="settings_summary_share">Allows the user to share music via a link. The functionality must be supported and enabled server-side and is limited to individual tracks, albums and playlists.</string>
@@ -551,7 +527,6 @@
     <string name="track_info_summary_transcoding_codec">The application will request the server to transcode the file. The requested codec by the user is %1$s, while the bitrate will be the same as the source file. The potential transcoding of the file into the chosen format is dependent on the server, as it may or may not support the operation.</string>
     <string name="track_info_title">Title</string>
     <string name="track_info_track_number">Track number</string>
-    <string name="track_info_station">Station</string>
     <string name="track_info_transcoded_content_type">Transcoded content type</string>
     <string name="track_info_transcoded_suffix">Transcoded suffix</string>
     <string name="track_info_year">Year</string>

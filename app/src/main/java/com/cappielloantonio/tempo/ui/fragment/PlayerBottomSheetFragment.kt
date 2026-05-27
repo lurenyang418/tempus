@@ -200,74 +200,33 @@ class PlayerBottomSheetFragment : Fragment() {
                 )
             )
 
-            val type = mediaMetadata.extras!!.getString("type")
-
-            if (type == Constants.MEDIA_TYPE_RADIO) {
-                // For radio: keep header consistent with full player
-                val stationName = mediaMetadata.extras!!.getString(
-                    "stationName",
-                    if (mediaMetadata.artist != null) mediaMetadata.artist.toString() else ""
+            bind!!.playerHeaderLayout.playerHeaderMediaTitleLabel.setText(
+                mediaMetadata.extras!!.getString(
+                    "title"
                 )
+            )
+            bind!!.playerHeaderLayout.playerHeaderMediaArtistLabel.setText(
+                if (mediaMetadata.artist != null)
+                    mediaMetadata.artist
+                else
+                    ""
+            )
 
-                val artist = mediaMetadata.extras!!.getString("radioArtist", "")
-                val title = mediaMetadata.extras!!.getString("radioTitle", "")
-
-                val mainTitle: String?
-                if (!TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
-                    mainTitle = artist + " - " + title
-                } else if (!TextUtils.isEmpty(title)) {
-                    mainTitle = title
-                } else if (!TextUtils.isEmpty(artist)) {
-                    mainTitle = artist
-                } else {
-                    mainTitle = stationName
-                }
-
-                bind!!.playerHeaderLayout.playerHeaderMediaTitleLabel.setText(mainTitle)
-                bind!!.playerHeaderLayout.playerHeaderMediaArtistLabel.setText(stationName)
-
-                bind!!.playerHeaderLayout.playerHeaderMediaTitleLabel.setVisibility(
-                    if (!TextUtils.isEmpty(
-                            mainTitle
-                        )
-                    ) View.VISIBLE else View.GONE
-                )
-                bind!!.playerHeaderLayout.playerHeaderMediaArtistLabel.setVisibility(
-                    if (!TextUtils.isEmpty(
-                            stationName
-                        )
-                    ) View.VISIBLE else View.GONE
-                )
-            } else {
-                // Default (music, podcast, etc.)
-                bind!!.playerHeaderLayout.playerHeaderMediaTitleLabel.setText(
-                    mediaMetadata.extras!!.getString(
+            bind!!.playerHeaderLayout.playerHeaderMediaTitleLabel.setVisibility(
+                if (mediaMetadata.extras!!.getString(
                         "title"
-                    )
+                    ) != null && mediaMetadata.extras!!.getString("title") != ""
+                ) View.VISIBLE else View.GONE
+            )
+            bind!!.playerHeaderLayout.playerHeaderMediaArtistLabel.setVisibility(
+                if (mediaMetadata.extras!!.getString("artist") != null && mediaMetadata.extras!!.getString(
+                        "artist"
+                    ) != ""
                 )
-                bind!!.playerHeaderLayout.playerHeaderMediaArtistLabel.setText(
-                    if (mediaMetadata.artist != null)
-                        mediaMetadata.artist
-                    else
-                        ""
-                )
-
-                bind!!.playerHeaderLayout.playerHeaderMediaTitleLabel.setVisibility(
-                    if (mediaMetadata.extras!!.getString(
-                            "title"
-                        ) != null && mediaMetadata.extras!!.getString("title") != ""
-                    ) View.VISIBLE else View.GONE
-                )
-                bind!!.playerHeaderLayout.playerHeaderMediaArtistLabel.setVisibility(
-                    if (mediaMetadata.extras!!.getString("artist") != null && mediaMetadata.extras!!.getString(
-                            "artist"
-                        ) != ""
-                    )
-                        View.VISIBLE
-                    else
-                        View.GONE
-                )
-            }
+                    View.VISIBLE
+                else
+                    View.GONE
+            )
 
             from(
                 requireContext(),

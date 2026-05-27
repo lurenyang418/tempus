@@ -49,9 +49,6 @@ class ArtistPageViewModel(application: Application) : AndroidViewModel(applicati
     val artistShuffleList: LiveData<MutableList<Child?>?>
         get() = artistRepository.getRandomSong(artist!!, 50)
 
-    val artistInstantMix: LiveData<MutableList<Child?>?>?
-        get() = artistRepository.getInstantMix(artist!!, 30)
-
     fun getArtist(): ArtistID3 {
         return artist!!
     }

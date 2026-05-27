@@ -255,55 +255,6 @@ class PlayerControllerFragment : Fragment() {
     }
 
     private fun setMetadata(mediaMetadata: MediaMetadata) {
-        val type =
-            if (mediaMetadata.extras != null) mediaMetadata.extras!!.getString("type") else null
-
-        if (type == Constants.MEDIA_TYPE_RADIO) {
-            // For radio: always read from extras first (radioArtist, radioTitle, stationName)
-            // MediaMetadata.title/artist are formatted for notification
-            val stationName = if (mediaMetadata.extras != null)
-                mediaMetadata.extras!!.getString(
-                    "stationName",
-                    if (mediaMetadata.artist != null) mediaMetadata.artist.toString() else ""
-                )
-            else
-                if (mediaMetadata.artist != null) mediaMetadata.artist.toString() else ""
-
-            val artist = if (mediaMetadata.extras != null)
-                mediaMetadata.extras!!.getString("radioArtist", "")
-            else
-                ""
-
-            val title = if (mediaMetadata.extras != null)
-                mediaMetadata.extras!!.getString("radioTitle", "")
-            else
-                ""
-
-            // Format: "Artist - Song" or fallback to title or station name
-            val mainTitle: String?
-            if (!TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
-                mainTitle = artist + " - " + title
-            } else if (!TextUtils.isEmpty(title)) {
-                mainTitle = title
-            } else if (!TextUtils.isEmpty(artist)) {
-                mainTitle = artist
-            } else {
-                mainTitle = stationName
-            }
-
-            playerMediaTitleLabel!!.setText(mainTitle)
-            playerArtistNameLabel!!.setText(stationName)
-
-            playerMediaTitleLabel!!.setSelected(true)
-            playerArtistNameLabel!!.setSelected(true)
-
-            playerMediaTitleLabel!!.setVisibility(if (!TextUtils.isEmpty(mainTitle)) View.VISIBLE else View.GONE)
-            playerArtistNameLabel!!.setVisibility(if (!TextUtils.isEmpty(stationName)) View.VISIBLE else View.GONE)
-
-            updateAssetLinkChips(mediaMetadata)
-            return
-        }
-
         playerMediaTitleLabel!!.setText(mediaMetadata.title.toString())
         playerArtistNameLabel!!.setText(
             if (mediaMetadata.artist != null) mediaMetadata.artist.toString() else
@@ -315,11 +266,7 @@ class PlayerControllerFragment : Fragment() {
 
         playerMediaTitleLabel!!.setVisibility(if (mediaMetadata.title != null && mediaMetadata.title != "") View.VISIBLE else View.GONE)
         playerArtistNameLabel!!.setVisibility(
-            if ((mediaMetadata.artist != null && mediaMetadata.artist != "")
-                || mediaMetadata.extras != null && mediaMetadata.extras!!.getString("type") == Constants.MEDIA_TYPE_RADIO && mediaMetadata.extras!!.getString(
-                    "uri"
-                ) != null
-            )
+            if (mediaMetadata.artist != null && mediaMetadata.artist != "")
                 View.VISIBLE
             else
                 View.GONE
@@ -563,26 +510,6 @@ class PlayerControllerFragment : Fragment() {
                     bind!!.getRoot().findViewById<View>(R.id.player_skip_silence_toggle_button)
                         .setVisibility(
                             View.VISIBLE
-                        )
-                    bind!!.getRoot().findViewById<View>(R.id.button_favorite)
-                        .setVisibility(View.GONE)
-                    setPlaybackParameters(mediaBrowser)
-                }
-
-                Constants.MEDIA_TYPE_RADIO -> {
-                    bind!!.getRoot().setShowShuffleButton(false)
-                    bind!!.getRoot().setShowRewindButton(false)
-                    bind!!.getRoot().setShowPreviousButton(false)
-                    bind!!.getRoot().setShowNextButton(false)
-                    bind!!.getRoot().setShowFastForwardButton(false)
-                    bind!!.getRoot().setRepeatToggleModes(RepeatModeUtil.REPEAT_TOGGLE_MODE_NONE)
-                    bind!!.getRoot().findViewById<View>(R.id.player_playback_speed_button)
-                        .setVisibility(
-                            View.GONE
-                        )
-                    bind!!.getRoot().findViewById<View>(R.id.player_skip_silence_toggle_button)
-                        .setVisibility(
-                            View.GONE
                         )
                     bind!!.getRoot().findViewById<View>(R.id.button_favorite)
                         .setVisibility(View.GONE)

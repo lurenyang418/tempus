@@ -3,7 +3,6 @@ package com.cappielloantonio.tempo.ui.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.widget.Toast
@@ -62,55 +61,13 @@ class TrackInfoDialog(private val mediaMetadata: MediaMetadata) : DialogFragment
         genreLink = null
         yearLink = null
 
-        val type =
-            if (mediaMetadata.extras != null) mediaMetadata.extras!!.getString("type") else null
-        val isRadio = type == Constants.MEDIA_TYPE_RADIO
-
-        if (isRadio) {
-            // For radio: always read from extras first (radioArtist, radioTitle, stationName)
-            // MediaMetadata.title/artist are formatted for notification
-            val stationName = if (mediaMetadata.extras != null)
-                mediaMetadata.extras!!.getString(
-                    "stationName",
-                    if (mediaMetadata.artist != null) mediaMetadata.artist.toString() else ""
-                )
-            else
-                if (mediaMetadata.artist != null) mediaMetadata.artist.toString() else ""
-
-            val artist = if (mediaMetadata.extras != null)
-                mediaMetadata.extras!!.getString("radioArtist", "")
+        bind!!.trakTitleInfoTextView.setText(mediaMetadata.title)
+        bind!!.trakArtistInfoTextView.setText(
+            if (mediaMetadata.artist != null)
+                mediaMetadata.artist
             else
                 ""
-
-            val title = if (mediaMetadata.extras != null)
-                mediaMetadata.extras!!.getString("radioTitle", "")
-            else
-                ""
-
-
-            // Format: "Artist - Song" or fallback to title or station name
-            val mainTitle: String?
-            if (!TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
-                mainTitle = artist + " - " + title
-            } else if (!TextUtils.isEmpty(title)) {
-                mainTitle = title
-            } else if (!TextUtils.isEmpty(artist)) {
-                mainTitle = artist
-            } else {
-                mainTitle = stationName
-            }
-
-            bind!!.trakTitleInfoTextView.setText(mainTitle)
-            bind!!.trakArtistInfoTextView.setText(stationName)
-        } else {
-            bind!!.trakTitleInfoTextView.setText(mediaMetadata.title)
-            bind!!.trakArtistInfoTextView.setText(
-                if (mediaMetadata.artist != null)
-                    mediaMetadata.artist
-                else
-                    ""
-            )
-        }
+        )
 
         if (mediaMetadata.extras != null) {
             songLink =
@@ -144,42 +101,15 @@ class TrackInfoDialog(private val mediaMetadata: MediaMetadata) : DialogFragment
                 if (artistLink != null) artistLink else songLink
             )
 
-            var titleValue =
+            val titleValue =
                 mediaMetadata.extras!!.getString("title", getString(R.string.label_placeholder))
             val albumValue =
                 mediaMetadata.extras!!.getString("album", getString(R.string.label_placeholder))
-            var artistValue =
+            val artistValue =
                 mediaMetadata.extras!!.getString("artist", getString(R.string.label_placeholder))
             val genreValue =
                 mediaMetadata.extras!!.getString("genre", getString(R.string.label_placeholder))
             val yearValue = mediaMetadata.extras!!.getInt("year", 0)
-
-
-            // Handle radio-specific metadata
-            if (isRadio) {
-                val stationName = mediaMetadata.extras!!.getString(
-                    "stationName",
-                    getString(R.string.label_placeholder)
-                )
-                val radioArtist = mediaMetadata.extras!!.getString("radioArtist", "")
-                val radioTitle = mediaMetadata.extras!!.getString("radioTitle", "")
-
-
-                // Show station name in station section
-                bind!!.stationInfoSector.setVisibility(View.VISIBLE)
-                bind!!.stationValueSector.setText(stationName)
-
-
-                // Use radio metadata for title/artist if available
-                if (!TextUtils.isEmpty(radioTitle)) {
-                    titleValue = radioTitle
-                }
-                if (!TextUtils.isEmpty(radioArtist)) {
-                    artistValue = radioArtist
-                }
-            } else {
-                bind!!.stationInfoSector.setVisibility(View.GONE)
-            }
 
             if (genreLink == null && genreValue != null && !genreValue.isEmpty() && !getString(R.string.label_placeholder).contentEquals(
                     genreValue

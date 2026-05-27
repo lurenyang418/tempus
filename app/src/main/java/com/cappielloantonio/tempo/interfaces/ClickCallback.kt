@@ -23,8 +23,6 @@ interface ClickCallback {
     fun onPodcastEpisodeLongClick(bundle: Bundle?) {}
     fun onPodcastChannelClick(bundle: Bundle?) {}
     fun onPodcastChannelLongClick(bundle: Bundle?) {}
-    fun onInternetRadioStationClick(bundle: Bundle?) {}
-    fun onInternetRadioStationLongClick(bundle: Bundle?) {}
     fun onMusicFolderClick(bundle: Bundle?) {}
     fun onMusicFolderPlay(bundle: Bundle?) {}
     fun onMusicDirectoryClick(bundle: Bundle?) {}

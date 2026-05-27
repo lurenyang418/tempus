@@ -115,12 +115,6 @@
             android:key="podcast_section_visibility" />
 
         <SwitchPreference
-            android:title="@string/settings_radio"
-            android:defaultValue="true"
-            android:summary="@string/settings_radio_summary"
-            android:key="radio_section_visibility" />
-
-        <SwitchPreference
             android:title="@string/settings_auto_download_lyrics"
             android:defaultValue="false"
             android:summary="@string/settings_auto_download_lyrics_summary"
@@ -462,11 +456,6 @@
             android:title="@string/settings_androidauto_playlist_view"
             android:defaultValue="false"
             android:key="androidauto_playlist_view" />
-
-        <SwitchPreference
-            android:title="@string/settings_androidauto_radio_view"
-            android:defaultValue="false"
-            android:key="androidauto_radio_view" />
 
         <SwitchPreference
             android:title="@string/settings_androidauto_podcast_view"

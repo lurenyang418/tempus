@@ -29,6 +29,7 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
                 sectors = fillStandardHomeSectorList()
             }
 
+            sectors = filterSupportedSectors(sectors)
             return sectors
         }
 
@@ -73,14 +74,6 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
                 getApplication<Application>().getString(R.string.home_title_best_of),
                 true,
                 3
-            )
-        )
-        sectors.add(
-            HomeSector(
-                Constants.HOME_SECTOR_RADIO_STATION,
-                getApplication<Application>().getString(R.string.home_title_radio_station),
-                true,
-                4
             )
         )
         sectors.add(
@@ -173,5 +166,10 @@ class HomeRearrangementViewModel(application: Application) : AndroidViewModel(ap
         )
 
         return sectors
+    }
+
+    private fun filterSupportedSectors(sectors: MutableList<HomeSector?>?): MutableList<HomeSector?>? {
+        val supportedIds = fillStandardHomeSectorList().map { it?.id }.toSet()
+        return sectors?.filter { it?.id in supportedIds }?.toMutableList()
     }
 }
