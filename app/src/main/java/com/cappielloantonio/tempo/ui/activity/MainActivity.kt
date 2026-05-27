@@ -108,6 +108,8 @@ class MainActivity : BaseActivity() {
     var isLandscape: Boolean = false
     private var assetLinkNavigator: AssetLinkNavigator? = null
     private var pendingAssetLink: AssetLink? = null
+    private var bottomSystemInset = 0
+    private var bottomSheetBasePeekHeightDp = 136
 
     var connectivityStatusBroadcastReceiver: ConnectivityStatusBroadcastReceiver? = null
     private var pendingDownloadPlaybackIntent: Intent? = null
@@ -284,6 +286,7 @@ class MainActivity : BaseActivity() {
             val systemBarInsets = insets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
             )
+            bottomSystemInset = systemBarInsets.bottom
 
             target.setPadding(
                 initialLeftPadding + systemBarInsets.left,
@@ -329,6 +332,7 @@ class MainActivity : BaseActivity() {
                 }
             }
 
+            updateBottomSheetPeekHeight()
             insets
         }
 
@@ -418,26 +422,36 @@ class MainActivity : BaseActivity() {
     }
 
     fun toggleBottomNavigationBarVisibilityOnOrientationChange() {
-        val displayDensity = getResources().getDisplayMetrics().density
         // Ignore orientation change, bottom navbar always hidden
         if (getHideBottomNavbarOnPortrait()) {
             navigationController!!.setNavbarVisibility(false)
-            bottomSheetController!!.setPeekHeight(56, displayDensity)
+            setBottomSheetPeekHeight(56)
             navigationController!!.setSystemBarsVisibility(this, !isLandscape)
             return
         }
 
         if (!isLandscape) {
             // Show app navbar + show system bars
-            bottomSheetController!!.setPeekHeight(136, displayDensity)
+            setBottomSheetPeekHeight(136)
             navigationController!!.setNavbarVisibility(true)
             navigationController!!.setSystemBarsVisibility(this, true)
         } else {
             // Hide app navbar + hide system bars
-            bottomSheetController!!.setPeekHeight(56, displayDensity)
+            setBottomSheetPeekHeight(56)
             navigationController!!.setNavbarVisibility(false)
             navigationController!!.setSystemBarsVisibility(this, false)
         }
+    }
+
+    private fun setBottomSheetPeekHeight(basePeekHeightDp: Int) {
+        bottomSheetBasePeekHeightDp = basePeekHeightDp
+        updateBottomSheetPeekHeight()
+    }
+
+    private fun updateBottomSheetPeekHeight() {
+        val behavior = bottomSheetBehavior ?: return
+        val basePeekHeightPx = (bottomSheetBasePeekHeightDp * resources.displayMetrics.density).toInt()
+        behavior.setPeekHeight(basePeekHeightPx + bottomSystemInset)
     }
 
     fun setNavigationDrawerLock(locked: Boolean) {
