@@ -92,11 +92,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:annotations:5.0.7'
 
     // Media3
-    implementation 'androidx.media3:media3-session:1.10.0'
-    implementation 'androidx.media3:media3-common:1.10.0'
-    implementation 'androidx.media3:media3-exoplayer:1.10.0'
-    implementation 'androidx.media3:media3-ui:1.10.0'
-    implementation 'androidx.media3:media3-exoplayer-hls:1.10.0'
+    implementation 'androidx.media3:media3-session:1.10.1'
+    implementation 'androidx.media3:media3-common:1.10.1'
+    implementation 'androidx.media3:media3-exoplayer:1.10.1'
+    implementation 'androidx.media3:media3-ui:1.10.1'
+    implementation 'androidx.media3:media3-exoplayer-hls:1.10.1'
 
     ksp 'com.github.bumptech.glide:ksp:5.0.7'
     ksp 'androidx.room:room-compiler:2.8.4'
